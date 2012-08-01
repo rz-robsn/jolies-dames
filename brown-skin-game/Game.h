@@ -1,7 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include "GameUtilities.h"
 #include "GameListener.h"
+
+using std::vector;
 
 /// <summary> 
 ///		Game class. Implements all the rules of the checker game and fires
@@ -9,12 +13,6 @@
 ///	</summary>
 class Game
 {
-private:
-	GameListener* listener;
-
-	GamePiece grid[7][7];
-	Player currentPlayer;
-
 public:
 
 	Game(void);
@@ -32,5 +30,16 @@ public:
 	void movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player);
 
 	virtual ~Game(void);
+
+private:
+	GameListener* listener;
+
+	const int GRID_SIZE = 7;
+	vector<vector<GamePiece>>* grid;
+	Player currentPlayer;
+
+	void initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece);
+	void initPiecesWithFirstSlotContainingPiece(vector<GamePiece>& gridRow, GamePiece piece);
+
 };
 

@@ -21,13 +21,13 @@ public:
 	///	 has moved to position (xEnd, yEnd). 
 	///	</summary>
 	/// <param name="gamePiece">
-	/// 	The type of piece that moved.
+	/// 	The type of piece that moved. Never equals to EMPTY_SLOT.
 	/// </param>	
 	virtual void OnPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece) = 0;
 
 	/// <summary> Executes when the piece at position (x,y) has been eaten </summary>
 	/// <param name="gamePiece">
-	/// 	The type of piece that has been eaten.
+	/// 	The type of piece that has been eaten. Never equals to EMPTY_SLOT.
 	/// </param>
 	virtual void OnPieceEaten(int x, int y, GamePiece gamePiece) = 0;
 
@@ -35,7 +35,7 @@ public:
 	/// 		  (x,y) are the position of piece after it moved. </summary>
 	/// <param name="gamePiece"> 
 	/// 	The type of piece that became king. Is either equal to
-	/// 	RED_KING_PIECE or BLACK_KING_PIECE.
+	/// 	RED_KING_PIECE or WHITE_KING_PIECE.
 	/// </param>
 	virtual void OnPieceBecameKing(int x, int y, GamePiece gamePiece) = 0;
 
