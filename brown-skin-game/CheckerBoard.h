@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Game.h"
+#include "GameListener.h"
 
-class CheckerBoard
+class CheckerBoard : GameListener
 {
 private:
 	Game* game;
-
 
 public:
 

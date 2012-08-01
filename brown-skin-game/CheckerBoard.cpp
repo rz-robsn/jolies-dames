@@ -4,6 +4,7 @@
 CheckerBoard::CheckerBoard(Game& game)
 {
 	this->game = &game;
+	game.setListener(*this);
 }
 
 
