@@ -15,6 +15,9 @@ public:
 	/// </param>
 	virtual void OnPlayerWin(Player player) = 0;
 
+	/// <summary> Executes the game ends in a draw. </summary>
+	virtual void OnDraw() = 0;
+
 	/// <summary> 
 	///  Executes when the piece at position 
 	///	 (xStart, yStart)
