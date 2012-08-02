@@ -34,12 +34,12 @@ public:
 private:
 	GameListener* listener;
 
-	const int GRID_SIZE = 7;
+	static const int GRID_SIZE = 8;
 	vector<vector<GamePiece>>* grid;
 	Player currentPlayer;
 
 	void initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece);
 	void initPiecesWithFirstSlotContainingPiece(vector<GamePiece>& gridRow, GamePiece piece);
-
+	void initRowWithEmptySlot(vector<GamePiece>& gridRow);
 };
 
