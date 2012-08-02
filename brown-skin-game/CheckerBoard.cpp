@@ -1,14 +1,11 @@
 #include "CheckerBoard.h"
 
 
-CheckerBoard::CheckerBoard(Game& game)
+CheckerBoard::CheckerBoard()
 {
-	this->game = &game;
-	game.setListener(*this);
 }
 
 
 CheckerBoard::~CheckerBoard(void)
 {
-	delete this->game;
 }
