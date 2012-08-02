@@ -9,7 +9,15 @@ Game::Game(void)
 	{
 		grid->at(i) = vector<GamePiece>(GRID_SIZE);
 	}
+}
 
+void Game::setListener(GameListener& listener)
+{
+	*(this->listener) = listener;
+}
+
+void Game::newGame()
+{
 	// Filling the grid with pieces and empty slots
 	this->initPiecesWithFirstSlotContainingPiece(grid->at(0), WHITE_PIECE);
 	this->initPiecesWithFirstSlotEmpty(grid->at(1), WHITE_PIECE);
@@ -21,10 +29,15 @@ Game::Game(void)
 	this->initPiecesWithFirstSlotEmpty(grid->at(7), RED_PIECE);
 }
 
-
-Game::~Game(void)
+void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 {
-	delete[] grid;
+	list<Slot> moves = this->getAvailableMovesForPiece(xStart, yStart, player);
+
+}
+
+list<Slot> Game::getAvailableMovesForPiece(int x, int y, Player player)
+{
+	return list<Slot>();
 }
 
 void Game::initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece)
@@ -51,7 +64,7 @@ void Game::initRowWithEmptySlot(vector<GamePiece>& gridRow)
 	}
 }
 
-void Game::setListener(GameListener& listener)
+Game::~Game(void)
 {
-	*(this->listener) = listener;
+	delete[] grid;
 }
