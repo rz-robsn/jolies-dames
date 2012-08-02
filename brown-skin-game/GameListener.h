@@ -42,6 +42,14 @@ public:
 	/// </param>
 	virtual void OnPieceBecameKing(int x, int y, GamePiece gamePiece) = 0;
 
+	/// <summary> 
+	///  Executes when the piece at position
+	///	 (xStart, yStart)
+	///	 has illegaly tried to move to position (xEnd, yEnd).  
+	///	</summary>
+	/// <param name="gamePiece"> The type of piece that illegally tried to move. Never equals to EMPTY_SLOT. </param>
+	virtual void OnIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece);
+
 	virtual ~GameListener() {};
 };
 
