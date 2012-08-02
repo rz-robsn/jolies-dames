@@ -48,5 +48,9 @@ private:
 	void initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece);
 	void initPiecesWithFirstSlotContainingPiece(vector<GamePiece>& gridRow, GamePiece piece);
 	void initRowWithEmptySlot(vector<GamePiece>& gridRow);
+	void switchPlayer();
+
+	GamePiece& getGamePieceAt(int x, int y);
+	void setGamePieceAt(int x, int y, GamePiece piece);
 };
 

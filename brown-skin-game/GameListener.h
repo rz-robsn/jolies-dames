@@ -50,6 +50,10 @@ public:
 	/// <param name="gamePiece"> The type of piece that illegally tried to move. Never equals to EMPTY_SLOT. </param>
 	virtual void onIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece) = 0;
 
+	/// <summary> Executes when a piece that just moved to position (x, y) can still jump to another slot. </summary>
+	/// <param name="gamePiece"> The type of piece that just moved. Never equals to EMPTY_SLOT. </param>
+	virtual void onPieceCanStillJump(int x, int y, GamePiece gamePiece) = 0;
+
 	virtual ~GameListener() {};
 };
 
