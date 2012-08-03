@@ -49,9 +49,13 @@ private:
 	void initPiecesWithFirstSlotContainingPiece(vector<GamePiece>& gridRow, GamePiece piece);
 	void initRowWithEmptySlot(vector<GamePiece>& gridRow);
 	void switchPlayer();
+
 	bool moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player);
+	bool pieceCanEatEnemyPiece(int x, int y);
+	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy);
 
 	static bool pieceBelongsToPlayer(GamePiece piece, Player player);
+	static Player getPlayerOwningPiece(GamePiece piece);
 
 	GamePiece& getGamePieceAt(int x, int y);
 	void setGamePieceAt(int x, int y, GamePiece piece);

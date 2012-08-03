@@ -95,13 +95,8 @@ bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player
 	{
 		return false;
 	} 
-	else if (this->getGamePieceAt(xEnd, yEnd) != EMPTY_SLOT) // Destination slot is occupied.
+	else
 	{
-		return false;
-	}
-	else 
-	{
-		// Determines wether the move is legal
 		list<Slot> moves = this->getAvailableMovesForPiece(xStart, yStart, player);
 		bool moveIsLegal = false;
 		for (list<Slot>::iterator it = moves.begin(); it != moves.end(); it++)
@@ -111,23 +106,65 @@ bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player
 				moveIsLegal = true;
 			}
 		}
-	}
+	}	
 	// set move is Legal to false if there is no piece that this piece can eat
 	// and there is another piece that can eat a piece.
+	
+}
+
+bool Game::pieceCanEatEnemyPiece(int x, int y)
+{
+	bool result = false;
+		
+	switch(this->getGamePieceAt(x,y))
+	{
+		case RED_KING_PIECE:
+		case WHITE_KING_PIECE:			
+			result = this->pieceCanEatEnemyPiece(x, y, x-1, y-1)
+					|| this->pieceCanEatEnemyPiece(x, y, x+1, y-1);
+
+		case WHITE_PIECE:
+		case RED_PIECE:
+			result = result
+					|| this->pieceCanEatEnemyPiece(x, y, x-1, y+1)
+					|| this->pieceCanEatEnemyPiece(x, y, x+1, y+1);
+	}
+
+	return result;
+}
+
+bool Game::pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy)
+{
+	GamePiece enemyPiece;
+	try
+	{
+		enemyPiece = Game::getGamePieceAt(xEnemy, yEnemy);
+	}
+	catch (std::out_of_range e)
+	{
+		return false;
+	}
+
+	return Game::getPlayerOwningPiece(this->getGamePieceAt(x,y)) != Game::getPlayerOwningPiece(enemyPiece);
 }
 
 bool Game::pieceBelongsToPlayer(GamePiece piece, Player player)
+{
+	return piece != EMPTY_SLOT && Game::getPlayerOwningPiece(piece) == player;
+}
+
+Player Game::getPlayerOwningPiece(GamePiece piece)
 {
 	switch(piece)
 	{
 		case RED_PIECE:
 		case RED_KING_PIECE:
-			return player == PLAYER_RED;
+			return PLAYER_RED;
 		case WHITE_PIECE:	
 		case WHITE_KING_PIECE:
-			return player == PLAYER_WHITE;
+			return PLAYER_WHITE;
 		case EMPTY_SLOT :
-			return false;
+			throw "Don't call Game::getPlayerOwningPiece(EMPTY_SLOT)";
 	}
 }
 
