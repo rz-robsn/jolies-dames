@@ -19,6 +19,7 @@ struct Slot
 	int x;
 	int y;
 
+	Slot();
 	Slot(int x, int y) : x(x), y(y) {};
 	bool operator=(Slot* slot)
 	{

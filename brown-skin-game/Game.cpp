@@ -55,9 +55,35 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 	}
 }
 
-list<Slot> Game::getAvailableMovesForPiece(int x, int y, Player player)
+list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 {
-	return list<Slot>();
+	list<Slot> moves = list<Slot>();
+
+	if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), this->currentPlayer))
+	{
+		return list<Slot>();
+	}
+
+	// check if there exists another piece that can eat a piece
+	// and return empty list if it does (because when you can eat, you must eat)  
+	if (!this->pieceCanEatEnemyPiece(x, y))
+	{
+		for (int i = 0; i < GRID_SIZE; i++)
+		{
+			for (int j = 0; j < GRID_SIZE; j++)
+			{
+				if( i != x && j != y
+					&& Game::getPlayerOwningPiece(this->getGamePieceAt(x,y)) == Game::getPlayerOwningPiece(this->getGamePieceAt(i,j))
+					&& this->pieceCanEatEnemyPiece(i,j))
+				{
+					return list<Slot>();
+				}
+			}
+		}		
+	}
+			
+
+	return moves;
 }
 
 void Game::initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece)
@@ -90,26 +116,17 @@ void Game::switchPlayer()
 }
 
 bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player)
-{
-	if(!Game::pieceBelongsToPlayer(getGamePieceAt(xStart, yStart), player))
+{ 
+	list<Slot> moves = this->getAvailableMovesForPiece(xStart, yStart);
+	bool moveIsLegal = false;
+	for (list<Slot>::iterator it = moves.begin(); it != moves.end(); it++)
 	{
-		return false;
-	} 
-	else
-	{
-		list<Slot> moves = this->getAvailableMovesForPiece(xStart, yStart, player);
-		bool moveIsLegal = false;
-		for (list<Slot>::iterator it = moves.begin(); it != moves.end(); it++)
+		if (it->x == xEnd && it->y == yEnd)
 		{
-			if (it->x == xEnd && it->y == yEnd)
-			{
-				moveIsLegal = true;
-			}
+			return true;
 		}
-	}	
-	// set move is Legal to false if there is no piece that this piece can eat
-	// and there is another piece that can eat a piece.
-	
+	}
+	return false;
 }
 
 bool Game::pieceCanEatEnemyPiece(int x, int y)
@@ -120,32 +137,44 @@ bool Game::pieceCanEatEnemyPiece(int x, int y)
 	{
 		case RED_KING_PIECE:
 		case WHITE_KING_PIECE:			
-			result = this->pieceCanEatEnemyPiece(x, y, x-1, y-1)
-					|| this->pieceCanEatEnemyPiece(x, y, x+1, y-1);
+			result = this->pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2)
+					|| this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2);
 
 		case WHITE_PIECE:
 		case RED_PIECE:
 			result = result
-					|| this->pieceCanEatEnemyPiece(x, y, x-1, y+1)
-					|| this->pieceCanEatEnemyPiece(x, y, x+1, y+1);
+					|| this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2)
+					|| this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2);
+			break;
+		case EMPTY_SLOT:
+			return false;
 	}
 
 	return result;
 }
 
-bool Game::pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy)
+bool Game::pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot)
 {
-	GamePiece enemyPiece;
 	try
 	{
-		enemyPiece = Game::getGamePieceAt(xEnemy, yEnemy);
+		bool result = Game::getPlayerOwningPiece(this->getGamePieceAt(x,y)) 
+						!= Game::getPlayerOwningPiece(this->getGamePieceAt(xEnemy, yEnemy))
+					  && this->getGamePieceAt(xEmptySlot, yEmptySlot) == EMPTY_SLOT;
+		return result;
 	}
 	catch (std::out_of_range e)
 	{
 		return false;
 	}
+}
 
-	return Game::getPlayerOwningPiece(this->getGamePieceAt(x,y)) != Game::getPlayerOwningPiece(enemyPiece);
+void Game::createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot, Slot& slot)
+{
+	if (this->pieceCanEatEnemyPiece(x, y, xEnemy, yEnemy, xEmptySlot, yEmptySlot))
+	{
+		slot.x = xEmptySlot;
+		slot.y = yEmptySlot;
+	}
 }
 
 bool Game::pieceBelongsToPlayer(GamePiece piece, Player player)

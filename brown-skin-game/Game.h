@@ -34,7 +34,7 @@ public:
 	/// <summary> Returns the list of slots where the piece at (x,y) can move to. </summary>
 	/// <param name="player"> The player who is moving the piece. </param>
 	/// <returns> The available moves for piece. </returns>
-	list<Slot> getAvailableMovesForPiece(int x, int y, Player player);
+	list<Slot> getAvailableMovesForPiece(int x, int y);
 
 	virtual ~Game(void);
 
@@ -51,8 +51,12 @@ private:
 	void switchPlayer();
 
 	bool moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player);
+
 	bool pieceCanEatEnemyPiece(int x, int y);
-	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy);
+	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
+	void createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot, Slot& slot);
+
+	list<Slot> getAllEatableEnemies(int x, int y);
 
 	static bool pieceBelongsToPlayer(GamePiece piece, Player player);
 	static Player getPlayerOwningPiece(GamePiece piece);
