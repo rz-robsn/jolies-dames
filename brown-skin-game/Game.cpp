@@ -33,20 +33,8 @@ void Game::newGame()
 
 void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 {
-	// Determines wether the move is legal
-	list<Slot> moves = this->getAvailableMovesForPiece(xStart, yStart, player);
-	bool moveIsLegal = false;
-	for (list<Slot>::iterator it = moves.begin(); it != moves.end(); it++)
-	{
-		if (it->x == xEnd && it->y == yEnd)
-		{
-			moveIsLegal = true;
-		}
-	}
-
 	GamePiece movingPiece = this->getGamePieceAt(xStart, yStart);
-
-	if (moveIsLegal)
+	if (this->moveIsLegal(xStart, yStart, xEnd, yEnd, player))
 	{
 		// move the piece
 		this->setGamePieceAt(xStart, yStart, EMPTY_SLOT);
@@ -99,6 +87,48 @@ void Game::initRowWithEmptySlot(vector<GamePiece>& gridRow)
 void Game::switchPlayer()
 {
 	this->currentPlayer = (currentPlayer == PLAYER_RED) ? PLAYER_WHITE : PLAYER_RED;
+}
+
+bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player)
+{
+	if(!Game::pieceBelongsToPlayer(getGamePieceAt(xStart, yStart), player))
+	{
+		return false;
+	} 
+	else if (this->getGamePieceAt(xEnd, yEnd) != EMPTY_SLOT) // Destination slot is occupied.
+	{
+		return false;
+	}
+	else 
+	{
+		// Determines wether the move is legal
+		list<Slot> moves = this->getAvailableMovesForPiece(xStart, yStart, player);
+		bool moveIsLegal = false;
+		for (list<Slot>::iterator it = moves.begin(); it != moves.end(); it++)
+		{
+			if (it->x == xEnd && it->y == yEnd)
+			{
+				moveIsLegal = true;
+			}
+		}
+	}
+	// set move is Legal to false if there is no piece that this piece can eat
+	// and there is another piece that can eat a piece.
+}
+
+bool Game::pieceBelongsToPlayer(GamePiece piece, Player player)
+{
+	switch(piece)
+	{
+		case RED_PIECE:
+		case RED_KING_PIECE:
+			return player == PLAYER_RED;
+		case WHITE_PIECE:	
+		case WHITE_KING_PIECE:
+			return player == PLAYER_WHITE;
+		case EMPTY_SLOT :
+			return false;
+	}
 }
 
 GamePiece& Game::getGamePieceAt(int x, int y)
