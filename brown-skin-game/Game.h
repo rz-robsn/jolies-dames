@@ -56,7 +56,7 @@ private:
 	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
 	void createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot, Slot& slot);
 
-	list<Slot> getAllEatableEnemies(int x, int y);
+	list<Slot> getAllMovesThatEatEnemy(int x, int y);
 
 	static bool pieceBelongsToPlayer(GamePiece piece, Player player);
 	static Player getPlayerOwningPiece(GamePiece piece);

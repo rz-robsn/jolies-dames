@@ -40,14 +40,17 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 		this->setGamePieceAt(xStart, yStart, EMPTY_SLOT);
 		this->setGamePieceAt(xEnd, yEnd, movingPiece);
 
-		// if you jump over a piece, eat it.
+		// if the piece jumps over an enemy piece, eat it.
 
-		// if the other player cannot move, the current player wins
-		// else if the piece can still jump
-		//		alert Listener player can still jump.
-		//		do nothing (wait for next movePiece call)
+		// if the current player cannot move a piece
+		//		declare draw if the other player can't move a piece as well.
+		
+		// if the other player cannot move, 
+		//		the current player wins
+		// else if the piece can still eat a piece
+		//		alert Listener player the piece can still eat a piece.
 		// else
-		//      switch player.		
+		//      switch player.
 	}
 	else
 	{
@@ -79,9 +82,14 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 					return list<Slot>();
 				}
 			}
-		}		
+		}
+
+		return this->getAllMovesThatEatEnemy(x, y);
 	}
-			
+	else 
+	{
+		// return all empty slots the piece can move to.
+	}
 
 	return moves;
 }
