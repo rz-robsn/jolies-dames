@@ -40,7 +40,13 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 		this->setGamePieceAt(xStart, yStart, EMPTY_SLOT);
 		this->setGamePieceAt(xEnd, yEnd, movingPiece);
 
-		// if the piece jumps over an enemy piece, eat it.
+		// if the piece jumps over an enemy piece.
+		if (std::abs(yEnd - yStart) == 2)
+		{
+			// eat The piece in between (xStart, yStart) and (xEnd, yEnd)
+			int xEnemy = xStart + (xEnd - xStart)/2; 
+			int yEnemy = yStart + (yEnd - yStart)/2; 
+		}
 
 		// if the current player cannot move a piece
 		//		declare draw if the other player can't move a piece as well.
@@ -145,14 +151,14 @@ bool Game::pieceCanEatEnemyPiece(int x, int y)
 	{
 		case RED_KING_PIECE:
 		case WHITE_KING_PIECE:			
-			result = this->pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2)
-					|| this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2);
+			result = this->pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2) // Bottom Left
+					|| this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2); // Bottom Right
 
 		case WHITE_PIECE:
 		case RED_PIECE:
 			result = result
-					|| this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2)
-					|| this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2);
+					|| this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2) // Top Left
+					|| this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2); // Top Right
 			break;
 		case EMPTY_SLOT:
 			return false;
@@ -176,13 +182,50 @@ bool Game::pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmpt
 	}
 }
 
-void Game::createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot, Slot& slot)
+Slot Game::createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot)
 {
 	if (this->pieceCanEatEnemyPiece(x, y, xEnemy, yEnemy, xEmptySlot, yEmptySlot))
 	{
-		slot.x = xEmptySlot;
-		slot.y = yEmptySlot;
+		return Slot(xEmptySlot,xEmptySlot);
 	}
+	else
+	{
+		std::nullptr_t null;
+	}
+}
+
+list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
+{
+	list<Slot> returnList = list<Slot>();
+	switch(this->getGamePieceAt(x,y))
+	{
+		case RED_KING_PIECE:
+		case WHITE_KING_PIECE:
+			if(this->pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
+
+			if(this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
+		case WHITE_PIECE:
+		case RED_PIECE:
+			if(this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
+
+			if(this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
+			break;
+		case EMPTY_SLOT:
+			break;
+	}
+	return returnList;
 }
 
 bool Game::pieceBelongsToPlayer(GamePiece piece, Player player)

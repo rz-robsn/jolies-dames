@@ -54,7 +54,7 @@ private:
 
 	bool pieceCanEatEnemyPiece(int x, int y);
 	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
-	void createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot, Slot& slot);
+	Slot createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
 
 	list<Slot> getAllMovesThatEatEnemy(int x, int y);
 
