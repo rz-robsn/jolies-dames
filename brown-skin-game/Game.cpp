@@ -13,9 +13,9 @@ Game::Game(void)
 	this->currentChainJumpingSlot = NULL;
 }
 
-void Game::setListener(GameListener& listener)
+void Game::setListener(GameListener* listener)
 {
-	*(this->listener) = listener;
+	this->listener = listener;
 }
 
 void Game::newGame()
@@ -36,8 +36,9 @@ void Game::newGame()
 	{
 		delete this->currentChainJumpingSlot ;
 	}
-
 	this->currentChainJumpingSlot = NULL;
+
+	this->listener->onNewGame();
 }
 
 void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)

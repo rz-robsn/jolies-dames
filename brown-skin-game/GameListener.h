@@ -7,7 +7,7 @@ class GameListener
 public:
 
 	/// <summary> Executes when the game starts. </summary>
-	virtual void onStart() = 0;
+	virtual void onNewGame() = 0;
 
 	/// <summary> Executes when a player wins. </summary>
 	/// <param name="player">

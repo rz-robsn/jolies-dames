@@ -21,7 +21,7 @@ public:
 
 	/// <summary> Sets this game's listener. </summary>
 	/// <param name="listener"> [in,out] The listener. Does not assume ownership. </param>
-	void setListener(GameListener& listener);
+	void setListener(GameListener* listener);
 
 	/// <summary> Starts a new Game </summary>
 	void newGame();
