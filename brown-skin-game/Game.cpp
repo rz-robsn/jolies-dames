@@ -10,6 +10,7 @@ Game::Game(void)
 	{
 		grid->at(i) = vector<GamePiece>(GRID_SIZE);
 	}
+	this->currentChainJumpingSlot = NULL;
 }
 
 void Game::setListener(GameListener& listener)
@@ -30,6 +31,13 @@ void Game::newGame()
 	this->initPiecesWithFirstSlotEmpty(grid->at(7), RED_PIECE);
 
 	this->currentPlayer = PLAYER_RED;
+
+	if(this->currentChainJumpingSlot != NULL)
+	{
+		delete this->currentChainJumpingSlot ;
+	}
+
+	this->currentChainJumpingSlot = NULL;
 }
 
 void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
@@ -70,6 +78,11 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 		else if (this->getAllMovesThatEatEnemy(xEnd, yEnd).size() > 0) // the moving piece can still jump another piece
 		{
 			this->listener->onPieceCanStillJump(xEnd, yEnd, movingPiece);
+			if(this->currentChainJumpingSlot != NULL)
+			{
+				delete this->currentChainJumpingSlot ;
+			}
+			this->currentChainJumpingSlot = new Slot(xEnd, yEnd);	
 		}
 		else 
 		{
@@ -80,6 +93,14 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 
 list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 {
+	// if there is another piece that is Jumping multiple
+	if(this->currentChainJumpingSlot != NULL
+		&& (this->currentChainJumpingSlot->x != x
+			|| this->currentChainJumpingSlot->y != y))
+	{
+		return list<Slot>();
+	}
+
 	if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), currentPlayer))
 	{
 		return list<Slot>();
@@ -140,6 +161,12 @@ void Game::initRowWithEmptySlot(vector<GamePiece>& gridRow)
 void Game::switchTurn()
 {
 	this->currentPlayer = (currentPlayer == PLAYER_RED) ? PLAYER_WHITE : PLAYER_RED;
+
+	if(this->currentChainJumpingSlot != NULL)
+	{
+		delete this->currentChainJumpingSlot ;
+	}
+	this->currentChainJumpingSlot = NULL;
 }
 
 bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player)

@@ -41,6 +41,10 @@ public:
 private:
 	GameListener* listener;
 
+	/// <summary> If the current player has jumped a piece and that piece can still jump another piece, 
+	/// 		  this attribute contains current slot of the jumping piece, otherwise equals NULL. </summary>
+	Slot* currentChainJumpingSlot;
+
 	static const int GRID_SIZE = 8;
 	vector<vector<GamePiece>>* grid;
 	Player currentPlayer;
