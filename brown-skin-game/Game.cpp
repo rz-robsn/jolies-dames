@@ -1,4 +1,5 @@
 #include "Game.h"
+
 using std::vector;
 
 Game::Game(void)
@@ -34,70 +35,82 @@ void Game::newGame()
 void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 {
 	GamePiece movingPiece = this->getGamePieceAt(xStart, yStart);
-	if (this->moveIsLegal(xStart, yStart, xEnd, yEnd, player))
+	if (!this->moveIsLegal(xStart, yStart, xEnd, yEnd, player))
+	{
+		this->listener->onIllegalMove(xStart, yStart, xEnd, yEnd, movingPiece);
+	}
+	else
 	{
 		// move the piece
 		this->setGamePieceAt(xStart, yStart, EMPTY_SLOT);
 		this->setGamePieceAt(xEnd, yEnd, movingPiece);
 
-		// if the piece jumps over an enemy piece.
+		// if the moving piece is jumping over an enemy piece.
 		if (std::abs(yEnd - yStart) == 2)
 		{
 			// eat The piece in between (xStart, yStart) and (xEnd, yEnd)
 			int xEnemy = xStart + (xEnd - xStart)/2; 
-			int yEnemy = yStart + (yEnd - yStart)/2; 
+			int yEnemy = yStart + (yEnd - yStart)/2;
+
+			GamePiece eatenPiece = this->getGamePieceAt(xEnemy, yEnemy);
+			this->setGamePieceAt(xEnemy, yEnemy, EMPTY_SLOT);
+			this->listener->onPieceEaten(xEnemy, yEnemy, eatenPiece);
 		}
 
-		// if the current player cannot move a piece
-		//		declare draw if the other player can't move a piece as well.
-		
-		// if the other player cannot move, 
-		//		the current player wins
-		// else if the piece can still eat a piece
-		//		alert Listener player the piece can still eat a piece.
-		// else
-		//      switch player.
-	}
-	else
-	{
-		this->listener->onIllegalMove(xStart, yStart, xEnd, yEnd, movingPiece);
+		// If both players can't move any pieces
+		if( !this->playerCanStillMoveAPiece(this->currentPlayer)
+			&& !this->playerCanStillMoveAPiece(Game::getOpponent(currentPlayer)))
+		{
+			this->listener->onDraw();
+		}
+		else if (!this->playerCanStillMoveAPiece(Game::getOpponent(currentPlayer))) // the other player cannot move
+		{
+			this->listener->onPlayerWin(this->currentPlayer);
+		}
+		else if (this->getAllMovesThatEatEnemy(xEnd, yEnd).size() > 0) // the moving piece can still jump another piece
+		{
+			this->listener->onPieceCanStillJump(xEnd, yEnd, movingPiece);
+		}
+		else 
+		{
+			this->switchTurn();
+		}
 	}
 }
 
 list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 {
-	list<Slot> moves = list<Slot>();
-
-	if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), this->currentPlayer))
+	if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), currentPlayer))
 	{
 		return list<Slot>();
 	}
-
-	// check if there exists another piece that can eat a piece
-	// and return empty list if it does (because when you can eat, you must eat)  
+	
 	if (!this->pieceCanEatEnemyPiece(x, y))
 	{
+		// check if there exists another piece that can eat an enemy piece
+		// and return empty list if it does (because the player must move that other piece)  
 		for (int i = 0; i < GRID_SIZE; i++)
 		{
 			for (int j = 0; j < GRID_SIZE; j++)
 			{
 				if( i != x && j != y
-					&& Game::getPlayerOwningPiece(this->getGamePieceAt(x,y)) == Game::getPlayerOwningPiece(this->getGamePieceAt(i,j))
-					&& this->pieceCanEatEnemyPiece(i,j))
+					&& this->pieceCanEatEnemyPiece(i,j)
+					&& Game::getPlayerOwningPiece(this->getGamePieceAt(x,y)) == Game::getPlayerOwningPiece(this->getGamePieceAt(i,j)))
 				{
 					return list<Slot>();
 				}
 			}
 		}
-
-		return this->getAllMovesThatEatEnemy(x, y);
+		
+		// return all empty slots the piece can move to.
+		list<Slot> moves = list<Slot>();
+		this->addAvailableMovesToEmptySlots(x, y, moves);
+		return moves;
 	}
 	else 
 	{
-		// return all empty slots the piece can move to.
+		return this->getAllMovesThatEatEnemy(x, y);
 	}
-
-	return moves;
 }
 
 void Game::initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece)
@@ -124,7 +137,7 @@ void Game::initRowWithEmptySlot(vector<GamePiece>& gridRow)
 	}
 }
 
-void Game::switchPlayer()
+void Game::switchTurn()
 {
 	this->currentPlayer = (currentPlayer == PLAYER_RED) ? PLAYER_WHITE : PLAYER_RED;
 }
@@ -182,16 +195,20 @@ bool Game::pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmpt
 	}
 }
 
-Slot Game::createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot)
+bool Game::playerCanStillMoveAPiece(Player player)
 {
-	if (this->pieceCanEatEnemyPiece(x, y, xEnemy, yEnemy, xEmptySlot, yEmptySlot))
+	for (int i = 0; i < GRID_SIZE; i++)
 	{
-		return Slot(xEmptySlot,xEmptySlot);
+		for (int j = 0; j < GRID_SIZE; j++)
+		{
+			if (this->pieceBelongsToPlayer(i, j, player)
+				&& this->getAvailableMovesForPiece(i,j).size() > 0)
+			{
+				return true;
+			}
+		}
 	}
-	else
-	{
-		std::nullptr_t null;
-	}
+	return false;
 }
 
 list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
@@ -228,6 +245,28 @@ list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
 	return returnList;
 }
 
+void Game::addAvailableMovesToEmptySlots(int x, int y, list<Slot>& moves)
+{
+	switch(this->getGamePieceAt(x,y))
+	{
+		case RED_KING_PIECE:
+		case WHITE_KING_PIECE:
+			this->pushSlotIfEmpty(x-1, y-1, moves);
+			this->pushSlotIfEmpty(x+1, y-1, moves);
+		case WHITE_PIECE:
+		case RED_PIECE:
+			this->pushSlotIfEmpty(x-1, y+1, moves);
+			this->pushSlotIfEmpty(x+1, y+1, moves);
+		case EMPTY_SLOT:
+			throw "Don't call Game::addAvailableMovesToEmptySlots() on EMPTY_SLOT.";
+	}
+}
+
+bool Game::pieceBelongsToPlayer(int x, int y, Player player)
+{
+	return Game::pieceBelongsToPlayer(this->getGamePieceAt(x, y), player);
+}
+
 bool Game::pieceBelongsToPlayer(GamePiece piece, Player player)
 {
 	return piece != EMPTY_SLOT && Game::getPlayerOwningPiece(piece) == player;
@@ -246,6 +285,23 @@ Player Game::getPlayerOwningPiece(GamePiece piece)
 		case EMPTY_SLOT :
 			throw "Don't call Game::getPlayerOwningPiece(EMPTY_SLOT)";
 	}
+}
+
+Player Game::getOpponent(Player player)
+{
+	return (player == PLAYER_RED) ? PLAYER_WHITE : PLAYER_RED;
+}
+
+void Game::pushSlotIfEmpty(int x, int y, list<Slot>& moves)
+{
+	try
+	{
+		if(this->getGamePieceAt(x,y) == EMPTY_SLOT)
+		{
+			moves.push_back(Slot(x,y));
+		}
+	}
+	catch (std::out_of_range doNothing) {}
 }
 
 GamePiece& Game::getGamePieceAt(int x, int y)

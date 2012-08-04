@@ -48,18 +48,24 @@ private:
 	void initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece);
 	void initPiecesWithFirstSlotContainingPiece(vector<GamePiece>& gridRow, GamePiece piece);
 	void initRowWithEmptySlot(vector<GamePiece>& gridRow);
-	void switchPlayer();
+	void switchTurn();
 
 	bool moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player);
 
 	bool pieceCanEatEnemyPiece(int x, int y);
 	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
-	Slot createSlotIfPieceCanEatEnemy(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
+
+	bool playerCanStillMoveAPiece(Player player);
 
 	list<Slot> getAllMovesThatEatEnemy(int x, int y);
+	void addAvailableMovesToEmptySlots(int x, int y, list<Slot>& moves);	
+	void pushSlotIfEmpty(int x, int y, list<Slot>& moves);
 
+	bool pieceBelongsToPlayer(int x, int y, Player player);	
 	static bool pieceBelongsToPlayer(GamePiece piece, Player player);
+
 	static Player getPlayerOwningPiece(GamePiece piece);
+	static Player getOpponent(Player player);
 
 	GamePiece& getGamePieceAt(int x, int y);
 	void setGamePieceAt(int x, int y, GamePiece piece);
