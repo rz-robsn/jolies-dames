@@ -75,7 +75,7 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 		{
 			this->listener->onPlayerWin(this->currentPlayer);
 		}
-		else if (this->getAllMovesThatEatEnemy(xEnd, yEnd).size() > 0) // the moving piece can still jump another piece
+		else if (this->pieceCanEatEnemyPiece(xEnd, yEnd)) // the moving piece can still jump another piece
 		{
 			this->listener->onPieceCanStillJump(xEnd, yEnd, movingPiece);
 			if(this->currentChainJumpingSlot != NULL)
@@ -93,20 +93,21 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
 
 list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 {
-	// if there is another piece that is Jumping multiple
-	if(this->currentChainJumpingSlot != NULL
+	if(this->getGamePieceAt(x,y) == EMPTY_SLOT)
+	{
+		return list<Slot>();
+	}	
+	else if(this->currentChainJumpingSlot != NULL
 		&& (this->currentChainJumpingSlot->x != x
-			|| this->currentChainJumpingSlot->y != y))
+			|| this->currentChainJumpingSlot->y != y)) // there is another piece that is Jumping multiple
 	{
 		return list<Slot>();
 	}
-
-	if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), currentPlayer))
+	else if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), currentPlayer))
 	{
 		return list<Slot>();
-	}
-	
-	if (!this->pieceCanEatEnemyPiece(x, y))
+	}	
+	else if (!this->pieceCanEatEnemyPiece(x, y))
 	{
 		// check if there exists another piece that can eat an enemy piece
 		// and return empty list if it does (because the player must move that other piece)  
@@ -124,7 +125,7 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 		}
 		
 		// return all empty slots the piece can move to.
-		list<Slot> moves = list<Slot>();
+		list<Slot> moves = list<Slot>(4);
 		this->addAvailableMovesToEmptySlots(x, y, moves);
 		return moves;
 	}
@@ -185,26 +186,7 @@ bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player
 
 bool Game::pieceCanEatEnemyPiece(int x, int y)
 {
-	bool result = false;
-		
-	switch(this->getGamePieceAt(x,y))
-	{
-		case RED_KING_PIECE:
-		case WHITE_KING_PIECE:			
-			result = this->pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2) // Bottom Left
-					|| this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2); // Bottom Right
-
-		case WHITE_PIECE:
-		case RED_PIECE:
-			result = result
-					|| this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2) // Top Left
-					|| this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2); // Top Right
-			break;
-		case EMPTY_SLOT:
-			return false;
-	}
-
-	return result;
+	return (this->getAllMovesThatEatEnemy(x,y).size() > 0);
 }
 
 bool Game::pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot)
@@ -249,7 +231,6 @@ list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
 			{
 				returnList.push_back(Slot(x-2, y-2));
 			}
-
 			if(this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2))
 			{
 				returnList.push_back(Slot(x-2, y-2));
@@ -267,7 +248,7 @@ list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
 			}
 			break;
 		case EMPTY_SLOT:
-			break;
+			throw "Don't call Game::getAllMovesThatEatEnemy() on EMPTY_SLOT.";
 	}
 	return returnList;
 }

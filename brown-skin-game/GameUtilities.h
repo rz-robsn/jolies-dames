@@ -19,10 +19,10 @@ struct Slot
 	int x;
 	int y;
 
-	Slot();
+	Slot(){};
 	Slot(int x, int y) : x(x), y(y) {};
 	bool operator=(Slot* slot)
 	{
 		return this->x == slot->x && this->y == slot->y;
-	}
+	};
 };
