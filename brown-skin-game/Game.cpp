@@ -203,6 +203,10 @@ bool Game::pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmpt
 	{
 		return false;
 	}
+	catch (const char* msg)
+	{
+		return false;
+	}
 }
 
 bool Game::playerCanStillMoveAPiece(Player player)
@@ -266,7 +270,7 @@ list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
 			}
 			break;
 		case EMPTY_SLOT:
-			throw "Don't call Game::getAllMovesThatEatEnemy() on EMPTY_SLOT.";
+			break;
 	}
 	return returnList;
 }
@@ -339,12 +343,12 @@ void Game::pushSlotIfEmpty(int x, int y, list<Slot>& moves)
 
 GamePiece& Game::getGamePieceAt(int x, int y)
 {
-	return grid->at(x).at(y);
+	return grid->at(y).at(x);
 }
 
 void Game::setGamePieceAt(int x, int y, GamePiece piece)
 {
-	grid->at(x).at(y) = piece;
+	grid->at(y).at(x) = piece;
 }
 
 Game::~Game(void)

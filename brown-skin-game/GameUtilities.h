@@ -1,16 +1,16 @@
 #pragma once
 
 typedef enum {
-	PLAYER_RED ,
-	PLAYER_WHITE
+	PLAYER_RED = 0,
+	PLAYER_WHITE = 1
 } Player;
 
 typedef enum {
-	EMPTY_SLOT,
-	RED_PIECE ,
-	WHITE_PIECE,
-	RED_KING_PIECE,
-	WHITE_KING_PIECE
+	EMPTY_SLOT = 0,
+	RED_PIECE = 1,
+	WHITE_PIECE = 2,
+	RED_KING_PIECE = 3,
+	WHITE_KING_PIECE = 4
 } GamePiece;
 
 /// <summary> Slot, represents a position on the grid. </summary>
