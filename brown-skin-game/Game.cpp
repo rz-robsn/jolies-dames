@@ -44,7 +44,7 @@ void Game::newGame()
 void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 {
 	GamePiece movingPiece = this->getGamePieceAt(xStart, yStart);
-	if (!this->moveIsLegal(xStart, yStart, xEnd, yEnd, this->currentPlayer))
+	if (!this->moveIsLegal(xStart, yStart, xEnd, yEnd))
 	{
 		this->listener->onIllegalMove(xStart, yStart, xEnd, yEnd, movingPiece);
 	}
