@@ -41,10 +41,10 @@ void Game::newGame()
 	this->listener->onNewGame();
 }
 
-void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player)
+void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 {
 	GamePiece movingPiece = this->getGamePieceAt(xStart, yStart);
-	if (!this->moveIsLegal(xStart, yStart, xEnd, yEnd, player))
+	if (!this->moveIsLegal(xStart, yStart, xEnd, yEnd, this->currentPlayer))
 	{
 		this->listener->onIllegalMove(xStart, yStart, xEnd, yEnd, movingPiece);
 	}
@@ -171,7 +171,7 @@ void Game::switchTurn()
 	this->currentChainJumpingSlot = NULL;
 }
 
-bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player)
+bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd)
 { 
 	list<Slot> moves = this->getAvailableMovesForPiece(xStart, yStart);
 	bool moveIsLegal = false;

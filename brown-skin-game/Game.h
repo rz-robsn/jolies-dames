@@ -29,7 +29,7 @@ public:
 	/// <summary> Move the piece from (xStart, yStart) to (xEnd, yEnd).
 	/// 		  If the move is illegal, the piece stays at (xStart, yStart). </summary>
 	/// <param name="player"> The player who is moving the piece. </param>
-	void movePiece(int xStart, int yStart, int xEnd, int yEnd, Player player);
+	void movePiece(int xStart, int yStart, int xEnd, int yEnd);
 
 	/// <summary> Returns the list of slots where the piece at (x,y) can move to. </summary>
 	/// <param name="player"> The player who is moving the piece. </param>
@@ -54,7 +54,7 @@ private:
 	void initRowWithEmptySlot(vector<GamePiece>& gridRow);
 	void switchTurn();
 
-	bool moveIsLegal(int xStart, int yStart, int xEnd, int yEnd, Player player);
+	bool moveIsLegal(int xStart, int yStart, int xEnd, int yEnd);
 
 	bool pieceCanEatEnemyPiece(int x, int y);
 	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
