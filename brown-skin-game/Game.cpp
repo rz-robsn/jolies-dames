@@ -236,13 +236,30 @@ list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
 			{
 				returnList.push_back(Slot(x-2, y-2));
 			}
-		case WHITE_PIECE:
-		case RED_PIECE:
 			if(this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2))
 			{
 				returnList.push_back(Slot(x-2, y-2));
 			}
-
+			if(this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
+			break;
+		case RED_PIECE:
+			if(this->pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
+			if(this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
+			break;
+		case WHITE_PIECE:
+			if(this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2))
+			{
+				returnList.push_back(Slot(x-2, y-2));
+			}
 			if(this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2))
 			{
 				returnList.push_back(Slot(x-2, y-2));
@@ -262,10 +279,17 @@ void Game::addAvailableMovesToEmptySlots(int x, int y, list<Slot>& moves)
 		case WHITE_KING_PIECE:
 			this->pushSlotIfEmpty(x-1, y-1, moves);
 			this->pushSlotIfEmpty(x+1, y-1, moves);
-		case WHITE_PIECE:
-		case RED_PIECE:
 			this->pushSlotIfEmpty(x-1, y+1, moves);
 			this->pushSlotIfEmpty(x+1, y+1, moves);
+			break;
+		case WHITE_PIECE:
+			this->pushSlotIfEmpty(x-1, y+1, moves);
+			this->pushSlotIfEmpty(x+1, y+1, moves);
+			break;
+		case RED_PIECE:
+			this->pushSlotIfEmpty(x-1, y-1, moves);
+			this->pushSlotIfEmpty(x+1, y-1, moves);
+			break;
 		case EMPTY_SLOT:
 			throw "Don't call Game::addAvailableMovesToEmptySlots() on EMPTY_SLOT.";
 	}
