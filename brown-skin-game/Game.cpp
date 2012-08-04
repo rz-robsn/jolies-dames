@@ -66,6 +66,8 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 			this->listener->onPieceEaten(xEnemy, yEnemy, eatenPiece);
 		}
 
+		this->listener->onPieceMoved(xStart, yStart, xEnd, yEnd, movingPiece);
+
 		// If both players can't move any pieces
 		if( !this->playerCanStillMoveAPiece(this->currentPlayer)
 			&& !this->playerCanStillMoveAPiece(Game::getOpponent(currentPlayer)))
@@ -94,6 +96,11 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 
 list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 {
+	return this->getAvailableMovesForPiece(x, y, this->currentPlayer);
+}
+
+list<Slot> Game::getAvailableMovesForPiece(int x, int y, Player player)
+{
 	if(this->getGamePieceAt(x,y) == EMPTY_SLOT)
 	{
 		return list<Slot>();
@@ -104,7 +111,7 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 	{
 		return list<Slot>();
 	}
-	else if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), currentPlayer))
+	else if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), player))
 	{
 		return list<Slot>();
 	}	
@@ -135,6 +142,7 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 		return this->getAllMovesThatEatEnemy(x, y);
 	}
 }
+
 
 void Game::initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece)
 {
@@ -187,6 +195,11 @@ bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd)
 
 bool Game::pieceCanEatEnemyPiece(int x, int y)
 {
+	return this->pieceCanEatEnemyPiece(x, y, this->currentPlayer);
+}
+
+bool Game::pieceCanEatEnemyPiece(int x, int y, Player player)
+{
 	return (this->getAllMovesThatEatEnemy(x,y).size() > 0);
 }
 
@@ -216,7 +229,7 @@ bool Game::playerCanStillMoveAPiece(Player player)
 		for (int j = 0; j < GRID_SIZE; j++)
 		{
 			if (this->pieceBelongsToPlayer(i, j, player)
-				&& this->getAvailableMovesForPiece(i,j).size() > 0)
+				&& this->getAvailableMovesForPiece(i, j, player).size() > 0)
 			{
 				return true;
 			}

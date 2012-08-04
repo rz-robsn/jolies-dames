@@ -31,8 +31,9 @@ public:
 	/// <param name="player"> The player who is moving the piece. </param>
 	void movePiece(int xStart, int yStart, int xEnd, int yEnd);
 
-	/// <summary> Returns the list of slots where the piece at (x,y) can move to. </summary>
-	/// <param name="player"> The player who is moving the piece. </param>
+	/// <summary> Returns the list of slots where the piece at (x,y) can move to.
+	/// 		  Will return empty list if the piece does not belong to the current
+	/// 		  player </summary>
 	/// <returns> The available moves for piece. </returns>
 	list<Slot> getAvailableMovesForPiece(int x, int y);
 
@@ -49,6 +50,12 @@ private:
 	vector<vector<GamePiece>>* grid;
 	Player currentPlayer;
 
+	/// <summary> Returns the list of slots where the piece at (x,y) can move to.
+	/// 		  </summary>
+	/// <param name="player"> The player who is attempting to move the piece. </param>
+	/// <returns> The available moves for piece. </returns>
+	list<Slot> getAvailableMovesForPiece(int x, int y, Player player);
+
 	void initPiecesWithFirstSlotEmpty(vector<GamePiece>& gridRow, GamePiece piece);
 	void initPiecesWithFirstSlotContainingPiece(vector<GamePiece>& gridRow, GamePiece piece);
 	void initRowWithEmptySlot(vector<GamePiece>& gridRow);
@@ -56,6 +63,7 @@ private:
 
 	bool moveIsLegal(int xStart, int yStart, int xEnd, int yEnd);
 
+	bool pieceCanEatEnemyPiece(int x, int y, Player player);
 	bool pieceCanEatEnemyPiece(int x, int y);
 	bool pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy, int xEmptySlot, int yEmptySlot);
 
