@@ -74,6 +74,9 @@ private:
 	void addAvailableMovesToEmptySlots(int x, int y, list<Slot>& moves);	
 	void pushSlotIfEmpty(int x, int y, list<Slot>& moves);
 
+	bool pieceHasReachedOppositeEnd(int x, int y);
+	void promotePiece(int x, int y);
+
 	bool pieceBelongsToPlayer(int x, int y, Player player);	
 	static bool pieceBelongsToPlayer(GamePiece piece, Player player);
 

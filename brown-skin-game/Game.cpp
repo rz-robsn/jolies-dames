@@ -78,6 +78,12 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 
 		this->listener->onPieceMoved(xStart, yStart, xEnd, yEnd, movingPiece);
 
+		// Promote to king if piece reached the end.
+		if (this->pieceHasReachedOppositeEnd(xEnd, yEnd))
+		{
+			this->promotePiece(xEnd, yEnd);
+		}
+
 		// If both players can't move any pieces
 		if( !this->playerCanStillMoveAPiece(this->currentPlayer)
 			&& !this->playerCanStillMoveAPiece(Game::getOpponent(currentPlayer)))
@@ -358,6 +364,41 @@ void Game::pushSlotIfEmpty(int x, int y, list<Slot>& moves)
 		}
 	}
 	catch (std::out_of_range doNothing) {}
+}
+
+bool Game::pieceHasReachedOppositeEnd(int x, int y)
+{
+	switch(this->getGamePieceAt(x,y))
+	{
+		case RED_PIECE:
+		case RED_KING_PIECE:
+			return y == 0;
+
+		case WHITE_PIECE:	
+		case WHITE_KING_PIECE:
+			return y == GRID_SIZE-1;
+
+		case EMPTY_SLOT :
+			throw "Don't call Game::pieceHasReachedOppositeEnd on EMPTY_SLOT";
+	}
+}
+
+void Game::promotePiece(int x, int y)
+{
+	switch(this->getGamePieceAt(x,y))
+	{
+		case RED_PIECE:
+		case RED_KING_PIECE:
+			this->setGamePieceAt(x, y, RED_KING_PIECE);
+			break;
+		case WHITE_PIECE:	
+		case WHITE_KING_PIECE:
+			this->setGamePieceAt(x, y, WHITE_KING_PIECE);
+			break;
+
+		case EMPTY_SLOT :
+			throw "Don't call Game::promotePiece on EMPTY_SLOT";
+	}
 }
 
 GamePiece& Game::getGamePieceAt(int x, int y)
