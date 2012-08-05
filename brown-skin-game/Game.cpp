@@ -10,7 +10,7 @@ Game::Game(void)
 	{
 		grid->at(i) = vector<GamePiece>(GRID_SIZE);
 	}
-	this->currentChainJumpingSlot = NULL;
+	this->jumpingPiece = NULL;
 }
 
 void Game::setListener(GameListener* listener)
@@ -32,11 +32,11 @@ void Game::newGame()
 
 	this->currentPlayer = PLAYER_RED;
 
-	if(this->currentChainJumpingSlot != NULL)
+	if(this->jumpingPiece != NULL)
 	{
-		delete this->currentChainJumpingSlot ;
+		delete this->jumpingPiece ;
 	}
-	this->currentChainJumpingSlot = NULL;
+	this->jumpingPiece = NULL;
 
 	this->listener->onNewGame();
 }
@@ -64,7 +64,17 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 			GamePiece eatenPiece = this->getGamePieceAt(xEnemy, yEnemy);
 			this->setGamePieceAt(xEnemy, yEnemy, EMPTY_SLOT);
 			this->listener->onPieceEaten(xEnemy, yEnemy, eatenPiece);
+
+			if(this->jumpingPiece != NULL)
+			{
+				delete this->jumpingPiece ;
+			}
+			this->jumpingPiece = new Slot(xEnd, yEnd);	
 		}
+		else if(this->jumpingPiece != NULL)
+		{
+			delete this->jumpingPiece ;
+		} 
 
 		this->listener->onPieceMoved(xStart, yStart, xEnd, yEnd, movingPiece);
 
@@ -78,14 +88,10 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 		{
 			this->listener->onPlayerWin(this->currentPlayer);
 		}
-		else if (this->pieceCanEatEnemyPiece(xEnd, yEnd)) // the moving piece can still jump another piece
+		else if (this->jumpingPiece != NULL
+				&& this->pieceCanEatEnemyPiece(xEnd, yEnd, this->currentPlayer)) // the moving piece can chain jumps
 		{
 			this->listener->onPieceCanStillJump(xEnd, yEnd, movingPiece);
-			if(this->currentChainJumpingSlot != NULL)
-			{
-				delete this->currentChainJumpingSlot ;
-			}
-			this->currentChainJumpingSlot = new Slot(xEnd, yEnd);	
 		}
 		else 
 		{
@@ -105,15 +111,15 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y, Player player)
 	{
 		return list<Slot>();
 	}	
-	else if(this->currentChainJumpingSlot != NULL
-		&& (this->currentChainJumpingSlot->x != x
-			|| this->currentChainJumpingSlot->y != y)) // there is another piece that is Jumping multiple
+	else if (this->jumpingPiece != NULL
+			&& Game::pieceBelongsToPlayer(getGamePieceAt(jumpingPiece->x, jumpingPiece->y), player)
+			&& (this->jumpingPiece->x != x || this->jumpingPiece->y != y))// there is another piece that is chain Jumping
 	{
-		return list<Slot>();
+		return list<Slot>();		
 	}
 	else if(!Game::pieceBelongsToPlayer(getGamePieceAt(x, y), player))
 	{
-		return list<Slot>();
+		return list<Slot>(); 
 	}	
 	else if (!this->pieceCanEatEnemyPiece(x, y))
 	{
@@ -172,11 +178,11 @@ void Game::switchTurn()
 {
 	this->currentPlayer = (currentPlayer == PLAYER_RED) ? PLAYER_WHITE : PLAYER_RED;
 
-	if(this->currentChainJumpingSlot != NULL)
+	if(this->jumpingPiece != NULL)
 	{
-		delete this->currentChainJumpingSlot ;
+		delete this->jumpingPiece ;
 	}
-	this->currentChainJumpingSlot = NULL;
+	this->jumpingPiece = NULL;
 }
 
 bool Game::moveIsLegal(int xStart, int yStart, int xEnd, int yEnd)
@@ -251,15 +257,15 @@ list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
 			}
 			if(this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2))
 			{
-				returnList.push_back(Slot(x-2, y-2));
+				returnList.push_back(Slot(x+2, y-2));
 			}
 			if(this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2))
 			{
-				returnList.push_back(Slot(x-2, y-2));
+				returnList.push_back(Slot(x-2, y+2));
 			}
 			if(this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2))
 			{
-				returnList.push_back(Slot(x-2, y-2));
+				returnList.push_back(Slot(x+2, y+2));
 			}
 			break;
 		case RED_PIECE:
@@ -269,17 +275,17 @@ list<Slot> Game::getAllMovesThatEatEnemy(int x, int y)
 			}
 			if(this->pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2))
 			{
-				returnList.push_back(Slot(x-2, y-2));
+				returnList.push_back(Slot(x+2, y-2));
 			}
 			break;
 		case WHITE_PIECE:
 			if(this->pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2))
 			{
-				returnList.push_back(Slot(x-2, y-2));
+				returnList.push_back(Slot(x-2, y+2));
 			}
 			if(this->pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2))
 			{
-				returnList.push_back(Slot(x-2, y-2));
+				returnList.push_back(Slot(x+2, y+2));
 			}
 			break;
 		case EMPTY_SLOT:
