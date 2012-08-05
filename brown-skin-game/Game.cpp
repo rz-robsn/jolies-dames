@@ -387,13 +387,17 @@ void Game::promotePiece(int x, int y)
 {
 	switch(this->getGamePieceAt(x,y))
 	{
-		case RED_PIECE:
-		case RED_KING_PIECE:
+		case RED_PIECE:		
 			this->setGamePieceAt(x, y, RED_KING_PIECE);
+			this->listener->onPieceBecameKing(x, y, RED_KING_PIECE);					
 			break;
-		case WHITE_PIECE:	
-		case WHITE_KING_PIECE:
+
+		case WHITE_PIECE:
 			this->setGamePieceAt(x, y, WHITE_KING_PIECE);
+			this->listener->onPieceBecameKing(x, y, WHITE_KING_PIECE);
+
+		case RED_KING_PIECE:
+		case WHITE_KING_PIECE:
 			break;
 
 		case EMPTY_SLOT :
