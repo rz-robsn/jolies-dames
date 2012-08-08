@@ -54,6 +54,6 @@ public:
 	/// <param name="gamePiece"> The type of piece that just moved. Never equals to EMPTY_SLOT. </param>
 	virtual void onPieceCanStillJump(int x, int y, GamePiece gamePiece) = 0;
 
-	virtual ~GameListener() {};
+	virtual ~GameListener(){};
 };
 
