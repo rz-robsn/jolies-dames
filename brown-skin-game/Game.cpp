@@ -135,7 +135,7 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y, Player player)
 		{
 			for (int j = 0; j < GRID_SIZE; j++)
 			{
-				if( i != x && j != y
+				if( !(i == x && j == y)
 					&& this->pieceCanEatEnemyPiece(i,j)
 					&& Game::getPlayerOwningPiece(this->getGamePieceAt(x,y)) == Game::getPlayerOwningPiece(this->getGamePieceAt(i,j)))
 				{
@@ -145,7 +145,7 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y, Player player)
 		}
 		
 		// return all empty slots the piece can move to.
-		list<Slot> moves = list<Slot>(4);
+		list<Slot> moves = list<Slot>();
 		this->addAvailableMovesToEmptySlots(x, y, moves);
 		return moves;
 	}
