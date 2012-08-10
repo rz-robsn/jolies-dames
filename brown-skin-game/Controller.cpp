@@ -1,3 +1,7 @@
+#pragma once
+
+#include <Windows.h>
+
 #include "Controller.h"
 
 Controller::Controller(void)
@@ -11,11 +15,17 @@ void Controller::start()
 	this->game->newGame();	
 }
 
-void Controller::onNewGame(){}
+void Controller::onNewGame()
+{
+}
 
-void Controller::onPlayerWin(Player player){}
+void Controller::onPlayerWin(Player player)
+{
+}
 
-void Controller::onDraw(){}
+void Controller::onDraw()
+{
+}
 
 void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece){}
 

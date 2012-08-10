@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+
 #include "GameListener.h"
 #include "Game.h"
 
@@ -22,8 +23,8 @@ public:
 	void onIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece);
 	void onPieceCanStillJump(int x, int y, GamePiece gamePiece);
 
-
 private:
 	Game* game;
+	Slot previousSlotClicked;
 };
 
