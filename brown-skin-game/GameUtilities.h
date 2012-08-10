@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef NO_SLOT
+#define NO_SLOT -1
+#endif
+
 typedef enum {
 	PLAYER_RED = 0,
 	PLAYER_WHITE = 1
@@ -21,7 +25,7 @@ struct Slot
 
 	Slot(){};
 	Slot(int x, int y) : x(x), y(y) {};
-	bool operator=(Slot* slot)
+	bool operator==(Slot* slot)
 	{
 		return this->x == slot->x && this->y == slot->y;
 	};

@@ -48,6 +48,9 @@ public:
 	/// <param name="player"> The player type. Either equals "RED PLAYER" or "WHITE PLAYER".</param>
 	void playPlayerWinAnimation(std::string player);
 
+	/// <summary> Play the animation to play when the game ends in a draw. </summary>
+	void playDrawAnimation();
+
 	/// <summary> Play the animation to play when the piece at position
 	///	 (xStart, yStart)
 	///	 has illegaly tried to move to position (xEnd, yEnd). </summary>

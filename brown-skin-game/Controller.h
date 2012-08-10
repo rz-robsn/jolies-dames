@@ -34,5 +34,9 @@ private:
 	CheckerBoard* board;
 
 	Slot previousSlotClicked;
+	list<Slot> previousSlotsHighLighted;
+
+	void highLightSlots(list<Slot> slots);
+	void unHighLightSlots(list<Slot> slots);
 };
 
