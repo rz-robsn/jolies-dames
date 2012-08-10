@@ -31,12 +31,12 @@ void Controller::onPlayerWin(Player player)
 {
 	switch (player)
 	{
-	case PLAYER_RED:
-		//this->board->playPlayerWinAnimation("RED PLAYER");
-		break;
-	case PLAYER_WHITE:
-		//this->board->playPlayerWinAnimation("WHITE PLAYER");
-		break;
+		case PLAYER_RED:
+			//this->board->playPlayerWinAnimation("RED PLAYER");
+			break;
+		case PLAYER_WHITE:
+			//this->board->playPlayerWinAnimation("WHITE PLAYER");
+			break;
 	}
 }
 
