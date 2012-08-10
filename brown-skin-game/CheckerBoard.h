@@ -11,6 +11,10 @@ public:
 	CheckerBoard();
 	virtual ~CheckerBoard(void);
 
+	/// <summary> Sets the function that executes when the user has clicked 
+	/// 		  the slot at position (x, y) of the board. </summary>
+	void setOnSlotClickedListener(void (*onSlotCliked)(int x, int y));
+
 	/// <summary> Translates the piece from (xStart, yStart) to (xEnd, yEnd). </summary>
 	void movePiece(int xStart, int  yStart, int xEnd, int yEnd);
 
@@ -32,6 +36,12 @@ public:
 	/// <summary> Transforms piece at position (x, y) of the board into a king Piece. </summary>
 	void transformPieceToKing(int x, int y);
 
+	/// <summary> Highlights the slot at position (x, y) of the board. </summary>
+	void highLightSlot(int x, int y);
+
+	/// <summary> un-highlights the slot at position (x, y) of the board. </summary>
+	void unHighLightSlot(int x, int y);
+
 	/// <summary> Play the animation to play when the passed player has won. </summary>
 	/// <param name="player"> The player type. Either equals "RED PLAYER" or "WHITE PLAYER".</param>
 	void playPlayerWinAnimation(std::string player);
@@ -40,10 +50,6 @@ public:
 	///	 (xStart, yStart)
 	///	 has illegaly tried to move to position (xEnd, yEnd). </summary>
 	void playIllegalMoveAnimation(int xStart, int yStart, int xEnd, int yEnd);
-
-	/// <summary> Sets the function that executes when the user has clicked 
-	/// 		  on position (x, y) of the board. </summary>
-	void setOnPieceClickedListener(void (*onPieceCliked)(int x, int y));
 };
 
 
