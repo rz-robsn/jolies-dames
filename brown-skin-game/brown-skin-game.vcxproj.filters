@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{e9de5a00-187e-44bb-aa56-3e467156f7be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\View">
+      <UniqueIdentifier>{c6cc79f0-1440-4424-8715-6f7fd6da1202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View">
+      <UniqueIdentifier>{8e93756d-4d36-4e3d-9922-19f26f4134ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -43,6 +49,12 @@
     </ClInclude>
     <ClInclude Include="GameListener.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckerBoard.h">
+      <Filter>Header Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="OnSlotClickedListener.h">
+      <Filter>Header Files\View</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

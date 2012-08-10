@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "OnSlotClickedListener.h"
+
 class CheckerBoard
 {
 private:
@@ -11,9 +13,9 @@ public:
 	CheckerBoard();
 	virtual ~CheckerBoard(void);
 
-	/// <summary> Sets the function that executes when the user has clicked 
-	/// 		  the slot at position (x, y) of the board. </summary>
-	void setOnSlotClickedListener(void (*onSlotCliked)(int x, int y));
+	/// <summary> Sets this board's onSlotClikedListener. </summary>
+	/// <param name="listener"> If non-null, the listener. </param>
+	void setOnSlotClikedListener(OnSlotClickedListener* listener);
 
 	/// <summary> Translates the piece from (xStart, yStart) to (xEnd, yEnd). </summary>
 	void movePiece(int xStart, int  yStart, int xEnd, int yEnd);
