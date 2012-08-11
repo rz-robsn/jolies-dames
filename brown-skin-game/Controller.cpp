@@ -20,23 +20,6 @@ void Controller::start()
 	
 	this->game->newGame();
 	this->board->initWindow();
-
-	//char input;
-	//do
-	//{
-	//	input = _getch();
-	//	switch (input)
-	//	{
-	//	case 'n':
-	//		this->game->newGame();
-	//		break;
-
-	//	case 'v':
-	//		this->board->changeViewPosition();
-	//		break;
-	//	}	
-	//}
-	//while(input != 'q');
 }
 
 void Controller::onNewGame()
