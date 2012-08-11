@@ -41,6 +41,12 @@ void Game::newGame()
 	this->listener->onNewGame();
 }
 
+vector<vector<GamePiece>>* Game::getGrid()
+{
+	return this->grid;
+}
+
+
 void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 {
 	GamePiece movingPiece = this->getGamePieceAt(xStart, yStart);

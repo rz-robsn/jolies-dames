@@ -5,6 +5,7 @@
 #include <Windows.h>
 
 #include <stdio.h>
+#include <vector> 
 #include <tchar.h>
 #include <iostream>
 #include <strstream>
@@ -27,6 +28,9 @@ glRotatef(180, 1,0,0); \
 glTranslatef(0.0f, 0.0f, HEIGHT); \
 gluDisk(QUAD, 0.0f, TOP, SLICES, 1); \
 glTranslatef(0.0f, 0.0f, -HEIGHT);
+
+//Grid 2d vec of game pieces
+
 
 // Initial size of the window
 int window_width = 1440;

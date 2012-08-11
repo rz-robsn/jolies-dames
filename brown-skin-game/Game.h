@@ -36,6 +36,8 @@ public:
 	/// <returns> The available moves for piece. </returns>
 	list<Slot> getAvailableMovesForPiece(int x, int y);
 
+	vector<vector<GamePiece>>* getGrid();
+
 	virtual ~Game(void);
 
 private:
