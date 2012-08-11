@@ -34,9 +34,6 @@ glTranslatef(0.0f, 0.0f, HEIGHT); \
 gluDisk(QUAD, 0.0f, TOP, SLICES, 1); \
 glTranslatef(0.0f, 0.0f, -HEIGHT);
 
-//Grid 2d vec of game pieces
-
-
 // Initial size of the window
 int window_width = 1440;
 int window_height = 900;
@@ -202,7 +199,7 @@ void set_pieces ()
 	glPushMatrix();
 		glTranslatef(-3.5, -2.120, -3.5);
 		glRotatef(90.0, 1.0, 0.0, 0.0);
-		for (GLint i = 0; i < 8; i++)
+		/*for (GLint i = 0; i < 8; i++)
 		{
 			for(GLint j = 0; j < 8; j++)
 			{
@@ -211,7 +208,29 @@ void set_pieces ()
 				else if(j%2 != 0 && i == 5 || j%2 != 0 && i == 7 || j%2 == 0 && i == 6)
 					draw_red_piece(i, j); // Positions the red pieces
 			}
-		}
+		}*/
+		std::vector<std::vector<GamePiece>>* grida=grid;
+		for (int i = 0; i < 8; i++) 
+		{ 
+			for (int j = 0; j < 8; j++) 
+			{ 
+				switch(::grid->at(i).at(j))
+				{
+					case RED_PIECE:
+						draw_red_piece (i,j);
+						break;
+					case WHITE_PIECE:
+						draw_white_piece (i,j);
+						break;
+					case RED_KING_PIECE:
+						draw_red_king (i,j);
+						break;
+					case WHITE_KING_PIECE:
+						draw_white_king (i,j);
+						break;
+				}
+			}
+		 } 
 	glPopMatrix();
 }
 
@@ -253,8 +272,17 @@ void special_keys (int key, int x, int y)
 	glutPostRedisplay();
 }
 
+void animate()
+{
+	glutPostRedisplay();
+}
+
+
+
 void display () 
 {
+	using std::vector;
+
 	// Display callback function.
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -266,6 +294,7 @@ void display ()
 
 	draw_light(); // Sets up the light source
 	draw_board(); // Draws the board
+
 	set_pieces(); // Positions the pieces
 
 	glutSwapBuffers();
@@ -297,6 +326,7 @@ int init_view (int argc, char *argv[])
 
 	glutDisplayFunc(display);
 	glutSpecialFunc(special_keys); // Enables Function keys to be used for input
+	glutIdleFunc(animate);
 	glutReshapeFunc(resize_window);
 
 	glutMainLoop();
