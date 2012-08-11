@@ -1,8 +1,10 @@
 #pragma once
 
 #include "OnSlotClickedListener.h"
+#include <vector>
 
 extern OnSlotClickedListener* listener;
+extern std::vector<std::vector<GamePiece>>* grid;
 
 // ----------------------------------------------------------
 // GL Functions

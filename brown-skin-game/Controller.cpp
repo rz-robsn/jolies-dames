@@ -17,9 +17,9 @@ void Controller::start()
 {
 	this->game->setListener(this);
 	this->board->setOnSlotClikedListener(this);
-
-	this->board->initWindow();
+	
 	this->game->newGame();
+	this->board->initWindow();
 
 	//char input;
 	//do
@@ -41,8 +41,7 @@ void Controller::start()
 
 void Controller::onNewGame()
 {
-	//this->board->redrawNewBoard();
-	// play new game sound.
+	this->board->setGrid(this->game->getGrid());
 }
 
 void Controller::onPlayerWin(Player player)
