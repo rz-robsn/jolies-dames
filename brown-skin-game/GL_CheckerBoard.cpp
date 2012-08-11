@@ -22,7 +22,8 @@
 
 OnSlotClickedListener* listener;
 std::vector<std::vector<GamePiece>>* grid;
-Slot previousSelectedSlot = Slot(NO_SLOT, NO_SLOT);
+
+Slot cursorPosition = Slot(0, 0);
 
 // My definition for a Solid Cylinder
 #define MyOwnSolidCylinder(QUAD, BASE, TOP, HEIGHT, SLICES, STACKS) \
@@ -244,8 +245,28 @@ void special_keys (int key, int x, int y)
 		cam_z = -0.1;
 		break;
 
+	case GLUT_KEY_LEFT:
+		::cursorPosition.x = (cursorPosition.x > 0) ? cursorPosition.x-1 : 0; 
+		break;
+
+	case GLUT_KEY_UP:
+		::cursorPosition.y = (cursorPosition.y < 7) ? cursorPosition.y+1 : 7;
+		break;
+
+	case GLUT_KEY_RIGHT:
+		::cursorPosition.x = (cursorPosition.x < 7) ? cursorPosition.x+1 : 7;
+		break;
+
+	case GLUT_KEY_DOWN:
+		::cursorPosition.y = (cursorPosition.y > 0) ? cursorPosition.y-1 : 0;
+		break;
+
+	case GLUT_KEY_F5 :
+		::listener->onSlotClicked(::cursorPosition.x, ::cursorPosition.y);
+		break;
+
 	case GLUT_KEY_F12:
-		//std::exit(0);
+		std::exit(0);
 		break;
 	}
 		
