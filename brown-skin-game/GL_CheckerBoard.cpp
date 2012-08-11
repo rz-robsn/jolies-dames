@@ -20,7 +20,7 @@
 // Global Variables
 // ----------------------------------------------------------
 
-OnSlotClickedListener* listener;
+BoardListener* listener;
 std::vector<std::vector<GamePiece>>* grid;
 
 Slot cursorPosition = Slot(7, 7);

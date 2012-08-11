@@ -1,12 +1,12 @@
 #pragma once
 
-class OnSlotClickedListener
+class BoardListener
 {
 public:
 	/// <summary> Executes when the user has clicked 
 	/// 		  the slot at position (x, y) of the board. </summary>
 	virtual void onSlotClicked(int x, int y) = 0;
 
-	virtual ~OnSlotClickedListener(void){};
+	virtual ~BoardListener(void){};
 };
 

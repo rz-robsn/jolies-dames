@@ -5,7 +5,7 @@
 
 CheckerBoard::CheckerBoard(){}
 
-void CheckerBoard::setOnSlotClikedListener(OnSlotClickedListener* listener)
+void CheckerBoard::setOnSlotClikedListener(BoardListener* listener)
 {
 	::listener = listener;
 }

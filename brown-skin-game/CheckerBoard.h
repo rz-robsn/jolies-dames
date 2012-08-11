@@ -3,7 +3,7 @@
 #include <vector>
 #include <list>
 
-#include "OnSlotClickedListener.h"
+#include "BoardListener.h"
 #include "GameUtilities.h"
 
 class CheckerBoard
@@ -17,7 +17,7 @@ public:
 
 	/// <summary> Sets this board's onSlotClikedListener. </summary>
 	/// <param name="listener"> If non-null, the listener. </param>
-	void setOnSlotClikedListener(OnSlotClickedListener* listener);
+	void setOnSlotClikedListener(BoardListener* listener);
 
 	/// <summary> Sets the grid. </summary>
 	void setGrid(std::vector<std::vector<GamePiece>>* grid);

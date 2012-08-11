@@ -77,7 +77,7 @@
     <ClInclude Include="GameListener.h" />
     <ClInclude Include="GameUtilities.h" />
     <ClInclude Include="GL_CheckerBoard.h" />
-    <ClInclude Include="OnSlotClickedListener.h" />
+    <ClInclude Include="BoardListener.h" />
     <ClInclude Include="SoundPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

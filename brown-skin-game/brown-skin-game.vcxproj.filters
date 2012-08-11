@@ -62,14 +62,14 @@
     <ClInclude Include="CheckerBoard.h">
       <Filter>Header Files\View</Filter>
     </ClInclude>
-    <ClInclude Include="OnSlotClickedListener.h">
-      <Filter>Header Files\View</Filter>
-    </ClInclude>
     <ClInclude Include="GL_CheckerBoard.h">
       <Filter>Header Files\View</Filter>
     </ClInclude>
     <ClInclude Include="SoundPlayer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardListener.h">
+      <Filter>Header Files\View</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

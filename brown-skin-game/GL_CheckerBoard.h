@@ -1,11 +1,11 @@
 #pragma once
 
-#include "OnSlotClickedListener.h"
+#include "BoardListener.h"
 #include "GameUtilities.h"
 #include <vector>
 #include <list>
 
-extern OnSlotClickedListener* listener;
+extern BoardListener* listener;
 extern std::vector<std::vector<GamePiece>>* grid;
 extern std::list<Slot>* slotsToHighLight;
 
