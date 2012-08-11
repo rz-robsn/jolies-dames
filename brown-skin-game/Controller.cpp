@@ -7,7 +7,7 @@
 Controller::Controller(void)
 {
 	this->game = new Game();
-	//this->board = new CheckerBoard();
+	this->board = new CheckerBoard();
 	
 	this->previousSlotClicked = Slot(NO_SLOT, NO_SLOT);
 	this->previousSlotsHighLighted = list<Slot>();
@@ -16,8 +16,9 @@ Controller::Controller(void)
 void Controller::start()
 {
 	this->game->setListener(this);
-	//this->board->setOnSlotClikedListener(this);
+	this->board->setOnSlotClikedListener(this);
 
+	this->board->initWindow();
 	this->game->newGame();
 
 	char input;
@@ -31,7 +32,7 @@ void Controller::start()
 			break;
 
 		case 'v':
-			//this->board->changeViewPosition();
+			this->board->changeViewPosition();
 			break;
 		}	
 	}
@@ -49,23 +50,23 @@ void Controller::onPlayerWin(Player player)
 	switch (player)
 	{
 		case PLAYER_RED:
-			//this->board->playPlayerWinAnimation("RED PLAYER");
+			this->board->playPlayerWinAnimation("RED PLAYER");
 			break;
 		case PLAYER_WHITE:
-			//this->board->playPlayerWinAnimation("WHITE PLAYER");
+			this->board->playPlayerWinAnimation("WHITE PLAYER");
 			break;
 	}
 }
 
 void Controller::onDraw()
 {
-	//this->board->playDrawAnimation();
+	this->board->playDrawAnimation();
 	// play draw sound.
 }
 
 void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	//this->board->movePiece(xStart, yStart, xEnd, yEnd);
+	this->board->movePiece(xStart, yStart, xEnd, yEnd);
 	// play move piece sound
 	
 	this->unHighLightSlots(this->previousSlotsHighLighted);
@@ -74,21 +75,21 @@ void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePi
 
 void Controller::onPieceEaten(int x, int y, GamePiece gamePiece)
 {
-	//this->board->destroyPiece(x, y);
+	this->board->destroyPiece(x, y);
 
 	// play destroy piece sound
 }
 
 void Controller::onPieceBecameKing(int x, int y, GamePiece gamePiece)
 {
-	//this->board->transformPieceToKing(x, y);
+	this->board->transformPieceToKing(x, y);
 
 	// Play king piece sound
 }
 
 void Controller::onIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	//this->board->playIllegalMoveAnimation(xStart, yStart, xEnd, yEnd);
+	this->board->playIllegalMoveAnimation(xStart, yStart, xEnd, yEnd);
 	// Play illegal Sound.
 
 	this->unHighLightSlots(this->previousSlotsHighLighted);
@@ -97,7 +98,7 @@ void Controller::onIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GameP
 
 void Controller::onPieceCanStillJump(int x, int y, GamePiece gamePiece)
 {
-	//this->board->highLightSlot(x, y);
+	this->board->highLightSlot(x, y);
 
 	this->previousSlotsHighLighted.push_back(Slot(x,y));
 }
@@ -130,7 +131,7 @@ void Controller::highLightSlots(list<Slot> slots)
 {
 	for(list<Slot>::iterator it = slots.begin(); it != slots.end(); it++)
 	{
-		//this->board->highLightSlot(it->x, it->y);
+		this->board->highLightSlot(it->x, it->y);
 	}
 }
 
@@ -138,12 +139,12 @@ void Controller::unHighLightSlots(list<Slot> slots)
 {
 	for(list<Slot>::iterator it = slots.begin(); it != slots.end(); it++)
 	{
-		//this->board->unHighLightSlot(it->x, it->y);
+		this->board->unHighLightSlot(it->x, it->y);
 	}
 }
 
 Controller::~Controller(void)
 {
 	delete this->game;
-	//delete this->board;
+	delete this->board;
 }
