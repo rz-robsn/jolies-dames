@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Windows.h>
+#include <conio.h>
 
 #include "Controller.h"
 
@@ -19,6 +19,23 @@ void Controller::start()
 	//this->board->setOnSlotClikedListener(this);
 
 	this->game->newGame();
+
+	char input;
+	do
+	{
+		input = _getch();
+		switch (input)
+		{
+		case 'n':
+			this->game->newGame();
+			break;
+
+		case 'v':
+			//this->board->changeViewPosition();
+			break;
+		}	
+	}
+	while(input != 'q');
 }
 
 void Controller::onNewGame()
