@@ -21,22 +21,22 @@ void Controller::start()
 	this->board->initWindow();
 	this->game->newGame();
 
-	char input;
-	do
-	{
-		input = _getch();
-		switch (input)
-		{
-		case 'n':
-			this->game->newGame();
-			break;
+	//char input;
+	//do
+	//{
+	//	input = _getch();
+	//	switch (input)
+	//	{
+	//	case 'n':
+	//		this->game->newGame();
+	//		break;
 
-		case 'v':
-			this->board->changeViewPosition();
-			break;
-		}	
-	}
-	while(input != 'q');
+	//	case 'v':
+	//		this->board->changeViewPosition();
+	//		break;
+	//	}	
+	//}
+	//while(input != 'q');
 }
 
 void Controller::onNewGame()

@@ -13,6 +13,7 @@
 #include <gl\GLU.h>
 #include <glut-3.7.6-bin\glut.h>
 
+#include "GameUtilities.h"
 
 // ----------------------------------------------------------
 // Global Variables
@@ -227,44 +228,37 @@ void mouse_click (int button, int state, int x, int y)
 // Enables Function keys for input
 void special_keys (int key, int x, int y)
 {
-	//  F1 - reset camera and light position
-	if (key == GLUT_KEY_F1)
+	switch (key)
 	{
+	case GLUT_KEY_F1:
 		light_x = 0.0;
 		cam_y = 3.0;
-		cam_z = 15.0;		
-	}
+		cam_z = 15.0;
+		break;
 
-	//  F2 - toggle light source translation
-	else if (key == GLUT_KEY_F2)
-	{
+	case GLUT_KEY_F2:
 		if (light_x == 0.0)
 			light_x = 5.0;
 		else if (light_x == 5.0)
 			light_x = -5.0;
 		else if (light_x == -5.0)
 			light_x = 5.0;
-	}
-
-	//  F3 - change camera to position 1
-	else if (key == GLUT_KEY_F3)
-	{
+		break;
+	case GLUT_KEY_F3:
 		cam_y = 3.0;
 		cam_z = -15.0;
-	}
+		break;
 
-	// F4 - toggle camera position 2
-	else if (key == GLUT_KEY_F4)
-	{
+	case GLUT_KEY_F4:
 		cam_y = 12.0;
 		cam_z = -0.1;
+		break;
+
+	case GLUT_KEY_F12:
+		//std::exit(0);
+		break;
 	}
 
-	// F12 - exit the application
-	else if (key == GLUT_KEY_F12)
-	{
-		//std::exit(0);
-	}
 	//  Request display update
 	glutPostRedisplay();
 }
