@@ -28,15 +28,11 @@ public:
 	// Inherited from OnSlotClickedListener
 	void onSlotClicked(int x, int y);
 
-
 private:
 	Game* game;
 	CheckerBoard* board;
 
 	Slot previousSlotClicked;
-	list<Slot> previousSlotsHighLighted;
-
-	void highLightSlots(list<Slot> slots);
-	void unHighLightSlots(list<Slot> slots);
+	std::list<Slot>* slotsToHighLight;
 };
 

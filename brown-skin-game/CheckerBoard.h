@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <list>
 
 #include "OnSlotClickedListener.h"
 #include "GameUtilities.h"
@@ -25,10 +26,7 @@ public:
 	void initWindow();
 
 	/// <summary> Highlights the slot at position (x, y) of the board. </summary>
-	void highLightSlot(int x, int y);
-
-	/// <summary> un-highlights the slot at position (x, y) of the board. </summary>
-	void unHighLightSlot(int x, int y);
+	void setSlotsToHighLight(std::list<Slot>* slots);
 };
 
 

@@ -23,8 +23,9 @@ void CheckerBoard::initWindow()
 	init_view (1, fakeargv);
 }
 
-void CheckerBoard::highLightSlot(int x, int y){}
-
-void CheckerBoard::unHighLightSlot(int x, int y){}
+void CheckerBoard::setSlotsToHighLight(std::list<Slot>* slots)
+{
+	::slotsToHighLight = slots;
+}
 
 CheckerBoard::~CheckerBoard(void){}

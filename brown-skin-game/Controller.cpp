@@ -10,7 +10,7 @@ Controller::Controller(void)
 	this->board = new CheckerBoard();
 	
 	this->previousSlotClicked = Slot(NO_SLOT, NO_SLOT);
-	this->previousSlotsHighLighted = list<Slot>();
+	this->slotsToHighLight = NULL;
 }
 
 void Controller::start()
@@ -25,6 +25,13 @@ void Controller::start()
 void Controller::onNewGame()
 {
 	this->board->setGrid(this->game->getGrid());
+
+	if(this->slotsToHighLight != NULL)
+	{
+		delete this->slotsToHighLight;
+	}
+	this->slotsToHighLight = new std::list<Slot>();
+	this->board->setSlotsToHighLight(this->slotsToHighLight);
 }
 
 void Controller::onPlayerWin(Player player)
@@ -40,20 +47,19 @@ void Controller::onPlayerWin(Player player)
 
 void Controller::onDraw()
 {
-	SoundPlayer::playDrawSound();
+	//SoundPlayer::playDrawSound();
 }
 
 void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	SoundPlayer::playMovePieceSound();
+	//SoundPlayer::playMovePieceSound();
 	
-	this->unHighLightSlots(this->previousSlotsHighLighted);
-	this->previousSlotsHighLighted = list<Slot>();
+	// highlite possible moves
 }
 
 void Controller::onPieceEaten(int x, int y, GamePiece gamePiece)
 {
-	SoundPlayer::playPieceDestroyedSound();
+	//SoundPlayer::playPieceDestroyedSound();
 }
 
 void Controller::onPieceBecameKing(int x, int y, GamePiece gamePiece)
@@ -63,21 +69,19 @@ void Controller::onPieceBecameKing(int x, int y, GamePiece gamePiece)
 
 void Controller::onIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	SoundPlayer::playIllegalSound();
-
-	this->unHighLightSlots(this->previousSlotsHighLighted);
-	this->previousSlotsHighLighted = list<Slot>();
+	//SoundPlayer::playIllegalSound();
 }
 
 void Controller::onPieceCanStillJump(int x, int y, GamePiece gamePiece)
 {
-	this->board->highLightSlot(x, y);
-
-	this->previousSlotsHighLighted.push_back(Slot(x,y));
+	// HighLight possible slots
 }
 
 void Controller::onSlotClicked(int x, int y)
 {
+	// Reset slots to none.
+	this->slotsToHighLight->clear();
+	
 	if(this->previousSlotClicked.x != NO_SLOT && this->previousSlotClicked.y != NO_SLOT)
 	{
 		game->movePiece(previousSlotClicked.x, previousSlotClicked.y, x, y);
@@ -89,30 +93,12 @@ void Controller::onSlotClicked(int x, int y)
 
 		if (moves.size() > 0)
 		{
-			this->highLightSlots(moves);
-			this->previousSlotsHighLighted.insert(previousSlotsHighLighted.end(), moves.begin(), moves.end());
-			this->previousSlotClicked = Slot(x, y);		
+			this->slotsToHighLight->insert(this->slotsToHighLight->end(), moves.begin(), moves.end());
 		}
 		else 
 		{
-			SoundPlayer::playIllegalSound();
+			//SoundPlayer::playIllegalSound();
 		}
-	}
-}
-
-void Controller::highLightSlots(list<Slot> slots)
-{
-	for(list<Slot>::iterator it = slots.begin(); it != slots.end(); it++)
-	{
-		this->board->highLightSlot(it->x, it->y);
-	}
-}
-
-void Controller::unHighLightSlots(list<Slot> slots)
-{
-	for(list<Slot>::iterator it = slots.begin(); it != slots.end(); it++)
-	{
-		this->board->unHighLightSlot(it->x, it->y);
 	}
 }
 

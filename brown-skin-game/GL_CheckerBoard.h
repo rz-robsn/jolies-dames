@@ -3,9 +3,11 @@
 #include "OnSlotClickedListener.h"
 #include "GameUtilities.h"
 #include <vector>
+#include <list>
 
 extern OnSlotClickedListener* listener;
 extern std::vector<std::vector<GamePiece>>* grid;
+extern std::list<Slot>* slotsToHighLight;
 
 // ----------------------------------------------------------
 // GL Functions
