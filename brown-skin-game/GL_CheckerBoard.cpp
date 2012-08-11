@@ -19,6 +19,9 @@
 // Global Variables
 // ----------------------------------------------------------
 
+OnSlotClickedListener* listener;
+Slot previousSelectedSlot = Slot(NO_SLOT, NO_SLOT);
+
 // My definition for a Solid Cylinder
 #define MyOwnSolidCylinder(QUAD, BASE, TOP, HEIGHT, SLICES, STACKS) \
 gluCylinder(QUAD, BASE, TOP, HEIGHT, SLICES, STACKS); \
@@ -207,24 +210,6 @@ void set_pieces ()
 	glPopMatrix();
 }
 
-// Enables mouse buttons for input
-void mouse_click (int button, int state, int x, int y)
-{
-	switch(button)
-	{
-		case GLUT_LEFT_BUTTON:
-			glPushMatrix();
-			glPopMatrix();
-			break;
-		case GLUT_RIGHT_BUTTON:
-			glPushMatrix();
-			glPopMatrix();
-			break;
-	}
-
-	glutPostRedisplay();
-}
-
 // Enables Function keys for input
 void special_keys (int key, int x, int y)
 {
@@ -258,7 +243,7 @@ void special_keys (int key, int x, int y)
 		//std::exit(0);
 		break;
 	}
-
+		
 	//  Request display update
 	glutPostRedisplay();
 }
@@ -307,7 +292,6 @@ int init_view (int argc, char *argv[])
 
 	glutDisplayFunc(display);
 	glutSpecialFunc(special_keys); // Enables Function keys to be used for input
-	glutMouseFunc(mouse_click); // Enables mouse buttons to be used for input
 	glutReshapeFunc(resize_window);
 
 	glutMainLoop();

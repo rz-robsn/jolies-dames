@@ -1,5 +1,9 @@
 #pragma once
 
+#include "OnSlotClickedListener.h"
+
+extern OnSlotClickedListener* listener;
+
 // ----------------------------------------------------------
 // GL Functions
 // ----------------------------------------------------------
