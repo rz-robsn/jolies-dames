@@ -21,6 +21,7 @@
 // ----------------------------------------------------------
 
 OnSlotClickedListener* listener;
+std::vector<std::vector<GamePiece>>* grid;
 Slot previousSelectedSlot = Slot(NO_SLOT, NO_SLOT);
 
 // My definition for a Solid Cylinder

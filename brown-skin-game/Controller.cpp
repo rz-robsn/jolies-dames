@@ -49,23 +49,19 @@ void Controller::onPlayerWin(Player player)
 	switch (player)
 	{
 		case PLAYER_RED:
-			this->board->playPlayerWinAnimation("RED PLAYER");
 			break;
 		case PLAYER_WHITE:
-			this->board->playPlayerWinAnimation("WHITE PLAYER");
 			break;
 	}
 }
 
 void Controller::onDraw()
 {
-	this->board->playDrawAnimation();
 	// play draw sound.
 }
 
 void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	this->board->movePiece(xStart, yStart, xEnd, yEnd);
 	// play move piece sound
 	
 	this->unHighLightSlots(this->previousSlotsHighLighted);
@@ -74,21 +70,16 @@ void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePi
 
 void Controller::onPieceEaten(int x, int y, GamePiece gamePiece)
 {
-	this->board->destroyPiece(x, y);
-
 	// play destroy piece sound
 }
 
 void Controller::onPieceBecameKing(int x, int y, GamePiece gamePiece)
 {
-	this->board->transformPieceToKing(x, y);
-
 	// Play king piece sound
 }
 
 void Controller::onIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	this->board->playIllegalMoveAnimation(xStart, yStart, xEnd, yEnd);
 	// Play illegal Sound.
 
 	this->unHighLightSlots(this->previousSlotsHighLighted);

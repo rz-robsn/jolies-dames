@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OnSlotClickedListener.h"
+#include "GameUtilities.h"
 #include <vector>
 
 extern OnSlotClickedListener* listener;
