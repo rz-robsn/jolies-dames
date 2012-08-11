@@ -62,6 +62,7 @@ GLfloat white_piece[] = { 1.0, 1.0, 1.0, is_dead };
 // Board Colors
 const GLfloat beige[] = { 1.0, 0.8078431372549019607843137254902, 0.61960784313725490196078431372549, 1.0 };
 const GLfloat brown[] = { 0.81960784313725490196078431372549, 0.54509803921568627450980392156863, 0.27843137254901960784313725490196, 1.0 };
+const GLfloat blue[] = { 0.1686, 0.1098, 0.8392, 1.0 };
 
 // Lighting and Shading Colors
 const GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -108,7 +109,13 @@ void draw_board ()
 		{
 			for (GLint j = 0; j < 8; j++)
 			{
-				if((i + j)%2 == 0) // if i + j is even, color the square brown
+				if (i == ::cursorPosition.y && j == ::cursorPosition.x)
+				{
+					glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, blue);
+					glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+					glMaterialfv(GL_FRONT, GL_SHININESS, polished);
+				}
+				else if((i + j)%2 == 0) // if i + j is even, color the square brown
 				{
 					glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, brown);
 					glMaterialfv(GL_FRONT, GL_SPECULAR, white);
