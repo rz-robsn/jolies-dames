@@ -34,8 +34,10 @@ void Controller::onPlayerWin(Player player)
 	switch (player)
 	{
 		case PLAYER_RED:
+			//SoundPlayer::playPlayerWinSound("RED PLAYER");
 			break;
 		case PLAYER_WHITE:
+			//SoundPlayer::playPlayerWinSound("WHITE PLAYER");
 			break;
 	}
 }
