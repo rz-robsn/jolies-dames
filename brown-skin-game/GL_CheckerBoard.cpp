@@ -23,7 +23,7 @@
 OnSlotClickedListener* listener;
 std::vector<std::vector<GamePiece>>* grid;
 
-Slot cursorPosition = Slot(0, 0);
+Slot cursorPosition = Slot(7, 7);
 
 // My definition for a Solid Cylinder
 #define MyOwnSolidCylinder(QUAD, BASE, TOP, HEIGHT, SLICES, STACKS) \

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <conio.h>
-
+#include "SoundPlayer.h"
 #include "Controller.h"
 
 Controller::Controller(void)
@@ -40,12 +40,12 @@ void Controller::onPlayerWin(Player player)
 
 void Controller::onDraw()
 {
-	// play draw sound.
+	SoundPlayer::playDrawSound();
 }
 
 void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	// play move piece sound
+	SoundPlayer::playMovePieceSound();
 	
 	this->unHighLightSlots(this->previousSlotsHighLighted);
 	this->previousSlotsHighLighted = list<Slot>();
@@ -53,7 +53,7 @@ void Controller::onPieceMoved(int xStart, int yStart, int xEnd, int yEnd, GamePi
 
 void Controller::onPieceEaten(int x, int y, GamePiece gamePiece)
 {
-	// play destroy piece sound
+	SoundPlayer::playPieceDestroyedSound();
 }
 
 void Controller::onPieceBecameKing(int x, int y, GamePiece gamePiece)
@@ -63,7 +63,7 @@ void Controller::onPieceBecameKing(int x, int y, GamePiece gamePiece)
 
 void Controller::onIllegalMove(int xStart, int yStart, int xEnd, int yEnd, GamePiece gamePiece)
 {
-	// Play illegal Sound.
+	SoundPlayer::playIllegalSound();
 
 	this->unHighLightSlots(this->previousSlotsHighLighted);
 	this->previousSlotsHighLighted = list<Slot>();
@@ -95,7 +95,7 @@ void Controller::onSlotClicked(int x, int y)
 		}
 		else 
 		{
-			// Play illegal Move sound
+			SoundPlayer::playIllegalSound();
 		}
 	}
 }
