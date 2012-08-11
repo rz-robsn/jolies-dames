@@ -63,8 +63,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CheckerBoard.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GL_CheckerBoard.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +75,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameListener.h" />
     <ClInclude Include="GameUtilities.h" />
+    <ClInclude Include="GL_CheckerBoard.h" />
     <ClInclude Include="OnSlotClickedListener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

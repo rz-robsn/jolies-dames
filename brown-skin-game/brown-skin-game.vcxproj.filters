@@ -36,6 +36,12 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="GL_CheckerBoard.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckerBoard.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h">
@@ -54,6 +60,9 @@
       <Filter>Header Files\View</Filter>
     </ClInclude>
     <ClInclude Include="OnSlotClickedListener.h">
+      <Filter>Header Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="GL_CheckerBoard.h">
       <Filter>Header Files\View</Filter>
     </ClInclude>
   </ItemGroup>
