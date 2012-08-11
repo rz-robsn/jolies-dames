@@ -207,17 +207,7 @@ void set_pieces ()
 	glPushMatrix();
 		glTranslatef(-3.5, -2.120, -3.5);
 		glRotatef(90.0, 1.0, 0.0, 0.0);
-		/*for (GLint i = 0; i < 8; i++)
-		{
-			for(GLint j = 0; j < 8; j++)
-			{
-				if(j%2 == 0 && i == 0 || j%2 == 0 && i == 2 || j%2 != 0 && i == 1)
-					draw_white_piece(i, j); // Positions the white pieces
-				else if(j%2 != 0 && i == 5 || j%2 != 0 && i == 7 || j%2 == 0 && i == 6)
-					draw_red_piece(i, j); // Positions the red pieces
-			}
-		}*/
-		std::vector<std::vector<GamePiece>>* grida=grid;
+
 		for (int i = 0; i < 8; i++) 
 		{ 
 			for (int j = 0; j < 8; j++) 

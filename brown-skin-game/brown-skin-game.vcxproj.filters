@@ -42,6 +42,9 @@
     <ClCompile Include="CheckerBoard.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Controller.h">
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="GL_CheckerBoard.h">
       <Filter>Header Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
