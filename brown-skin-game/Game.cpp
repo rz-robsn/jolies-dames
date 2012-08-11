@@ -351,6 +351,7 @@ Player Game::getPlayerOwningPiece(GamePiece piece)
 		case WHITE_KING_PIECE:
 			return PLAYER_WHITE;
 		case EMPTY_SLOT :
+		default:
 			throw "Don't call Game::getPlayerOwningPiece(EMPTY_SLOT)";
 	}
 }
@@ -385,6 +386,7 @@ bool Game::pieceHasReachedOppositeEnd(int x, int y)
 			return y == GRID_SIZE-1;
 
 		case EMPTY_SLOT :
+		default:
 			throw "Don't call Game::pieceHasReachedOppositeEnd on EMPTY_SLOT";
 	}
 }
