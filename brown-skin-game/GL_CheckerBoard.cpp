@@ -14,10 +14,14 @@
 #include <gl\GLU.h>
 #include <glut-3.7.6-bin\glut.h>
 
+#include "GameUtilities.h"
 
 // ----------------------------------------------------------
 // Global Variables
 // ----------------------------------------------------------
+
+OnSlotClickedListener* listener;
+Slot previousSelectedSlot = Slot(NO_SLOT, NO_SLOT);
 
 // My definition for a Solid Cylinder
 #define MyOwnSolidCylinder(QUAD, BASE, TOP, HEIGHT, SLICES, STACKS) \
@@ -210,65 +214,40 @@ void set_pieces ()
 	glPopMatrix();
 }
 
-// Enables mouse buttons for input
-void mouse_click (int button, int state, int x, int y)
-{
-	switch(button)
-	{
-		case GLUT_LEFT_BUTTON:
-			glPushMatrix();
-			glPopMatrix();
-			break;
-		case GLUT_RIGHT_BUTTON:
-			glPushMatrix();
-			glPopMatrix();
-			break;
-	}
-
-	glutPostRedisplay();
-}
-
 // Enables Function keys for input
 void special_keys (int key, int x, int y)
 {
-	//  F1 - reset camera and light position
-	if (key == GLUT_KEY_F1)
+	switch (key)
 	{
+	case GLUT_KEY_F1:
 		light_x = 0.0;
 		cam_y = 3.0;
-		cam_z = 15.0;		
-	}
+		cam_z = 15.0;
+		break;
 
-	//  F2 - toggle light source translation
-	else if (key == GLUT_KEY_F2)
-	{
+	case GLUT_KEY_F2:
 		if (light_x == 0.0)
 			light_x = 5.0;
 		else if (light_x == 5.0)
 			light_x = -5.0;
 		else if (light_x == -5.0)
 			light_x = 5.0;
-	}
-
-	//  F3 - change camera to position 1
-	else if (key == GLUT_KEY_F3)
-	{
+		break;
+	case GLUT_KEY_F3:
 		cam_y = 3.0;
 		cam_z = -15.0;
-	}
+		break;
 
-	// F4 - toggle camera position 2
-	else if (key == GLUT_KEY_F4)
-	{
+	case GLUT_KEY_F4:
 		cam_y = 12.0;
 		cam_z = -0.1;
-	}
+		break;
 
-	// F12 - exit the application
-	else if (key == GLUT_KEY_F12)
-	{
+	case GLUT_KEY_F12:
 		//std::exit(0);
+		break;
 	}
+		
 	//  Request display update
 	glutPostRedisplay();
 }
@@ -317,7 +296,6 @@ int init_view (int argc, char *argv[])
 
 	glutDisplayFunc(display);
 	glutSpecialFunc(special_keys); // Enables Function keys to be used for input
-	glutMouseFunc(mouse_click); // Enables mouse buttons to be used for input
 	glutReshapeFunc(resize_window);
 
 	glutMainLoop();
