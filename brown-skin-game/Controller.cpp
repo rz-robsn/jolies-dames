@@ -91,10 +91,6 @@ void Controller::onSlotClicked(int x, int y)
 			this->slotsToHighLight->insert(this->slotsToHighLight->end(), moves.begin(), moves.end());
 			this->previousSlotClicked = Slot(x, y);
 		}
-		else 
-		{
-			//SoundPlayer::playIllegalSound();
-		}
 	}
 }
 
