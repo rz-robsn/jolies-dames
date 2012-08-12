@@ -26,7 +26,8 @@ public:
 	void onPieceCanStillJump(int x, int y, GamePiece gamePiece);
 
 	// Inherited from BoardListener
-	void onSlotClicked(int x, int y);
+	void onSlotSelected(int x, int y);
+	void onNewGameRequested();
 
 private:
 	Game* game;

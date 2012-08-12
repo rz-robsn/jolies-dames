@@ -75,7 +75,7 @@ void Controller::onPieceCanStillJump(int x, int y, GamePiece gamePiece)
 	this->slotsToHighLight->insert(this->slotsToHighLight->end(), moves.begin(), moves.end());
 }
 
-void Controller::onSlotClicked(int x, int y)
+void Controller::onSlotSelected(int x, int y)
 {
 	this->slotsToHighLight->clear();
 	
@@ -94,6 +94,11 @@ void Controller::onSlotClicked(int x, int y)
 			this->previousSlotClicked = Slot(x, y);
 		}
 	}
+}
+
+void Controller::onNewGameRequested()
+{
+	this->game->newGame();
 }
 
 Controller::~Controller(void)

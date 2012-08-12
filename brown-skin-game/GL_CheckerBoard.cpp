@@ -273,6 +273,18 @@ void special_keys (int key, int x, int y)
 		cam_z = -0.1;
 		break;
 
+	case GLUT_KEY_F5 :
+		::listener->onSlotSelected(::cursorPosition.x, ::cursorPosition.y);
+		break;
+
+	case GLUT_KEY_F6 :
+		::listener->onNewGameRequested();
+		break;
+
+	case GLUT_KEY_F12:
+		std::exit(0);
+		break;
+
 	case GLUT_KEY_LEFT:
 		::cursorPosition.x = (cursorPosition.x > 0) ? cursorPosition.x-1 : 0; 
 		break;
@@ -287,14 +299,6 @@ void special_keys (int key, int x, int y)
 
 	case GLUT_KEY_DOWN:
 		::cursorPosition.y = (cursorPosition.y > 0) ? cursorPosition.y-1 : 0;
-		break;
-
-	case GLUT_KEY_F5 :
-		::listener->onSlotClicked(::cursorPosition.x, ::cursorPosition.y);
-		break;
-
-	case GLUT_KEY_F12:
-		std::exit(0);
 		break;
 	}
 		
