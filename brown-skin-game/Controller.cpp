@@ -16,7 +16,7 @@ Controller::Controller(void)
 void Controller::start()
 {
 	this->game->setListener(this);
-	this->board->setOnSlotClikedListener(this);
+	this->board->setOnSlotSelectedListener(this);
 	
 	this->game->newGame();
 	this->board->initWindow();

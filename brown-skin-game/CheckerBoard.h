@@ -17,7 +17,7 @@ public:
 
 	/// <summary> Sets this board's onSlotClikedListener. </summary>
 	/// <param name="listener"> If non-null, the listener. </param>
-	void setOnSlotClikedListener(BoardListener* listener);
+	void setOnSlotSelectedListener(BoardListener* listener);
 
 	/// <summary> Sets the grid. </summary>
 	void setGrid(std::vector<std::vector<GamePiece>>* grid);
