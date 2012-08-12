@@ -117,10 +117,11 @@ void draw_board ()
 					glMaterialfv(GL_FRONT, GL_SPECULAR, white);
 					glMaterialfv(GL_FRONT, GL_SHININESS, polished);
 				}
-				else if(std::find_if(::slotsToHighLight->begin(), ::slotsToHighLight->end(), [i, j](Slot slot) -> bool 
-				{
-					return i == slot.y && j == slot.x; 
-				}) != ::slotsToHighLight->end()) // ::slotsToHighLight (j, i) contains (j, i)
+				else if(std::find_if(::slotsToHighLight->begin(), ::slotsToHighLight->end(), 
+					[i, j](Slot slot) -> bool 
+					{
+						return i == slot.y && j == slot.x; 
+					}) != ::slotsToHighLight->end()) // if ::slotsToHighLight contains (j, i)
 				{
 					glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
 					glMaterialfv(GL_FRONT, GL_SPECULAR, white);

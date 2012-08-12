@@ -52,6 +52,8 @@ private:
 	vector<vector<GamePiece>>* grid;
 	Player currentPlayer;
 
+	bool gameIsOver ;
+
 	/// <summary> Returns the list of slots where the piece at (x,y) can move to.
 	/// 		  </summary>
 	/// <param name="player"> The player who is attempting to move the piece. </param>

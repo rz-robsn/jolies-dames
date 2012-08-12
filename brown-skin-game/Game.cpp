@@ -31,6 +31,7 @@ void Game::newGame()
 	this->initPiecesWithFirstSlotEmpty(grid->at(7), RED_PIECE);
 
 	this->currentPlayer = PLAYER_RED;
+	this->gameIsOver = false;
 
 	if(this->jumpingPiece != NULL)
 	{
@@ -94,10 +95,12 @@ void Game::movePiece(int xStart, int yStart, int xEnd, int yEnd)
 		if( !this->playerCanStillMoveAPiece(this->currentPlayer)
 			&& !this->playerCanStillMoveAPiece(Game::getOpponent(currentPlayer)))
 		{
+			this->gameIsOver = true;
 			this->listener->onDraw();
 		}
 		else if (!this->playerCanStillMoveAPiece(Game::getOpponent(currentPlayer))) // the other player cannot move
 		{
+			this->gameIsOver = true ;
 			this->listener->onPlayerWin(this->currentPlayer);
 		}
 		else if (this->jumpingPiece != NULL
@@ -119,6 +122,10 @@ list<Slot> Game::getAvailableMovesForPiece(int x, int y)
 
 list<Slot> Game::getAvailableMovesForPiece(int x, int y, Player player)
 {
+	if(this->gameIsOver)
+	{
+		return list<Slot>();
+	}
 	if(this->getGamePieceAt(x,y) == EMPTY_SLOT)
 	{
 		return list<Slot>();
