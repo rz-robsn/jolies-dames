@@ -33,7 +33,7 @@ private:
 	Game* game;
 	CheckerBoard* board;
 
-	Slot previousSlotClicked;
+	Slot previousSlotSelected;
 	std::list<Slot>* slotsToHighLight;
 };
 

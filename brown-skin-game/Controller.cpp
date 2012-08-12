@@ -9,7 +9,7 @@ Controller::Controller(void)
 	this->game = new Game();
 	this->board = new CheckerBoard();
 	
-	this->previousSlotClicked = Slot(NO_SLOT, NO_SLOT);
+	this->previousSlotSelected = Slot(NO_SLOT, NO_SLOT);
 	this->slotsToHighLight = new std::list<Slot>();
 }
 
@@ -79,10 +79,10 @@ void Controller::onSlotSelected(int x, int y)
 {
 	this->slotsToHighLight->clear();
 	
-	if(this->previousSlotClicked.x != NO_SLOT && this->previousSlotClicked.y != NO_SLOT)
+	if(this->previousSlotSelected.x != NO_SLOT && this->previousSlotSelected.y != NO_SLOT)
 	{
-		game->movePiece(previousSlotClicked.x, previousSlotClicked.y, x, y);
-		this->previousSlotClicked = Slot(NO_SLOT, NO_SLOT);
+		game->movePiece(previousSlotSelected.x, previousSlotSelected.y, x, y);
+		this->previousSlotSelected = Slot(NO_SLOT, NO_SLOT);
 	}
 	else 
 	{
@@ -91,7 +91,7 @@ void Controller::onSlotSelected(int x, int y)
 		if (moves.size() > 0)
 		{
 			this->slotsToHighLight->insert(this->slotsToHighLight->end(), moves.begin(), moves.end());
-			this->previousSlotClicked = Slot(x, y);
+			this->previousSlotSelected = Slot(x, y);
 		}
 	}
 }
