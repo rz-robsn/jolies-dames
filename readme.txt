@@ -19,6 +19,7 @@
  F5				Select/Move a piece
  F6				New Game
  F12			Quit
+ Arrow keys		Move the cursor position.
  
   
 ========
