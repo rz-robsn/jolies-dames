@@ -2,6 +2,13 @@
 				Checker Game 
 				************
 
+========				
+	Run Instructions		
+========		
+
+	Either build the solution yourself buy opening the brown-skin-game.sln file with Visual Studio or
+	just execute the file Debug/brown-skin-game.exe
+
 ========
 	Controls 
 ========
