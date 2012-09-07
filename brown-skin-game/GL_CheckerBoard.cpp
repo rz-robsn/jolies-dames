@@ -24,6 +24,7 @@ BoardListener* listener;
 std::vector<std::vector<GamePiece>>* grid;
 
 Slot cursorPosition = Slot(7, 7);
+
 std::list<Slot>* slotsToHighLight;
 
 // My definition for a Solid Cylinder
@@ -260,7 +261,7 @@ void mouse_click (int button, int state, int x, int y)
 		       winY = (float)viewport_view_param[3] - y, 
 			   winZ;    
 
-		// getting the winZ coordinate;
+		// getting the winZ coordinate; 
 		glReadPixels(winX,winY,1,1,GL_DEPTH_COMPONENT,GL_FLOAT,&winZ);
 
 		// getting the world-coordinates of the point pressed.
@@ -277,6 +278,7 @@ void mouse_click (int button, int state, int x, int y)
 		{
 			::cursorPosition.x = x_slotSelected;
 			::cursorPosition.y = y_slotSelected;
+			::listener->onSlotSelected(::cursorPosition.x, ::cursorPosition.y);
 		}
 	}
 }
