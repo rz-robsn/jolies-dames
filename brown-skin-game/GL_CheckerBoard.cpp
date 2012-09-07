@@ -249,6 +249,23 @@ void mouse_click (int button, int state, int x, int y)
 	if (button ==  GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
 		std::cout << "x=" << x << ", y=" << y << std::endl;
+
+		GLdouble x_pressed = 0 ;
+		GLdouble y_pressed = 0;
+		GLdouble z_pressed = 0;
+
+		GLdouble model_view_param[16];
+		glGetDoublev(GL_MODELVIEW_MATRIX, model_view_param);
+
+		GLdouble proj_view_param[16];
+		glGetDoublev(GL_PROJECTION_MATRIX, proj_view_param);
+		
+		GLint viewport_view_param[4];
+		glGetIntegerv(GL_VIEWPORT, viewport_view_param);
+
+		gluUnProject(x, y, 1, model_view_param, proj_view_param, viewport_view_param, &x_pressed, &y_pressed, &z_pressed);
+
+		std::cout << "xp=" << x_pressed << ", yp=" << y_pressed << ", zp=" << z_pressed <<std::endl << std::endl;
 	}
 }
 
@@ -338,7 +355,6 @@ void display ()
 	draw_board(); // Draws the board
 
 	set_pieces(); // Positions the pieces
-
 	glutSwapBuffers();
 	glFlush();
 }
