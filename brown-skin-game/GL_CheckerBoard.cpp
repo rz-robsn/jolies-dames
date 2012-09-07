@@ -250,20 +250,26 @@ void mouse_click (int button, int state, int x, int y)
 	{
 		std::cout << "x=" << x << ", y=" << y << std::endl;
 
-		GLdouble x_pressed = 0 ;
-		GLdouble y_pressed = 0;
-		GLdouble z_pressed = 0;
-
+		// Getting Current Matrices for Glunproject method.
 		GLdouble model_view_param[16];
-		glGetDoublev(GL_MODELVIEW_MATRIX, model_view_param);
-
 		GLdouble proj_view_param[16];
-		glGetDoublev(GL_PROJECTION_MATRIX, proj_view_param);
-		
 		GLint viewport_view_param[4];
+		glGetDoublev(GL_MODELVIEW_MATRIX, model_view_param);
+		glGetDoublev(GL_PROJECTION_MATRIX, proj_view_param);
 		glGetIntegerv(GL_VIEWPORT, viewport_view_param);
 
-		gluUnProject(x, y, 1, model_view_param, proj_view_param, viewport_view_param, &x_pressed, &y_pressed, &z_pressed);
+		GLfloat winX = x,
+		       winY = (float)viewport_view_param[3] - y, 
+			   winZ;    
+
+		// getting the winZ coordinate;
+		glReadPixels(winX,winY,1,1,GL_DEPTH_COMPONENT,GL_FLOAT,&winZ);
+
+		GLdouble x_pressed;
+		GLdouble y_pressed;
+		GLdouble z_pressed;
+		
+		gluUnProject(winX, winY, winZ, model_view_param, proj_view_param, viewport_view_param, &x_pressed, &y_pressed, &z_pressed);
 
 		std::cout << "xp=" << x_pressed << ", yp=" << y_pressed << ", zp=" << z_pressed <<std::endl << std::endl;
 	}
