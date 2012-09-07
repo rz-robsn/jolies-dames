@@ -248,8 +248,6 @@ void mouse_click (int button, int state, int x, int y)
 {
 	if (button ==  GLUT_LEFT_BUTTON && state == GLUT_UP)
 	{
-		std::cout << "x=" << x << ", y=" << y << std::endl;
-
 		// Getting Current Matrices for Glunproject method.
 		GLdouble model_view_param[16];
 		GLdouble proj_view_param[16];
@@ -265,18 +263,26 @@ void mouse_click (int button, int state, int x, int y)
 		// getting the winZ coordinate;
 		glReadPixels(winX,winY,1,1,GL_DEPTH_COMPONENT,GL_FLOAT,&winZ);
 
+		// getting the world-coordinates of the point pressed.
 		GLdouble x_pressed;
 		GLdouble y_pressed;
-		GLdouble z_pressed;
-		
+		GLdouble z_pressed;		
 		gluUnProject(winX, winY, winZ, model_view_param, proj_view_param, viewport_view_param, &x_pressed, &y_pressed, &z_pressed);
 
-		std::cout << "xp=" << x_pressed << ", yp=" << y_pressed << ", zp=" << z_pressed <<std::endl << std::endl;
+		int x_slotSelected = std::floor(z_pressed + 4);
+		int y_slotSelected = std::floor(x_pressed + 4);
+
+		if ( 0 <= x_slotSelected && x_slotSelected < 8
+			&& 0 <= y_slotSelected && y_slotSelected < 8) // The user has clicked on a slot
+		{
+			::cursorPosition.x = x_slotSelected;
+			::cursorPosition.y = y_slotSelected;
+		}
 	}
 }
 
 // Enables Function keys for input
-void special_keys (int key, int x, int y)
+void special_keys (int key, int x, int y)	
 {
 	switch (key)
 	{
@@ -332,17 +338,12 @@ void special_keys (int key, int x, int y)
 		::cursorPosition.y = (cursorPosition.y > 0) ? cursorPosition.y-1 : 0;
 		break;
 	}
-		
-	//  Request display update
-	glutPostRedisplay();
 }
 
 void animate()
 {
 	glutPostRedisplay();
 }
-
-
 
 void display () 
 {
@@ -392,8 +393,7 @@ int init_view (int argc, char *argv[])
 	glutSpecialFunc(special_keys); // Enables Function keys to be used for input
 	glutIdleFunc(animate);
 	glutReshapeFunc(resize_window);
-
-	::glutMouseFunc(mouse_click);
+	glutMouseFunc(mouse_click);
 
 	glutMainLoop();
 	return 0;
