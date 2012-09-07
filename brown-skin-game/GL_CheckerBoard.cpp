@@ -244,6 +244,14 @@ void set_pieces ()
 	glPopMatrix();
 }
 
+void mouse_click (int button, int state, int x, int y)
+{
+	if (button ==  GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		std::cout << "x=" << x << ", y=" << y << std::endl;
+	}
+}
+
 // Enables Function keys for input
 void special_keys (int key, int x, int y)
 {
@@ -362,6 +370,8 @@ int init_view (int argc, char *argv[])
 	glutSpecialFunc(special_keys); // Enables Function keys to be used for input
 	glutIdleFunc(animate);
 	glutReshapeFunc(resize_window);
+
+	::glutMouseFunc(mouse_click);
 
 	glutMainLoop();
 	return 0;
