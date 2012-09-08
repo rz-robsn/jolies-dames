@@ -1,0 +1,10 @@
+*/gen/
+*/bin/
+*/target/
+*/.settings/
+*/tmp/
+*.class
+*~
+*.metadata/
+.project
+.classpath
