@@ -1,0 +1,3 @@
+[submodule "maven-android-sdk-deployer"]
+	path = maven-android-sdk-deployer
+	url = https://github.com/mosabua/maven-android-sdk-deployer.git
