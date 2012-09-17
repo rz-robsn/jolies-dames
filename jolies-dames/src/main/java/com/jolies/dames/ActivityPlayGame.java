@@ -1,6 +1,6 @@
 package com.jolies.dames;
 
-import com.jolies.dames.utilities.RendererGameView;
+import com.jolies.dames.utilities.GLSurfaceViewGame;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
@@ -14,17 +14,7 @@ public class ActivityPlayGame extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 				
-		surface = new GLSurfaceView(this);
-		
-        // Create an OpenGL ES 2.0 context.
-		surface.setEGLContextClientVersion(2);
-
-        // Set the Renderer for drawing on the GLSurfaceView
-		surface.setRenderer(new RendererGameView());
-
-        // Render the view only when there is a change in the drawing data
-		surface.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-		
+		surface = new GLSurfaceViewGame(this);
 		this.setContentView(surface);
 	}
 
