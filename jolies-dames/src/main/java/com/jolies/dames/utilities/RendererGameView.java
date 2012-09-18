@@ -37,9 +37,12 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	/** Allocate storage for the final combined matrix. This will be passed into the shader program. */
 	private float[] mMVPMatrix = new float[16];
 	
-	/** Store our model data in a float buffer. */
-	private final FloatBuffer boardVertices;
+	/** Store our model position in a float buffer. */
+	private final FloatBuffer boardVerticesPosition;
 
+	/** Store our model color in a float buffer. */
+	private final FloatBuffer boardVerticesColor;
+	
 	/** This will be used to pass in the transformation matrix. */
 	private int mMVPMatrixHandle;
 	
@@ -52,46 +55,61 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	/** How many bytes per float. */
 	private final int mBytesPerFloat = 4;
 	
-	/** How many elements per vertex. */
-	private final int mStrideBytes = 7 * mBytesPerFloat;	
-	
-	/** Offset of the position data. */
-	private final int mPositionOffset = 0;
-	
 	/** Size of the position data in elements. */
 	private final int mPositionDataSize = 3;
 	
-	/** Offset of the color data. */
-	private final int mColorOffset = 3;
-	
 	/** Size of the color data in elements. */
-	private final int mColorDataSize = 4;		
+	private final int mColorDataSize = 4;
+	
+	/** How many elements per position vertex. */
+	private final int mStridePositionBytes = mPositionDataSize * mBytesPerFloat;	
+
+	/** How many elements per color vertex. */
+	private final int mStrideColorBytes = mColorDataSize * mBytesPerFloat;	
+			
 				
 	/**
 	 * Initialize the model data.
 	 */
 	public RendererGameView()
 	{	
-		// Define points for equilateral triangles.
-		
-		// This triangle is red, green, and blue.
-		final float[] boardVerticesData = {
+		// Define points for square.
+		// This square is red.
+		final float[] boardVerticesPositionData = {
+				
 				// X, Y, Z, 
+	            0.5f, -0.5f, 0.0f, 
+	            0.5f, 0.5f, 0.0f,
+	            -0.5f, -0.5f, 0.0f, 
+	            -0.5f, -0.5f, 0.0f, 
+	            0.5f, 0.5f, 0.0f,
+	            -0.5f, 0.5f, 0.0f
+		};
+		
+		final float[] boardVerticesColorData = {
+
 				// R, G, B, A
-	            -0.5f, -0.25f, 0.0f, 
 	            1.0f, 0.0f, 0.0f, 1.0f,
-	            
-	            0.5f, -0.25f, 0.0f,
 	            1.0f, 0.0f, 0.0f, 1.0f,
-	            
-	            0.0f, 0.559016994f, 0.0f, 
-	            1.0f, 0.0f, 0.0f, 1.0f};
+	            1.0f, 0.0f, 0.0f, 1.0f,
+	            1.0f, 0.0f, 0.0f, 1.0f,
+	            1.0f, 0.0f, 0.0f, 1.0f,
+	            1.0f, 0.0f, 0.0f, 1.0f
+		};
 		
 		// Initialize the buffers.
-		boardVertices = ByteBuffer.allocateDirect(boardVerticesData.length * mBytesPerFloat)
-        .order(ByteOrder.nativeOrder()).asFloatBuffer();
-					
-		boardVertices.put(boardVerticesData).position(0);
+		boardVerticesPosition = ByteBuffer.allocateDirect(boardVerticesPositionData.length * mBytesPerFloat)
+        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
+		boardVerticesPosition.put(boardVerticesPositionData).position(0);
+		
+		// Initialize the buffers.
+		boardVerticesColor = ByteBuffer.allocateDirect(boardVerticesColorData.length * mBytesPerFloat)
+        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
+		boardVerticesColor.put(boardVerticesColorData).position(0);
+		
+		
+		
+		
 	}
 	
 	@Override
@@ -269,15 +287,10 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	public void onDrawFrame(GL10 glUnused) 
 	{
 		GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);			        
-                
-        // Do a complete rotation every 10 seconds.
-        long time = SystemClock.uptimeMillis() % 10000L;
-        float angleInDegrees = (360.0f / 10000.0f) * ((int) time);
-        
+                        
         // Draw the triangle facing straight on.
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 0.0f, 1.0f);        
-        drawBoard(boardVertices);
+        Matrix.setIdentityM(mModelMatrix, 0);        
+        drawBoard();
         
 	}	
 	
@@ -286,20 +299,18 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	 * 
 	 * @param aBoardBuffer The buffer containing the vertex data.
 	 */
-	private void drawBoard(final FloatBuffer aBoardBuffer)
+	private void drawBoard()
 	{		
 		// Pass in the position information
-		aBoardBuffer.position(mPositionOffset);
+		boardVerticesPosition.position(0);
         GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
-        		mStrideBytes, aBoardBuffer);        
-                
+        		mStridePositionBytes, boardVerticesPosition);                        
         GLES20.glEnableVertexAttribArray(mPositionHandle);        
         
         // Pass in the color information
-        aBoardBuffer.position(mColorOffset);
+        boardVerticesColor.position(0);
         GLES20.glVertexAttribPointer(mColorHandle, mColorDataSize, GLES20.GL_FLOAT, false,
-        		mStrideBytes, aBoardBuffer);        
-        
+        		mStrideColorBytes, boardVerticesColor);                
         GLES20.glEnableVertexAttribArray(mColorHandle);
         
 		// This multiplies the view matrix by the model matrix, and stores the result in the MVP matrix
@@ -311,6 +322,6 @@ public class RendererGameView implements GLSurfaceView.Renderer
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
 
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3);                               
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);                               
 	}
 }
