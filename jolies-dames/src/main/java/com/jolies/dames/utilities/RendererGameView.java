@@ -78,12 +78,12 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		final float[] boardVerticesPositionData = {
 				
 				// X, Y, Z, 
-	            0.5f, -0.5f, 0.0f, 
+	            -0.5f, 0.5f, 0.0f,
+	            -0.5f, -0.5f, 0.0f,
 	            0.5f, 0.5f, 0.0f,
-	            -0.5f, -0.5f, 0.0f, 
-	            -0.5f, -0.5f, 0.0f, 
 	            0.5f, 0.5f, 0.0f,
-	            -0.5f, 0.5f, 0.0f
+	            -0.5f, -0.5f, 0.0f,
+	            0.5f, -0.5f, 0.0f
 		};
 		
 		final float[] boardVerticesColorData = {
@@ -117,12 +117,12 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		// Position the eye behind the origin.
 		final float eyeX = 0.0f;
 		final float eyeY = 0.0f;
-		final float eyeZ = 1.5f;
+		final float eyeZ = 1.1f;
 
 		// We are looking toward the distance
 		final float lookX = 0.0f;
 		final float lookY = 0.0f;
-		final float lookZ = -5.0f;
+		final float lookZ = -1.0f;
 
 		// Set our up vector. This is where our head would be pointing were we holding the camera.
 		final float upX = 0.0f;
@@ -193,7 +193,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		final float bottom = -1.0f;
 		final float top = 1.0f;
 		final float near = 1.0f;
-		final float far = 100.0f;
+		final float far = 10.0f;
 		
 		Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
 	}	
