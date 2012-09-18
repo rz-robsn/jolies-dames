@@ -38,9 +38,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	private float[] mMVPMatrix = new float[16];
 	
 	/** Store our model data in a float buffer. */
-	private final FloatBuffer mTriangle1Vertices;
-	private final FloatBuffer mTriangle2Vertices;
-	private final FloatBuffer mTriangle3Vertices;
+	private final FloatBuffer boardVertices;
 
 	/** This will be used to pass in the transformation matrix. */
 	private int mMVPMatrixHandle;
@@ -77,55 +75,23 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		// Define points for equilateral triangles.
 		
 		// This triangle is red, green, and blue.
-		final float[] triangle1VerticesData = {
+		final float[] boardVerticesData = {
 				// X, Y, Z, 
 				// R, G, B, A
 	            -0.5f, -0.25f, 0.0f, 
 	            1.0f, 0.0f, 0.0f, 1.0f,
 	            
 	            0.5f, -0.25f, 0.0f,
-	            0.0f, 0.0f, 1.0f, 1.0f,
+	            1.0f, 0.0f, 0.0f, 1.0f,
 	            
 	            0.0f, 0.559016994f, 0.0f, 
-	            0.0f, 1.0f, 0.0f, 1.0f};
-		
-		// This triangle is yellow, cyan, and magenta.
-		final float[] triangle2VerticesData = {
-				// X, Y, Z, 
-				// R, G, B, A
-	            -0.5f, -0.25f, 0.0f, 
-	            1.0f, 1.0f, 0.0f, 1.0f,
-	            
-	            0.5f, -0.25f, 0.0f, 
-	            0.0f, 1.0f, 1.0f, 1.0f,
-	            
-	            0.0f, 0.559016994f, 0.0f, 
-	            1.0f, 0.0f, 1.0f, 1.0f};
-		
-		// This triangle is white, gray, and black.
-		final float[] triangle3VerticesData = {
-				// X, Y, Z, 
-				// R, G, B, A
-	            -0.5f, -0.25f, 0.0f, 
-	            1.0f, 1.0f, 1.0f, 1.0f,
-	            
-	            0.5f, -0.25f, 0.0f, 
-	            0.5f, 0.5f, 0.5f, 1.0f,
-	            
-	            0.0f, 0.559016994f, 0.0f, 
-	            0.0f, 0.0f, 0.0f, 1.0f};
+	            1.0f, 0.0f, 0.0f, 1.0f};
 		
 		// Initialize the buffers.
-		mTriangle1Vertices = ByteBuffer.allocateDirect(triangle1VerticesData.length * mBytesPerFloat)
-        .order(ByteOrder.nativeOrder()).asFloatBuffer();
-		mTriangle2Vertices = ByteBuffer.allocateDirect(triangle2VerticesData.length * mBytesPerFloat)
-        .order(ByteOrder.nativeOrder()).asFloatBuffer();
-		mTriangle3Vertices = ByteBuffer.allocateDirect(triangle3VerticesData.length * mBytesPerFloat)
+		boardVertices = ByteBuffer.allocateDirect(boardVerticesData.length * mBytesPerFloat)
         .order(ByteOrder.nativeOrder()).asFloatBuffer();
 					
-		mTriangle1Vertices.put(triangle1VerticesData).position(0);
-		mTriangle2Vertices.put(triangle2VerticesData).position(0);
-		mTriangle3Vertices.put(triangle3VerticesData).position(0);
+		boardVertices.put(boardVerticesData).position(0);
 	}
 	
 	@Override
@@ -311,41 +277,28 @@ public class RendererGameView implements GLSurfaceView.Renderer
         // Draw the triangle facing straight on.
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 0.0f, 1.0f);        
-        drawTriangle(mTriangle1Vertices);
+        drawBoard(boardVertices);
         
-        // Draw one translated a bit down and rotated to be flat on the ground.
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 0.0f, -1.0f, 0.0f);
-        Matrix.rotateM(mModelMatrix, 0, 90.0f, 1.0f, 0.0f, 0.0f);
-        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 0.0f, 1.0f);        
-        drawTriangle(mTriangle2Vertices);
-        
-        // Draw one translated a bit to the right and rotated to be facing to the left.
-        Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, 1.0f, 0.0f, 0.0f);
-        Matrix.rotateM(mModelMatrix, 0, 90.0f, 0.0f, 1.0f, 0.0f);
-        Matrix.rotateM(mModelMatrix, 0, angleInDegrees, 0.0f, 0.0f, 1.0f);
-        drawTriangle(mTriangle3Vertices);
 	}	
 	
 	/**
-	 * Draws a triangle from the given vertex data.
+	 * Draws a board from the given vertex data.
 	 * 
-	 * @param aTriangleBuffer The buffer containing the vertex data.
+	 * @param aBoardBuffer The buffer containing the vertex data.
 	 */
-	private void drawTriangle(final FloatBuffer aTriangleBuffer)
+	private void drawBoard(final FloatBuffer aBoardBuffer)
 	{		
 		// Pass in the position information
-		aTriangleBuffer.position(mPositionOffset);
+		aBoardBuffer.position(mPositionOffset);
         GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
-        		mStrideBytes, aTriangleBuffer);        
+        		mStrideBytes, aBoardBuffer);        
                 
         GLES20.glEnableVertexAttribArray(mPositionHandle);        
         
         // Pass in the color information
-        aTriangleBuffer.position(mColorOffset);
+        aBoardBuffer.position(mColorOffset);
         GLES20.glVertexAttribPointer(mColorHandle, mColorDataSize, GLES20.GL_FLOAT, false,
-        		mStrideBytes, aTriangleBuffer);        
+        		mStrideBytes, aBoardBuffer);        
         
         GLES20.glEnableVertexAttribArray(mColorHandle);
         
