@@ -46,6 +46,7 @@ public class GLBoard {
 		this.topLeft = topLeft;
 		this.length = length;
 		
+		/* Creating the GLSlots */
 		glSlots = new GLSlot[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
 		
 		// the dimension of an individual slot;
@@ -60,7 +61,7 @@ public class GLBoard {
 						topLeft[1],
 						topLeft[2]+ (CheckerGame.GRID_SIZE - j-1) * slotLength
 				};
-				glSlots[i][j] = new GLSlot(slotTopLeftData, slotLength, Color.BLUE);
+				glSlots[i][j] = new GLSlot(slotTopLeftData, slotLength, (i + j) % 2 == 0 ? Color.BROWN : Color.BEIGE);
 			}	
 		}
 	}
