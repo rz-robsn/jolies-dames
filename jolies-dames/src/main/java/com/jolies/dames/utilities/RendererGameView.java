@@ -149,6 +149,6 @@ public class RendererGameView implements GLSurfaceView.Renderer
                         
         // Draw the triangle facing straight on.
         Matrix.setIdentityM(mModelMatrix, 0); 
-        this.board.draw(mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
+        this.board.draw(mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);        
 	}	
 }

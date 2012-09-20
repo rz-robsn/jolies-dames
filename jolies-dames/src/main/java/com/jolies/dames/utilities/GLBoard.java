@@ -8,27 +8,27 @@ import android.opengl.GLES20;
 import android.opengl.Matrix;
 
 public class GLBoard {
+	
+	/** How many bytes per float. */
+	private static final int mBytesPerFloat = 4;
+	
+	/** Size of the position data in elements. */
+	private static final int mPositionDataSize = 3;
+	
+	/** Size of the color data in elements. */
+	private static final int mColorDataSize = 4;
+	
+	/** How many elements per position vertex. */
+	private static final int mStridePositionBytes = mPositionDataSize * mBytesPerFloat;	
+
+	/** How many elements per color vertex. */
+	private static final int mStrideColorBytes = mColorDataSize * mBytesPerFloat;	
 
 	/** Store our model position in a float buffer. */
 	private final FloatBuffer boardVerticesPosition;
 
 	/** Store our model color in a float buffer. */
 	private final FloatBuffer boardVerticesColor;
-	
-	/** How many bytes per float. */
-	private final int mBytesPerFloat = 4;
-	
-	/** Size of the position data in elements. */
-	private final int mPositionDataSize = 3;
-	
-	/** Size of the color data in elements. */
-	private final int mColorDataSize = 4;
-	
-	/** How many elements per position vertex. */
-	private final int mStridePositionBytes = mPositionDataSize * mBytesPerFloat;	
-
-	/** How many elements per color vertex. */
-	private final int mStrideColorBytes = mColorDataSize * mBytesPerFloat;	
 	
 	public GLBoard() {
 		
@@ -61,7 +61,6 @@ public class GLBoard {
         .order(ByteOrder.nativeOrder()).asFloatBuffer();		
 		boardVerticesPosition.put(boardVerticesPositionData).position(0);
 		
-		// Initialize the buffers.
 		boardVerticesColor = ByteBuffer.allocateDirect(boardVerticesColorData.length * mBytesPerFloat)
         .order(ByteOrder.nativeOrder()).asFloatBuffer();		
 		boardVerticesColor.put(boardVerticesColorData).position(0);
@@ -69,7 +68,8 @@ public class GLBoard {
 	}
 
 	public void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)
-	{		// Pass in the position information
+	{		
+		// Pass in the position information
 		boardVerticesPosition.position(0);
         GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
         		mStridePositionBytes, boardVerticesPosition);                        
