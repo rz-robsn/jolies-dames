@@ -78,12 +78,12 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		final float[] boardVerticesPositionData = {
 				
 				// X, Y, Z, 
-	            -0.5f, 0.5f, 0.0f,
-	            -0.5f, -0.5f, 0.0f,
-	            0.5f, 0.5f, 0.0f,
-	            0.5f, 0.5f, 0.0f,
-	            -0.5f, -0.5f, 0.0f,
-	            0.5f, -0.5f, 0.0f
+	            -0.5f, 0.0f, 0.0f,
+	            0.5f, 0.0f, 0.0f,
+	            -0.5f, 0.0f, -0.5f,
+	            -0.5f, 0.0f, -0.5f,
+	            0.5f, 0.0f, 0.0f,
+	            0.5f, 0.0f, -0.5f
 		};
 		
 		final float[] boardVerticesColorData = {
@@ -116,18 +116,18 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	
 		// Position the eye behind the origin.
 		final float eyeX = 0.0f;
-		final float eyeY = 0.0f;
-		final float eyeZ = 1.1f;
+		final float eyeY = 1.5f;
+		final float eyeZ = 0.5f;
 
 		// We are looking toward the distance
 		final float lookX = 0.0f;
-		final float lookY = 0.0f;
-		final float lookZ = -1.0f;
+		final float lookY = -5.0f;
+		final float lookZ = -2.5f;
 
 		// Set our up vector. This is where our head would be pointing were we holding the camera.
 		final float upX = 0.0f;
-		final float upY = 1.0f;
-		final float upZ = 0.0f;
+		final float upY = 5.0f;
+		final float upZ = -10.0f;
 
 		// Set the view matrix. This matrix can be said to represent the camera position.
 		// NOTE: In OpenGL 1, a ModelView matrix is used, which is a combination of a model and
@@ -195,7 +195,9 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		final float near = 1.0f;
 		final float far = 10.0f;
 		
-		Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
+		final float zoomFactor = 0.5f;
+		
+		Matrix.frustumM(mProjectionMatrix, 0, left*zoomFactor, right*zoomFactor, bottom*zoomFactor, top*zoomFactor, near, far);
 	}	
 
 	@Override
@@ -205,7 +207,6 @@ public class RendererGameView implements GLSurfaceView.Renderer
                         
         // Draw the triangle facing straight on.
         Matrix.setIdentityM(mModelMatrix, 0); 
-        Matrix.rotateM(mModelMatrix, 0, -45, 1, 0, 0); 
         drawBoard();
 	}	
 	
