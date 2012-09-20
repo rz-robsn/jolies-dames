@@ -26,70 +26,46 @@ public class GLSlot {
 
 	/** The Different colors a slot can have */
 	public static enum Color {BLUE, GREEN, BROWN, BEIGE}
-	private final static FloatBuffer BLUE ;
-	private final static FloatBuffer GREEN;
-	private final static FloatBuffer BROWN;
-	private final static FloatBuffer BEIGE;
+	private final static float[] blueColorData = {
+		
+		// R, G, B, A
+		0.1686f, 0.1098f, 0.8392f, 1.0f, 
+		0.1686f, 0.1098f, 0.8392f, 1.0f, 
+		0.1686f, 0.1098f, 0.8392f, 1.0f, 
+		0.1686f, 0.1098f, 0.8392f, 1.0f, 
+		0.1686f, 0.1098f, 0.8392f, 1.0f, 
+		0.1686f, 0.1098f, 0.8392f, 1.0f, 
+	};
+	
+	private final static float[] greenColorData = { 
+		
+		0.133333f, 0.72157f, 0.027450f, 1.0f,
+		0.133333f, 0.72157f, 0.027450f, 1.0f,
+		0.133333f, 0.72157f, 0.027450f, 1.0f,
+		0.133333f, 0.72157f, 0.027450f, 1.0f,
+		0.133333f, 0.72157f, 0.027450f, 1.0f,
+		0.133333f, 0.72157f, 0.027450f, 1.0f,
+	};
+	
+	private final static float[] brownColorData = { 
 
-	static 
-	{
-		float[] blueColorData = {
-				
-				// R, G, B, A
-				0.1686f, 0.1098f, 0.8392f, 1.0f, 
-				0.1686f, 0.1098f, 0.8392f, 1.0f, 
-				0.1686f, 0.1098f, 0.8392f, 1.0f, 
-				0.1686f, 0.1098f, 0.8392f, 1.0f, 
-				0.1686f, 0.1098f, 0.8392f, 1.0f, 
-				0.1686f, 0.1098f, 0.8392f, 1.0f, 
-		};
+		0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
+		0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
+		0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
+		0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
+		0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
+		0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f 				
+	};
+	
+	private final static float[] beigeColorData = { 
 		
-		float[] greenColorData = { 
-				
-				0.133333f, 0.72157f, 0.027450f, 1.0f,
-				0.133333f, 0.72157f, 0.027450f, 1.0f,
-				0.133333f, 0.72157f, 0.027450f, 1.0f,
-				0.133333f, 0.72157f, 0.027450f, 1.0f,
-				0.133333f, 0.72157f, 0.027450f, 1.0f,
-				0.133333f, 0.72157f, 0.027450f, 1.0f,
-		};
-		
-		float[] brownColorData = { 
-
-				0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
-				0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
-				0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
-				0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
-				0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f, 
-				0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f, 1.0f 				
-		};
-		
-		float[] beigeColorData = { 
-				
-				1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
-				1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,	
-				1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
-				1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
-				1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
-				1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
-		};
-		
-		// Initialize the buffers.
-		BLUE = ByteBuffer.allocateDirect(blueColorData.length * mBytesPerFloat)
-				.order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		BLUE.put(blueColorData).position(0);
-		GREEN = ByteBuffer.allocateDirect(greenColorData.length * mBytesPerFloat)
-		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		GREEN.put(greenColorData).position(0);
-		
-		BROWN = ByteBuffer.allocateDirect(brownColorData.length * mBytesPerFloat)
-		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		BROWN.put(brownColorData).position(0);
-		
-		BEIGE = ByteBuffer.allocateDirect(beigeColorData.length * mBytesPerFloat)
-		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		BEIGE.put(beigeColorData).position(0);
-	}
+		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
+		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,	
+		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
+		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
+		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
+		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
+	};
 	
 	/** Top left corner of the slot. */	
 	private FloatBuffer position;
@@ -117,34 +93,35 @@ public class GLSlot {
 				topLeftPosition[0] + length, topLeftPosition[1], topLeftPosition[2],
 				topLeftPosition[0] + length, topLeftPosition[1], topLeftPosition[2] + length
 		};
-		
+
+		float[] colorData = null;
+		switch(color)
+		{
+			case BLUE:
+				colorData = blueColorData;
+				break;
+				
+			case BEIGE:
+				colorData = beigeColorData;
+				break;
+				
+			case BROWN:
+				colorData = brownColorData;
+				break;
+				
+			case GREEN:
+				colorData = greenColorData;
+				break;
+		}		
+				
 		// Initialize the buffers.
 		this.position = ByteBuffer.allocateDirect(positionData.length * mBytesPerFloat)
 		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
 		this.position.put(positionData).position(0);
 		
-		switch(color)
-		{
-			case BLUE:
-				this.color = BLUE;
-				break;
-				
-			case BEIGE:
-				this.color = BEIGE;
-				break;
-				
-			case BROWN:
-				this.color = BROWN;
-				break;
-				
-			case GREEN:
-				this.color = GREEN;
-				break;
-
-			default:
-				this.color = BROWN;
-				break;
-		}		
+		this.color = ByteBuffer.allocateDirect(colorData.length * mBytesPerFloat)
+		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
+		this.color.put(colorData).position(0);
 	}
 	
 	public void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)

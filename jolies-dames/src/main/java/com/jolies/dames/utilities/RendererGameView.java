@@ -47,7 +47,8 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	 */
 	public RendererGameView()
 	{	
-		board = new GLBoard();
+		float[] topLeftPosition = {-0.5f, 0.0f, -0.5f};
+		board = new GLBoard(topLeftPosition, 1f);
 	}
 	
 	@Override
@@ -137,7 +138,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		final float near = 1.0f;
 		final float far = 10.0f;
 		
-		final float zoomFactor = 0.5f;
+		final float zoomFactor = 0.6f;
 		
 		Matrix.frustumM(mProjectionMatrix, 0, left*zoomFactor, right*zoomFactor, bottom*zoomFactor, top*zoomFactor, near, far);
 	}	

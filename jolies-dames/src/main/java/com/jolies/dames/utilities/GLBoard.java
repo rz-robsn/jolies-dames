@@ -29,20 +29,35 @@ public class GLBoard {
 
 	/** Store our model color in a float buffer. */
 	private final FloatBuffer boardVerticesColor;
+
+	/** Top left position of the board */
+	private final float[] topLeft;
+
+	/** The Dimension of the board */
+	private final float length;
 	
-	public GLBoard() {
+	/**
+	 * Constructor
+	 * 
+	 * @param topLeft Top Left position of the board. The board will be parallel to the Y-plane.
+	 * @param length the Dimension of the square board.
+	 */
+	public GLBoard(float[] topLeft, float length) {
+		
+		this.topLeft = topLeft;
+		this.length = length;
 		
 		// Define points for square.
 		// This square is red.
 		final float[] boardVerticesPositionData = {
 				
 				// X, Y, Z, 
-	            -0.5f, 0.0f, 0.0f,
-	            0.5f, 0.0f, 0.0f,
-	            -0.5f, 0.0f, -0.5f,
-	            -0.5f, 0.0f, -0.5f,
-	            0.5f, 0.0f, 0.0f,
-	            0.5f, 0.0f, -0.5f
+	            topLeft[0], topLeft[1], topLeft[2] + length,
+	            topLeft[0] + length, topLeft[1], topLeft[2] + length,
+	            topLeft[0], topLeft[1], topLeft[2],
+	            topLeft[0], topLeft[1], topLeft[2],
+	            topLeft[0] + length, topLeft[1], topLeft[2] + length,
+	            topLeft[0] + length, topLeft[1], topLeft[2],
 		};
 		
 		final float[] boardVerticesColorData = {
@@ -64,7 +79,6 @@ public class GLBoard {
 		boardVerticesColor = ByteBuffer.allocateDirect(boardVerticesColorData.length * mBytesPerFloat)
         .order(ByteOrder.nativeOrder()).asFloatBuffer();		
 		boardVerticesColor.put(boardVerticesColorData).position(0);
-
 	}
 
 	public void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)
