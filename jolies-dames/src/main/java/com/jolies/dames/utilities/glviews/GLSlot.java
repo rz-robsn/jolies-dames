@@ -59,7 +59,7 @@ public class GLSlot extends GLView{
 	private FloatBuffer color;
 
 	/**
-	 * Contructor for GLSLot. The Slot drawn will always be parrallel to the Y-plan.
+	 * Contructor for GLSLot. The Slot drawn will always be parrallel to the XZ-Plane.
 	 * 
 	 * @param topLeftPosition top-left coordinate of the slot to draw
 	 * @param length dimension of the square slot to draw

@@ -10,7 +10,7 @@ public class GLBoard extends GLView{
 	/**
 	 * Constructor
 	 * 
-	 * @param topLeft Top Left position of the board. The board will be parallel to the Y-plane.
+	 * @param topLeft Top Left position of the board. The board will be parallel to the XZ-plane.
 	 * @param length the Dimension of the square board.
 	 */
 	public GLBoard(float[] topLeft, float length) {
