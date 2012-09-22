@@ -1,10 +1,10 @@
-package com.jolies.dames.utilities;
+package com.jolies.dames.utilities.glviews;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import com.jolies.dames.utilities.GLSlot.Color;
+import com.jolies.dames.utilities.glviews.GLSlot.Color;
 import com.jolies.dames.utilities.model.CheckerGame;
 
 import android.opengl.GLES20;

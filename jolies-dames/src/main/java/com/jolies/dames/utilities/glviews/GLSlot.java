@@ -1,4 +1,4 @@
-package com.jolies.dames.utilities;
+package com.jolies.dames.utilities.glviews;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
