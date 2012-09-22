@@ -1,11 +1,15 @@
 package com.jolies.dames.utilities.glviews;
 
+import android.opengl.Matrix;
+
 import com.jolies.dames.utilities.glviews.GLSlot.Color;
 import com.jolies.dames.utilities.model.CheckerGame;
 
 public class GLBoard extends GLView{
 			
 	private GLSlot[][] glSlots;
+	
+	private GLPiece glPiece;
 	
 	/**
 	 * Constructor
@@ -33,11 +37,24 @@ public class GLBoard extends GLView{
 				glSlots[i][j] = new GLSlot(slotTopLeftData, slotLength, (i + j) % 2 == 0 ? Color.BROWN : Color.BEIGE);
 			}	
 		}
+		
+		float[] pieceTopCenterData = {
+				topLeft[0]+ slotLength/2f,
+				topLeft[1]+ 0.05f,
+				topLeft[2]+ slotLength/2f
+		};
+		float[] pieceBottomCenterData = {
+				topLeft[0]+ slotLength/2f,
+				topLeft[1]+ 0.3f,
+				topLeft[2]+ slotLength/2f
+		};		
+		
+		glPiece = new GLPiece(pieceTopCenterData, pieceBottomCenterData, Math.max(slotLength/2f-0.02f, 0.05f));
 	}
 
 	@Override
 	public void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)
-	{		
+	{			 
 		for(GLSlot[] slots : this.glSlots)
 		{
 			for(GLSlot glSlot : slots)
@@ -45,5 +62,7 @@ public class GLBoard extends GLView{
 				glSlot.draw(mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
 			}
 		}
-    }
+		glPiece.draw(mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
+
+   }
 }

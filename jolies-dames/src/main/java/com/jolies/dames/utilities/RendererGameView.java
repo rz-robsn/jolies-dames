@@ -150,7 +150,6 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	{
 		GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);			        
                         
-        // Draw the triangle facing straight on.
         Matrix.setIdentityM(mModelMatrix, 0); 
         this.board.draw(mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);        
 	}	
