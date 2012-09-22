@@ -1,38 +1,10 @@
 package com.jolies.dames.utilities.glviews;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-
 import com.jolies.dames.utilities.glviews.GLSlot.Color;
 import com.jolies.dames.utilities.model.CheckerGame;
 
-import android.opengl.GLES20;
-import android.opengl.Matrix;
-
-public class GLBoard {
-	
-	/** How many bytes per float. */
-	private static final int mBytesPerFloat = 4;
-	
-	/** Size of the position data in elements. */
-	private static final int mPositionDataSize = 3;
-	
-	/** Size of the color data in elements. */
-	private static final int mColorDataSize = 4;
-	
-	/** How many elements per position vertex. */
-	private static final int mStridePositionBytes = mPositionDataSize * mBytesPerFloat;	
-
-	/** How many elements per color vertex. */
-	private static final int mStrideColorBytes = mColorDataSize * mBytesPerFloat;	
-
-	/** Top left position of the board */
-	private final float[] topLeft;
-
-	/** The Dimension of the board */
-	private final float length;
-	
+public class GLBoard extends GLView{
+			
 	private GLSlot[][] glSlots;
 	
 	/**
@@ -42,9 +14,6 @@ public class GLBoard {
 	 * @param length the Dimension of the square board.
 	 */
 	public GLBoard(float[] topLeft, float length) {
-		
-		this.topLeft = topLeft;
-		this.length = length;
 		
 		/* Creating the GLSlots */
 		glSlots = new GLSlot[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];

@@ -1,28 +1,11 @@
 package com.jolies.dames.utilities.glviews;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
-public class GLSlot {
-	
-	/** How many bytes per float. */
-	private static final int mBytesPerFloat = 4;
-	
-	/** Size of the position data in elements. */
-	private static final int mPositionDataSize = 3;
-	
-	/** Size of the color data in elements. */
-	private static final int mColorDataSize = 4;
-	
-	/** How many elements per position vertex. */
-	private static final int mStridePositionBytes = mPositionDataSize * mBytesPerFloat;	
-
-	/** How many elements per color vertex. */
-	private static final int mStrideColorBytes = mColorDataSize * mBytesPerFloat;	
+public class GLSlot extends GLView{
 
 	/** The Different colors a slot can have */
 	public static enum Color {BLUE, GREEN, BROWN, BEIGE}
@@ -115,27 +98,22 @@ public class GLSlot {
 		}		
 				
 		// Initialize the buffers.
-		this.position = ByteBuffer.allocateDirect(positionData.length * mBytesPerFloat)
-		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		this.position.put(positionData).position(0);
-		
-		this.color = ByteBuffer.allocateDirect(colorData.length * mBytesPerFloat)
-		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		this.color.put(colorData).position(0);
+		this.initializeFloatBuffer(position, positionData);
+		this.initializeFloatBuffer(this.color, colorData);		
 	}
 	
 	public void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)
 	{		
 		// Pass in the position information
 		position.position(0);
-        GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
-        		mStridePositionBytes, position);                        
+        GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false,
+        		STRIDE_POSITION_BYTES, position);                        
         GLES20.glEnableVertexAttribArray(mPositionHandle);        
         
         // Pass in the color information
         color.position(0);
-        GLES20.glVertexAttribPointer(mColorHandle, mColorDataSize, GLES20.GL_FLOAT, false,
-        		mStrideColorBytes, color);                
+        GLES20.glVertexAttribPointer(mColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false,
+        		STRIDE_COLOR_BYTES, color);                
         GLES20.glEnableVertexAttribArray(mColorHandle);
         
 		// This multiplies the view matrix by the model matrix, and stores the result in the MVP matrix
