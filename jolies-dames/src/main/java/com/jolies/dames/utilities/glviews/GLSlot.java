@@ -1,5 +1,7 @@
 package com.jolies.dames.utilities.glviews;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import android.opengl.GLES20;
@@ -98,10 +100,16 @@ public class GLSlot extends GLView{
 		}		
 				
 		// Initialize the buffers.
-		this.initializeFloatBuffer(position, positionData);
-		this.initializeFloatBuffer(this.color, colorData);		
+		this.position = ByteBuffer.allocateDirect(positionData.length * BYTES_PER_FLOAT)
+		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
+		this.position.put(positionData).position(0);
+		
+		this.color = ByteBuffer.allocateDirect(colorData.length * BYTES_PER_FLOAT)
+		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
+		this.color.put(colorData).position(0);
 	}
 	
+	@Override
 	public void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)
 	{		
 		// Pass in the position information

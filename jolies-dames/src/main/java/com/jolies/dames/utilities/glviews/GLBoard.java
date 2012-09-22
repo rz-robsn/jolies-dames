@@ -35,6 +35,7 @@ public class GLBoard extends GLView{
 		}
 	}
 
+	@Override
 	public void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)
 	{		
 		for(GLSlot[] slots : this.glSlots)
