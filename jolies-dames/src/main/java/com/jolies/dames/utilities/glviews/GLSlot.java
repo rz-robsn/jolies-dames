@@ -10,7 +10,7 @@ import android.opengl.Matrix;
 public class GLSlot extends GLView{
 
 	/** The Different colors a slot can have */
-	public static enum Color {BLUE, GREEN, BROWN, BEIGE}
+	public static enum SlotColor {BLUE, GREEN, BROWN, BEIGE}
 	private final static float[] blueColorData = {
 		
 		// R, G, B, A
@@ -65,7 +65,7 @@ public class GLSlot extends GLView{
 	 * @param length dimension of the square slot to draw
 	 * @param color color of the slot.
 	 */
-	public GLSlot(float[] topLeftPosition, float length, Color color) {
+	public GLSlot(float[] topLeftPosition, float length, SlotColor color) {
 		super();
 
 		float[] positionData = {
