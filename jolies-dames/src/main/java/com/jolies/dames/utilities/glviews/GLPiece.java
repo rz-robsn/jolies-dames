@@ -44,7 +44,7 @@ public class GLPiece extends GLView {
 
 		// The vertex data array of the cylinder sides, 
 		// size is enough to store 2 * NUM_OF_DISK_VERTICES triangles;
-		float[] cylinderSideVerticesData = new float[3 * 3 * 2 * NUM_OF_DISK_VERTICES];
+		float[] cylinderSideVerticesData = new float[topDiskVerticesData.length + bottomDiskVerticesData.length];
 
 		// The vertexColorDatas
 		float[] diskVerticesDataColor = new float[(NUM_OF_DISK_VERTICES + 1) * COLOR_DATA_SIZE];
@@ -72,45 +72,32 @@ public class GLPiece extends GLView {
 			bottomDiskVerticesData[3 * i + 2] = bottomCenterPosition[2] + radius * FloatMath.sin(i * stepSize);
 		}
 
-		for (int i = 0; i < NUM_OF_DISK_VERTICES*2; i += 6) 
+		for (int i = 3, j = 0; i < topDiskVerticesData.length; i += 3, j += 6) 
 		{
-			int vertexOffset = i + POSITION_DATA_SIZE;
+			// Top Vertex i
+			cylinderSideVerticesData[j] = topDiskVerticesData[i];
+			cylinderSideVerticesData[j+1] = topDiskVerticesData[i+1];
+			cylinderSideVerticesData[j+2] = topDiskVerticesData[i+2];
 			
-			int vertexTop1Offset = vertexOffset;
-			int vertexTop2Offset = vertexOffset + POSITION_DATA_SIZE;
-			int vertexBottom1Offset = vertexOffset;
-			int vertexBottom2Offset = vertexOffset + POSITION_DATA_SIZE;
+			// Bottom Vertex i
+			cylinderSideVerticesData[j+3] = bottomDiskVerticesData[i];
+			cylinderSideVerticesData[j+4] = bottomDiskVerticesData[i+1];
+			cylinderSideVerticesData[j+5] = bottomDiskVerticesData[i+2];
 			
-			// Top Vertex 1
-			cylinderSideVerticesData[3*i] = topDiskVerticesData[vertexTop1Offset];
-			cylinderSideVerticesData[3*i+1] = topDiskVerticesData[vertexTop1Offset+1];
-			cylinderSideVerticesData[3*i+2] = topDiskVerticesData[vertexTop1Offset+2];
-			
-			// Top Vertex 2
-			cylinderSideVerticesData[3*i+3] = topDiskVerticesData[vertexTop2Offset];
-			cylinderSideVerticesData[3*i+4] = topDiskVerticesData[vertexTop2Offset+1];
-			cylinderSideVerticesData[3*i+5] = topDiskVerticesData[vertexTop2Offset+2];
-			
-			// Bottom Vertex 1
-			cylinderSideVerticesData[3*i+6] = bottomDiskVerticesData[vertexBottom1Offset];
-			cylinderSideVerticesData[3*i+7] = bottomDiskVerticesData[vertexBottom1Offset+1];
-			cylinderSideVerticesData[3*i+8] = bottomDiskVerticesData[vertexBottom1Offset+2];		
-					
-			// Bottom Vertex 1
-			cylinderSideVerticesData[3*i+9] = bottomDiskVerticesData[vertexBottom1Offset];
-			cylinderSideVerticesData[3*i+10] = bottomDiskVerticesData[vertexBottom1Offset+1];
-			cylinderSideVerticesData[3*i+11] = bottomDiskVerticesData[vertexBottom1Offset+2];		
-
-			// Top Vertex 2
-			cylinderSideVerticesData[3*i+12] = topDiskVerticesData[vertexTop2Offset];
-			cylinderSideVerticesData[3*i+13] = topDiskVerticesData[vertexTop2Offset+1];
-			cylinderSideVerticesData[3*i+14] = topDiskVerticesData[vertexTop2Offset+2];			
-					
-			// Bottom Vertex 2
-			cylinderSideVerticesData[3*i+15] = bottomDiskVerticesData[vertexBottom2Offset];
-			cylinderSideVerticesData[3*i+16] = bottomDiskVerticesData[vertexBottom2Offset+1];
-			cylinderSideVerticesData[3*i+17] = bottomDiskVerticesData[vertexBottom2Offset+2];		
+			if (i+3 >= topDiskVerticesData.length)
+			{
+				// Top Vertex 1
+				cylinderSideVerticesData[j+6] = topDiskVerticesData[3];
+				cylinderSideVerticesData[j+7] = topDiskVerticesData[4];
+				cylinderSideVerticesData[j+8] = topDiskVerticesData[5];
+				
+				// Bottom Vertex 1
+				cylinderSideVerticesData[j+9] = bottomDiskVerticesData[3];
+				cylinderSideVerticesData[j+10] = bottomDiskVerticesData[4];
+				cylinderSideVerticesData[j+11] = bottomDiskVerticesData[5];				
+			}
 		}
+
 
 		
 		/* Color Array initialization */
@@ -230,7 +217,7 @@ public class GLPiece extends GLView {
 		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
 
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, NUM_OF_DISK_VERTICES + 1);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, NUM_OF_DISK_VERTICES + 1);
 		
 	}
 

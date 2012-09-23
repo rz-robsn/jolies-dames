@@ -40,7 +40,7 @@ public class GLBoard extends GLView{
 		
 		float[] pieceTopCenterData = {
 				topLeft[0]+ slotLength/2f,
-				topLeft[1]+ 0.05f,
+				topLeft[1]+ 0.025f,
 				topLeft[2]+ slotLength/ 2f
 		};
 		float[] pieceBottomCenterData = {
