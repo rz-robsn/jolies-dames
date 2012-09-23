@@ -49,7 +49,7 @@ public class GLBoard extends GLView{
 				topLeft[2]+ slotLength/2f
 		};		
 		
-		glPiece = new GLPiece(pieceTopCenterData, pieceBottomCenterData, Math.min(Math.abs(slotLength/2f-0.02f), 0.06f), GLPiece.PieceColor.RED);
+		glPiece = new GLPiece(pieceTopCenterData, pieceBottomCenterData, slotLength/2f, GLPiece.PieceColor.RED);
 	}
 
 	@Override
