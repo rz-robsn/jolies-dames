@@ -1,9 +1,5 @@
 package com.jolies.dames.utilities.glviews;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-
 public abstract class GLView {
 
 	/** How many bytes per float. */

@@ -1,7 +1,5 @@
 package com.jolies.dames.utilities.glviews;
 
-import android.opengl.Matrix;
-
 import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.CheckerGame;
 
