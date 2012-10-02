@@ -9,9 +9,10 @@ public class CheckerGame
     
     private GameListener listener;
     
-    // / <summary> If the current player's last move was a jump,
-    // / this attribute will contain current slot of the jumping piece,
-    // / otherwise equals NULL. </summary>
+    /**
+     * If the current player's last move was a jump, this attribute will contain
+     * current slot of the jumping piece, otherwise equals null.
+     */
     private Slot jumpingPiece;
     
     private ArrayList<ArrayList<GamePiece>> grid;
@@ -23,29 +24,46 @@ public class CheckerGame
     {
     }
     
-    // / <summary> Sets this game's listener. </summary>
-    // / <param name="listener"> [in,out] The listener. Does not assume
-    // ownership. </param>
+    /**
+     * Sets this game's listener.
+     * 
+     * @param listener
+     *            The listener
+     */
     public void setListener(GameListener listener)
     {
     }
     
-    // / <summary> Starts a new Game </summary>
+    /**
+     * Starts a new Game
+     */
     public void newGame()
     {
     }
     
-    // / <summary> Move the piece from (xStart, yStart) to (xEnd, yEnd).
-    // / If the move is illegal, the piece stays at (xStart, yStart). </summary>
+    /**
+     * Move the piece from (xStart, yStart) to (xEnd, yEnd). If the move is
+     * illegal, the piece stays at (xStart, yStart).
+     * 
+     * @param xStart
+     * @param yStart
+     * @param xEnd
+     * @param yEnd
+     */
     public void movePiece(int xStart, int yStart, int xEnd, int yEnd)
     {
     }
     
-    // / <summary> Returns the list of slots where the piece at (x,y) can move
-    // to.
-    // / Will return empty list if the piece does not belong to the current
-    // / player </summary>
-    // / <returns> The available moves for piece. </returns>
+    /**
+     * Returns the list of slots where the piece at (x,y) can move to. Will
+     * return empty list if the piece does not belong to the current player.
+     * 
+     * @param x
+     * @param y
+     * @return The list of slots where the piece at (x,y) can move to. Will
+     *         return empty list if the piece does not belong to the current
+     *         player.
+     */
     public List<Slot> getAvailableMovesForPiece(int x, int y)
     {
         return null;
@@ -56,99 +74,102 @@ public class CheckerGame
         return null;
     }
     
-    // / <summary> Returns the list of slots where the piece at (x,y) can move
-    // to.
-    // / </summary>
-    // / <param name="player"> The player who is attempting to move the piece.
-    // </param>
-    // / <returns> The available moves for piece. </returns>
+    /**
+     * Returns the list of slots where the piece at (x,y) can move to.
+     * 
+     * @param x
+     * @param y
+     * @param player
+     *            The player who is attempting to move the piece.
+     * @return The available moves for piece at position (x,y).
+     */
     private List<Slot> getAvailableMovesForPiece(int x, int y, Player player)
     {
         return null;
     }
     
-    void initPiecesWithFirstSlotEmpty(ArrayList<GamePiece> gridRow,
+    private void initPiecesWithFirstSlotEmpty(ArrayList<GamePiece> gridRow,
             GamePiece piece)
     {
     }
     
-    void initPiecesWithFirstSlotContainingPiece(ArrayList<GamePiece> gridRow,
-            GamePiece piece)
+    private void initPiecesWithFirstSlotContainingPiece(
+            ArrayList<GamePiece> gridRow, GamePiece piece)
     {
     }
     
-    void initRowWithEmptySlot(ArrayList<GamePiece> gridRow)
+    private void initRowWithEmptySlot(ArrayList<GamePiece> gridRow)
     {
     }
     
-    void switchTurn()
+    private void switchTurn()
     {
     }
     
-    boolean moveIsLegal(int xStart, int yStart, int xEnd, int yEnd)
-    {
-        return false;
-    }
-    
-    boolean pieceCanEatEnemyPiece(int x, int y, Player player)
+    private boolean moveIsLegal(int xStart, int yStart, int xEnd, int yEnd)
     {
         return false;
     }
     
-    boolean pieceCanEatEnemyPiece(int x, int y)
+    private boolean pieceCanEatEnemyPiece(int x, int y, Player player)
     {
         return false;
     }
     
-    boolean pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy,
+    private boolean pieceCanEatEnemyPiece(int x, int y)
+    {
+        return false;
+    }
+    
+    private boolean pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy,
             int xEmptySlot, int yEmptySlot)
     {
         return false;
     }
     
-    boolean playerCanStillMoveAPiece(Player player)
+    private boolean playerCanStillMoveAPiece(Player player)
     {
         return false;
     }
     
-    List<Slot> getAllMovesThatEatEnemy(int x, int y)
+    private List<Slot> getAllMovesThatEatEnemy(int x, int y)
     {
         return null;
     }
     
-    void addAvailableMovesToEmptySlots(int x, int y, List<Slot> moves)
+    private void addAvailableMovesToEmptySlots(int x, int y, List<Slot> moves)
     {
     }
     
-    void pushSlotIfEmpty(int x, int y, List<Slot> moves)
+    private void pushSlotIfEmpty(int x, int y, List<Slot> moves)
     {
     }
     
-    boolean pieceHasReachedOppositeEnd(int x, int y)
-    {
-        return false;
-    }
-    
-    void promotePiece(int x, int y)
-    {
-    }
-    
-    boolean pieceBelongsToPlayer(int x, int y, Player player)
+    private boolean pieceHasReachedOppositeEnd(int x, int y)
     {
         return false;
     }
     
-    static boolean pieceBelongsToPlayer(GamePiece piece, Player player)
+    private void promotePiece(int x, int y)
+    {
+    }
+    
+    private boolean pieceBelongsToPlayer(int x, int y, Player player)
     {
         return false;
     }
     
-    GamePiece getGamePieceAt(int x, int y)
+    private static boolean pieceBelongsToPlayer(GamePiece piece, Player player)
+    {
+        return false;
+    }
+    
+    private GamePiece getGamePieceAt(int x, int y)
     {
         return null;
     }
     
-    void setGamePieceAt(int x, int y, GamePiece piece)
+    private void setGamePieceAt(int x, int y, GamePiece piece)
     {
     }
     
