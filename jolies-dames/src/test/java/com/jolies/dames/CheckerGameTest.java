@@ -63,4 +63,9 @@ public class CheckerGameTest
     {
 
     }
+    
+    private void printGame() throws Exception
+    {
+        
+    }
 }
