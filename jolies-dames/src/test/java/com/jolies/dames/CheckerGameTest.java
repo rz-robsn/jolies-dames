@@ -1,8 +1,8 @@
 package com.jolies.dames;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+//import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
+//import static org.mockito.Mockito.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +22,7 @@ public class CheckerGameTest
     @Before
     public void setUp() throws Exception
     {
-        mockListener = mock(GameListener.class);
+        //mockListener = mock(GameListener.class);
         
         game = new CheckerGame();
         game.setListener(mockListener);
