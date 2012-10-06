@@ -156,18 +156,18 @@ public class GLPiece extends GLView {
 	}
 
 	@Override
-	public void draw(float[] mMVPMatrix, float[] mModelMatrix,
+	public void draw(float[] mMVPMatrix, float[] mModelViewMatrix, float[] mModelMatrix,
 			float[] mViewMatrix, float[] mProjectionMatrix,
 			int mPositionHandle, int mColorHandle, int mMVPMatrixHandle) 
 	{
-		this.drawDisk(topDiskPosition, mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
-		this.drawDisk(bottomDiskPosition, mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
+		this.drawDisk(topDiskPosition, mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
+		this.drawDisk(bottomDiskPosition, mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
 		
-		this.drawPieceSide(mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);		
+		this.drawPieceSide(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);		
 	}
 
 	private void drawDisk(FloatBuffer diskBuffer, 
-			float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix,
+			float[] mMVPMatrix, float[] mModelViewMatrix, float[] mModelMatrix, float[] mViewMatrix,
 			float[] mProjectionMatrix, int mPositionHandle, int mColorHandle,
 			int mMVPMatrixHandle) 
 	{
@@ -186,18 +186,18 @@ public class GLPiece extends GLView {
 		// This multiplies the view matrix by the model matrix, and stores the
 		// result in the MVP matrix
 		// (which currently contains model * view).
-		Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
+		Matrix.multiplyMM(mModelViewMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
 
 		// This multiplies the modelview matrix by the projection matrix, and
 		// stores the result in the MVP matrix
 		// (which now contains model * view * projection).
-		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
+		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mModelViewMatrix, 0);
 
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, NUM_OF_DISK_VERTICES + 1);
 	}
 	
-	private void drawPieceSide(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix,
+	private void drawPieceSide(float[] mMVPMatrix, float[] mModelViewMatrix, float[] mModelMatrix, float[] mViewMatrix,
 			float[] mProjectionMatrix, int mPositionHandle, int mColorHandle,
 			int mMVPMatrixHandle)
 	{
@@ -213,8 +213,8 @@ public class GLPiece extends GLView {
 				GLES20.GL_FLOAT, false, STRIDE_COLOR_BYTES, sideColor);
 		GLES20.glEnableVertexAttribArray(mColorHandle);
 
-		Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
+		Matrix.multiplyMM(mModelViewMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
+		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mModelViewMatrix, 0);
 
 		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, NUM_OF_DISK_VERTICES + 1);

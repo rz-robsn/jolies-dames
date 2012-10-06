@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 public class GLSurfaceViewGame extends GLSurfaceView {
 
     private BoardListener listener;
+    private RendererGameView renderer;
     
 	public GLSurfaceViewGame(Context context) {
 		super(context);
@@ -17,13 +18,13 @@ public class GLSurfaceViewGame extends GLSurfaceView {
 		this.setEGLContextClientVersion(2);
 
 		// Set the Renderer for drawing on the GLSurfaceView
-		this.setRenderer(new RendererGameView());
+		renderer = new RendererGameView();
+		this.setRenderer(renderer);
 	}
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-        // TODO Auto-generated method stub
         return super.onTouchEvent(event);
     }
 

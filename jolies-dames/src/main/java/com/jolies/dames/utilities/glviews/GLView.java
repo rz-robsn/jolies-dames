@@ -17,5 +17,5 @@ public abstract class GLView {
 	/** How many elements per color vertex. */
 	protected static final int STRIDE_COLOR_BYTES = COLOR_DATA_SIZE * BYTES_PER_FLOAT;	
 		
-	public abstract void draw(float[] mMVPMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle);
+	public abstract void draw(float[] mMVPMatrix, float[] mModelViewMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle);
 }

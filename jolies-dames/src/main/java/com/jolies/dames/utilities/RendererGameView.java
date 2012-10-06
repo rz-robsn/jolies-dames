@@ -29,10 +29,16 @@ public class RendererGameView implements GLSurfaceView.Renderer
 
 	/** Store the projection matrix. This is used to project the scene onto a 2D viewport. */
 	private float[] mProjectionMatrix = new float[16];
+
+    /** Stores the modelView matrix, This is equal to the mModelMatrix * mViewMatrix */
+    private float[] mModelViewMatrix = new float[16];	
 	
 	/** Allocate storage for the final combined matrix. This will be passed into the shader program. */
 	private float[] mMVPMatrix = new float[16];
-		
+
+	/** Stores the viewPort */
+    private float[] mViewPort = new float[4];
+	
 	/** This will be used to pass in the transformation matrix. */
 	private int mMVPMatrixHandle;
 	
@@ -129,6 +135,8 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	{
 		// Set the OpenGL viewport to the same size as the surface.
 		GLES20.glViewport(0, 0, width, height);
+		this.mViewPort[2] = width;
+		this.mViewPort[3] = height;
 
 		// Create a new perspective projection matrix. The height will stay the same
 		// while the width will vary as per aspect ratio.
@@ -151,6 +159,21 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);			        
                         
         Matrix.setIdentityM(mModelMatrix, 0); 
-        this.board.draw(mMVPMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);        
-	}	
+        this.board.draw(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);        
+	}
+
+    public float[] getmProjectionMatrix()
+    {
+        return mProjectionMatrix;
+    }
+
+    public float[] getmModelViewMatrix()
+    {
+        return mModelViewMatrix;
+    }
+
+    public float[] getmViewPort()
+    {
+        return mViewPort;
+    }	
 }
