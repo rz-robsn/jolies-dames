@@ -1,6 +1,7 @@
 package com.jolies.dames.utilities;
 
 import com.jolies.dames.utilities.glviews.BoardListener;
+import com.jolies.dames.utilities.glviews.TouchListenerSurfaceViewGame;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -8,8 +9,8 @@ import android.view.MotionEvent;
 
 public class GLSurfaceViewGame extends GLSurfaceView {
 
-    private BoardListener listener;
     private RendererGameView renderer;
+    private TouchListenerSurfaceViewGame touchListener;
     
 	public GLSurfaceViewGame(Context context) {
 		super(context);
@@ -20,17 +21,14 @@ public class GLSurfaceViewGame extends GLSurfaceView {
 		// Set the Renderer for drawing on the GLSurfaceView
 		renderer = new RendererGameView();
 		this.setRenderer(renderer);
+		
+		touchListener = new TouchListenerSurfaceViewGame();
+		this.setOnTouchListener(touchListener);
 	}
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-        return super.onTouchEvent(event);
-    }
 
     public void setListener(BoardListener listener)
     {
-        this.listener = listener;
+        this.touchListener.setListener(listener);
     }
 
 }
