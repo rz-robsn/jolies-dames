@@ -37,7 +37,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	private float[] mMVPMatrix = new float[16];
 
 	/** Stores the viewPort */
-    private float[] mViewPort = new float[4];
+    private int[] mViewPort = new int[4];
 	
 	/** This will be used to pass in the transformation matrix. */
 	private int mMVPMatrixHandle;
@@ -172,7 +172,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
         return mModelViewMatrix;
     }
 
-    public float[] getmViewPort()
+    public int[] getmViewPort()
     {
         return mViewPort;
     }	

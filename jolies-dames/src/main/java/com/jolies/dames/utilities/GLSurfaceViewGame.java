@@ -22,7 +22,7 @@ public class GLSurfaceViewGame extends GLSurfaceView {
 		renderer = new RendererGameView();
 		this.setRenderer(renderer);
 		
-		touchListener = new TouchListenerSurfaceViewGame();
+		touchListener = new TouchListenerSurfaceViewGame(renderer);
 		this.setOnTouchListener(touchListener);
 	}
 
