@@ -5,6 +5,7 @@ import com.jolies.dames.utilities.RendererGameView;
 import android.graphics.PointF;
 import android.opengl.GLES10;
 import android.opengl.GLU;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,15 +44,58 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
 
         if (unprojectedNear && unprojectedFar)
         {
-            // To convert the transformed 4D vector to 3D, you must divide
-            // it by the W component
-            nearPos = convertTo3d(nearPos);
-            farPos = convertTo3d(farPos);
+            
+            
+          // Logic taken from 
+          // http://softwareprodigy.blogspot.fr/2009/08/gluunproject-for-iphone-opengl-es.html
 
-            float floorViewX = (((farPos[0] - nearPos[0]) / 9) * nearPos[2]) + nearPos[0];
-            float floorViewY = ((((farPos[1] - nearPos[1]) / 9) * nearPos[2])  + nearPos[1]) + (2f * nearPos[1]);
-        
-            Log.d("opengl", "floorViewX=" + floorViewX + ", floorViewY=" + floorViewY);
+          float cX, cY, cZ, fX, fY, fZ;
+          cX = nearPos[0]/nearPos[3];
+          cY = nearPos[1]/nearPos[3];
+          cZ = nearPos[2]/nearPos[3];
+          fX = farPos[0]/farPos[3];
+          fY = farPos[1]/farPos[3];
+          fZ = farPos[2]/farPos[3];            
+            
+          //ray
+          fX -= cX;
+          fY -= cY;
+          fZ -= cZ;
+          float rayLength = FloatMath.sqrt(cX*cX + cY*cY + cZ*cZ);
+          
+          //normalize
+          fX /= rayLength;
+          fY /= rayLength;
+          fZ /= rayLength;
+
+          //T = [planeNormal.(pointOnPlane - rayOrigin)]/planeNormal.rayDirection;
+          //pointInPlane = rayOrigin + (rayDirection * T);
+
+          float pointInPlaneX = 0;
+          float pointInPlaneY = 0;
+          float pointInPlaneZ = 0;
+          float planeNormalX = 0;
+          float planeNormalY = 1;
+          float planeNormalZ = 0;
+
+          pointInPlaneX -= cX;
+          pointInPlaneY -= cY;
+          pointInPlaneZ -= cZ;
+
+          float dot1, dot2;
+          dot1 = (planeNormalX * pointInPlaneX) + (planeNormalY * pointInPlaneY) + (planeNormalZ * pointInPlaneZ);
+          dot2 = (planeNormalX * fX) + (planeNormalY * fY) + (planeNormalZ * fZ);
+          float t = dot1/dot2;
+
+          fX *= t;
+          fY *= t;
+          fZ *= t;
+          
+          float pointTouchedX = fX + cX;
+          float pointTouchedY = fY + cY;
+          float pointTouchedZ = fZ + cZ;          
+          
+          Log.d("opengl", "x=" + pointTouchedX + " y=" + pointTouchedY + ", z=" + pointTouchedZ);
         }
                 
         return true;
@@ -61,14 +105,4 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
     {
         this.listener = listener;
     }    
-    
-    private float[] convertTo3d(float[] vector) {
-        float[] result = new float[4];
-
-        for (int index = 0; index < vector.length; index++) {
-            result[index] = vector[index] / vector[3];
-        }
-
-        return result;
-    }
 }
