@@ -49,11 +49,9 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	
 	/** This will be used to pass in model color information. */
 	private int mColorHandle;	
-	
-	private Slot slotToSelect;
 
-    private GLBoard board;
-	
+	private GLBoard board;
+    
 	/**
 	 * Initialize the model data.
 	 */
@@ -153,7 +151,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		final float far = 10.0f;
 		
 		final float zoomFactor = 0.6f;
-		
+
 		Matrix.frustumM(mProjectionMatrix, 0, left*zoomFactor, right*zoomFactor, bottom*zoomFactor, top*zoomFactor, near, far);
 	}	
 
@@ -198,5 +196,10 @@ public class RendererGameView implements GLSurfaceView.Renderer
     public void selectSlot(Slot slot)
     {
         this.board.setSlotSelected(slot);
+    }
+    
+    public void highLightSlots(Slot[] slots)
+    {
+        this.board.setSlotsToHighLight(slots);
     }
 }

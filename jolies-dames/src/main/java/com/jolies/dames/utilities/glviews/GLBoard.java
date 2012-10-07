@@ -12,7 +12,7 @@ public class GLBoard extends GLView{
 	private GLPiece glPiece;
 	
 	private Slot slotSelected = null;
-	private Slot[] slotsToHighLight;
+	private Slot[] slotsToHighLight = {};
 	
 	/**
 	 * Top Left position of the board. The board will be parallel to the XZ-plane.
@@ -90,6 +90,29 @@ public class GLBoard extends GLView{
         
         this.setGLSlotColor(slotSelected, SlotColor.BLUE);
         this.slotSelected = slotSelected;
+    }
+
+    /**
+     * Sets the slots to Highlight to the passed slotsToHighLight on the grid and
+     * sets the previous highlighted slots' colors to their respective default ones.
+     * 
+     * @param slotsToHighLight the slotsToHighLight to set
+     */
+    public void setSlotsToHighLight(Slot[] slotsToHighLight)
+    {
+        if (this.slotsToHighLight.length > 0)
+        {
+            for(Slot slot : this.slotsToHighLight)
+            {
+                this.setGLSlotColor(slot, defaultColor(slot));
+            }
+        }
+        
+        this.slotsToHighLight = slotsToHighLight;
+        for(Slot slot : this.slotsToHighLight)
+        {
+            this.setGLSlotColor(slot, SlotColor.GREEN);
+        }
     }
 
     /**
