@@ -4,6 +4,8 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import com.jolies.dames.utilities.glviews.GLBoard;
+import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
+import com.jolies.dames.utilities.model.Slot;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -47,8 +49,10 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	
 	/** This will be used to pass in model color information. */
 	private int mColorHandle;	
-				
-	private GLBoard board;
+	
+	private Slot slotToSelect;
+
+    private GLBoard board;
 	
 	/**
 	 * Initialize the model data.
@@ -184,4 +188,15 @@ public class RendererGameView implements GLSurfaceView.Renderer
     {
         return board;
     }	
+    
+    /**
+     * Select the slot in the grid and color it with the
+     * slot selection color.
+     * 
+     * @param slotToSelect the slot to select
+     */
+    public void selectSlot(Slot slot)
+    {
+        this.board.setSlotSelected(slot);
+    }
 }

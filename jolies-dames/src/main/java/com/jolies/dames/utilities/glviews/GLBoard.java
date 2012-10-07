@@ -4,12 +4,15 @@ import android.graphics.RectF;
 
 import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.CheckerGame;
+import com.jolies.dames.utilities.model.Slot;
 
 public class GLBoard extends GLView{
 			
 	private GLSlot[][] glSlots;
-	
 	private GLPiece glPiece;
+	
+	private Slot slotSelected = null;
+	private Slot[] slotsToHighLight;
 	
 	/**
 	 * Top Left position of the board. The board will be parallel to the XZ-plane.
@@ -45,7 +48,7 @@ public class GLBoard extends GLView{
 						topLeft[1],
 						topLeft[2]+ (CheckerGame.GRID_SIZE - j-1) * slotLength
 				};
-				glSlots[i][j] = new GLSlot(slotTopLeftData, slotLength, (i + j) % 2 == 0 ? SlotColor.BROWN : SlotColor.BEIGE);
+				glSlots[i][j] = new GLSlot(slotTopLeftData, slotLength, defaultColor(i, j));
 			}	
 		}
 		
@@ -59,7 +62,6 @@ public class GLBoard extends GLView{
 				topLeft[1],
 				topLeft[2]+ slotLength/2f
 		};		
-		
 		glPiece = new GLPiece(pieceTopCenterData, pieceBottomCenterData, slotLength/2f, GLPiece.PieceColor.RED);
 	}
 
@@ -75,6 +77,48 @@ public class GLBoard extends GLView{
 		}
 		glPiece.draw(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
    }
+	
+	/**
+     * @param slotSelected the slotSelected to set
+     */
+    public void setSlotSelected(Slot slotSelected)
+    {
+        if(this.slotSelected != null)
+        {
+            this.setGLSlotColor(this.slotSelected, defaultColor(this.slotSelected));
+        }
+        
+        this.setGLSlotColor(slotSelected, SlotColor.BLUE);
+        this.slotSelected = slotSelected;
+    }
+
+    /**
+	 * Sets the color of the passed slot on the grid to the passed color.
+	 * 
+	 * @param slot the slot.
+	 * @param color the color to set the slot to.
+	 */
+	public void setGLSlotColor(Slot slot, SlotColor color)
+	{
+	    this.setGLSlotColor(slot.x, slot.y, color);
+	}
+	
+	/**
+	 * Sets the slot at position (x, y) to the passed color
+	 * 
+	 * @param x
+	 * @param y
+	 * @param color the color to set the slot to.
+	 */
+	public void setGLSlotColor(int x, int y, SlotColor color)
+	{
+        float[] slotTopLeftData = {
+                topLeft[0]+ x * this.getSlotLength(),
+                topLeft[1],
+                topLeft[2]+ (CheckerGame.GRID_SIZE - y-1) * this.getSlotLength()
+        };
+	    this.glSlots[x][y] = new GLSlot(slotTopLeftData, this.getSlotLength(), color);
+	}
 	
 	/**
      * @return the Top Left position of the board. The board will be parallel to the XZ-plane.
@@ -107,5 +151,24 @@ public class GLBoard extends GLView{
 	{
 	    return this.glSlots[x][y].getRectF();
 	}
-	
+
+	/**
+	 * @param slot
+	 * @return the default color of the passed slot
+	 */
+    private static SlotColor defaultColor(Slot slot)
+    {
+        return defaultColor(slot.x, slot.y);
+    }
+		
+    /**
+     * @param x
+     * @param y
+     * @return the default color of the slot at position (x, y)
+     */
+    private static SlotColor defaultColor(int x, int y)
+    {
+        return (x + y) % 2 == 0 ? SlotColor.BROWN : SlotColor.BEIGE;
+    }
+
 }

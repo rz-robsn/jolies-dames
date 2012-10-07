@@ -3,6 +3,7 @@ package com.jolies.dames.utilities.glviews;
 import com.jolies.dames.utilities.ListenerBoard;
 import com.jolies.dames.utilities.RendererGameView;
 import com.jolies.dames.utilities.model.CheckerGame;
+import com.jolies.dames.utilities.model.Slot;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -98,8 +99,6 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
           float pointTouchedY = fY + cY;
           float pointTouchedZ = fZ + cZ;          
           
-          Log.d("opengl", "x=" + pointTouchedX + " y=" + pointTouchedY + ", z=" + pointTouchedZ);
-          
           // Determine what slot of the board has been touched, if any          
           RectF boardRect = renderer.getBoard().getRectF();
           if(boardRect.contains(pointTouchedX, pointTouchedZ))
@@ -110,6 +109,7 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
               float zWidthRatio = (Math.abs(pointTouchedZ - boardRect.bottom))/boardRect.height();
               int yGridTouched = (int) FloatMath.floor(zWidthRatio/renderer.getBoard().getSlotLength());
               
+              this.renderer.selectSlot(new Slot(xGridTouched, yGridTouched));
               this.listener.onSlotSelected(xGridTouched, yGridTouched);
           }
         }
