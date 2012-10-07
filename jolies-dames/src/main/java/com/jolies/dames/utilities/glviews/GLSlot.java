@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import android.graphics.RectF;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
@@ -52,6 +53,16 @@ public class GLSlot extends GLView{
 		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
 	};
 	
+	/**
+	 * Top-left coordinate of the slot
+	 */
+	private float[] topLeftPosition;
+	
+	/**
+	 * Width and height of the square slot to draw
+	 */
+	private float length;
+	
 	/** Top left corner of the slot. */	
 	private FloatBuffer position;
 	
@@ -62,12 +73,15 @@ public class GLSlot extends GLView{
 	 * Contructor for GLSLot. The Slot drawn will always be parrallel to the XZ-Plane.
 	 * 
 	 * @param topLeftPosition top-left coordinate of the slot to draw
-	 * @param length dimension of the square slot to draw
+	 * @param length width and height of the square slot to draw
 	 * @param color color of the slot.
 	 */
 	public GLSlot(float[] topLeftPosition, float length, SlotColor color) {
 		super();
 
+		this.topLeftPosition = topLeftPosition;
+		this.length = length;
+		
 		float[] positionData = {
 				
 				// X, Y, Z
@@ -136,5 +150,12 @@ public class GLSlot extends GLView{
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
      }
 	
-	
+	/**
+     * @return the RectF object containing the board's coordinate
+     */
+    public RectF getRectF()
+    {
+        return new RectF(topLeftPosition[0], topLeftPosition[2], topLeftPosition[0] + length, topLeftPosition[2] + length);
+    }
+
 }

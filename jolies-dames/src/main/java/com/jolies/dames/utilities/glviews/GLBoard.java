@@ -1,5 +1,7 @@
 package com.jolies.dames.utilities.glviews;
 
+import android.graphics.RectF;
+
 import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.CheckerGame;
 
@@ -10,18 +12,29 @@ public class GLBoard extends GLView{
 	private GLPiece glPiece;
 	
 	/**
+	 * Top Left position of the board. The board will be parallel to the XZ-plane.
+	 */
+	private float[] topLeft;
+	
+	/**
+	 * The width and weight values of the square board.
+	 */
+	private float length;
+	
+	/**
 	 * Constructor
 	 * 
 	 * @param topLeft Top Left position of the board. The board will be parallel to the XZ-plane.
-	 * @param length the Dimension of the square board.
+	 * @param length the width and weight values of the square board.
 	 */
 	public GLBoard(float[] topLeft, float length) {
 		
 		/* Creating the GLSlots */
 		glSlots = new GLSlot[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
 		
-		// the dimension of an individual slot;
-		float slotLength = length/CheckerGame.GRID_SIZE;
+		this.topLeft = topLeft;
+		this.length = length; 
+		float slotLength = this.getSlotLength();
 		
 		for (int i = 0; i < CheckerGame.GRID_SIZE; i++)
 		{
@@ -62,4 +75,37 @@ public class GLBoard extends GLView{
 		}
 		glPiece.draw(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
    }
+	
+	/**
+     * @return the Top Left position of the board. The board will be parallel to the XZ-plane.
+     */
+    public float[] getTopLeft()
+    {
+        return topLeft;
+    }
+
+	/**
+	 * @return the width and height of an individual square slot.
+	 */
+	public float getSlotLength()
+	{
+	    return this.length/CheckerGame.GRID_SIZE;
+	}
+	
+	/**
+	 * @return the RectF object containing the board's coordinate
+	 */
+	public RectF getRectF()
+	{
+	    return new RectF(topLeft[0], topLeft[2], topLeft[0] + length, topLeft[2] + length);
+	}
+	
+    /**
+     * @return returns the RectF object of the GSlot at the grid position (x, y)
+     */
+	public RectF getRectFForPiece(int x, int y)
+	{
+	    return this.glSlots[x][y].getRectF();
+	}
+	
 }

@@ -1,8 +1,10 @@
 package com.jolies.dames.utilities.glviews;
 
 import com.jolies.dames.utilities.RendererGameView;
+import com.jolies.dames.utilities.model.CheckerGame;
 
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.opengl.GLES10;
 import android.opengl.GLU;
 import android.util.FloatMath;
@@ -29,6 +31,8 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
     @Override
     public boolean onTouch(View v, MotionEvent event)
     {
+        /* Unproject the point : convert the motion event's screen coordinates
+           into an object's world coordinate via ray tracing.*/        
         float x = event.getX();
         float y = renderer.getmViewPort()[3] - event.getY();
         
@@ -43,9 +47,7 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
             renderer.getmViewPort(), 0, farPos, 0) == GLES10.GL_TRUE);
 
         if (unprojectedNear && unprojectedFar)
-        {
-            
-            
+        {    
           // Logic taken from 
           // http://softwareprodigy.blogspot.fr/2009/08/gluunproject-for-iphone-opengl-es.html
 
@@ -96,6 +98,19 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
           float pointTouchedZ = fZ + cZ;          
           
           Log.d("opengl", "x=" + pointTouchedX + " y=" + pointTouchedY + ", z=" + pointTouchedZ);
+          
+          // Determine what slot of the board has been touched, if any          
+          RectF boardRect = renderer.getBoard().getRectF();
+          if(boardRect.contains(pointTouchedX, pointTouchedZ))
+          {
+              float xWidthRatio = (Math.abs(pointTouchedX - boardRect.left))/boardRect.width();
+              int xGridTouched = (int) FloatMath.floor(xWidthRatio/renderer.getBoard().getSlotLength());
+
+              float zWidthRatio = (Math.abs(pointTouchedZ - boardRect.bottom))/boardRect.height();
+              int yGridTouched = (int) FloatMath.floor(zWidthRatio/renderer.getBoard().getSlotLength());
+              
+              Log.d("gridTouched", "x=" + xGridTouched + " y=" + yGridTouched);
+          }
         }
                 
         return true;
@@ -104,5 +119,5 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
     public void setListener(BoardListener listener)
     {
         this.listener = listener;
-    }    
+    }
 }

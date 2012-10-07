@@ -175,5 +175,13 @@ public class RendererGameView implements GLSurfaceView.Renderer
     public int[] getmViewPort()
     {
         return mViewPort;
+    }
+
+    /**
+     * @return the GLBoard object that is rendered.
+     */
+    public GLBoard getBoard()
+    {
+        return board;
     }	
 }
