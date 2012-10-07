@@ -1,6 +1,6 @@
-package com.jolies.dames.utilities.glviews;
+package com.jolies.dames.utilities;
 
-public interface BoardListener
+public interface ListenerBoard
 {
     /**
      * Executes when the user(s) has selected 
@@ -10,9 +10,4 @@ public interface BoardListener
      * @param y
      */
     public void onSlotSelected(int x, int y);
-
-    /**
-     * Executes when the user(s) requests a new game.
-     */
-    public void onNewGameRequested();
 }

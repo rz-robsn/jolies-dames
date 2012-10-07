@@ -1,5 +1,6 @@
 package com.jolies.dames.utilities.glviews;
 
+import com.jolies.dames.utilities.ListenerBoard;
 import com.jolies.dames.utilities.RendererGameView;
 import com.jolies.dames.utilities.model.CheckerGame;
 
@@ -19,7 +20,7 @@ import android.view.View.OnTouchListener;
  */
 public class TouchListenerSurfaceViewGame implements OnTouchListener
 {
-    private BoardListener listener;
+    private ListenerBoard listener;
     private RendererGameView renderer;
     
     public TouchListenerSurfaceViewGame(RendererGameView renderer)
@@ -109,14 +110,14 @@ public class TouchListenerSurfaceViewGame implements OnTouchListener
               float zWidthRatio = (Math.abs(pointTouchedZ - boardRect.bottom))/boardRect.height();
               int yGridTouched = (int) FloatMath.floor(zWidthRatio/renderer.getBoard().getSlotLength());
               
-              Log.d("gridTouched", "x=" + xGridTouched + " y=" + yGridTouched);
+              this.listener.onSlotSelected(xGridTouched, yGridTouched);
           }
         }
                 
         return true;
     }
     
-    public void setListener(BoardListener listener)
+    public void setListener(ListenerBoard listener)
     {
         this.listener = listener;
     }

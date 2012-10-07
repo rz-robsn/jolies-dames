@@ -3,11 +3,13 @@ package com.jolies.dames.utilities.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jolies.dames.utilities.ListenerGame;
+
 public class CheckerGame
 {
     public static final int GRID_SIZE = 8;
     
-    private GameListener listener;
+    private ListenerGame listener;
     
     /**
      * If the current player's last move was a jump, this attribute will contain
@@ -30,7 +32,7 @@ public class CheckerGame
      * @param listener
      *            The listener
      */
-    public void setListener(GameListener listener)
+    public void setListener(ListenerGame listener)
     {
     }
     

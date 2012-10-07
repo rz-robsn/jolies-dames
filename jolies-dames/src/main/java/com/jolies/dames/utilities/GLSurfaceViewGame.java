@@ -1,6 +1,5 @@
 package com.jolies.dames.utilities;
 
-import com.jolies.dames.utilities.glviews.BoardListener;
 import com.jolies.dames.utilities.glviews.TouchListenerSurfaceViewGame;
 
 import android.content.Context;
@@ -26,7 +25,7 @@ public class GLSurfaceViewGame extends GLSurfaceView {
 		this.setOnTouchListener(touchListener);
 	}
 
-    public void setListener(BoardListener listener)
+    public void setListenerBoard(ListenerBoard listener)
     {
         this.touchListener.setListener(listener);
     }

@@ -15,7 +15,7 @@
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name" >
-        <activity android:name=".HelloAndroidActivity" >
+        <activity android:name=".ActivityHelloAndroid" >
         </activity>
         <activity android:name=".ActivityPlayGame" >
             <intent-filter>

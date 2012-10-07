@@ -3,9 +3,9 @@ package com.jolies.dames.utilities;
 import android.opengl.GLES20;
 import android.util.Log;
 
-public class RendererGameViewHelper {
+public class HelperRendererGameView {
 
-	private static final String TAG = RendererGameViewHelper.class.getSimpleName();
+	private static final String TAG = HelperRendererGameView.class.getSimpleName();
 	
 	/** 
 	 * Helper function to compile a shader.

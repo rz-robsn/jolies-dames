@@ -9,14 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.jolies.dames.utilities.ListenerGame;
 import com.jolies.dames.utilities.model.CheckerGame;
-import com.jolies.dames.utilities.model.GameListener;
 import com.xtremelabs.robolectric.RobolectricTestRunner;
 
 @RunWith(RobolectricTestRunner.class)
 public class CheckerGameTest
 {
-    GameListener mockListener;
+    ListenerGame mockListener;
     CheckerGame game;
     
     @Before

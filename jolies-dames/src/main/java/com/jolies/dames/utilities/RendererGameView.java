@@ -112,14 +112,14 @@ public class RendererGameView implements GLSurfaceView.Renderer
 		  + "}                              \n";												
 		
 		// Load in the vertex shader.
-		int vertexShaderHandle = RendererGameViewHelper.compileShader(GLES20.GL_VERTEX_SHADER, vertexShader);
+		int vertexShaderHandle = HelperRendererGameView.compileShader(GLES20.GL_VERTEX_SHADER, vertexShader);
 		
 		// Load in the fragment shader shader.
-		int fragmentShaderHandle = RendererGameViewHelper.compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader);
+		int fragmentShaderHandle = HelperRendererGameView.compileShader(GLES20.GL_FRAGMENT_SHADER, fragmentShader);
 				
 		// Create a program object and store the handle to it.
 		String[] attributes = {"a_Position", "a_Color"};
-		int programHandle = RendererGameViewHelper.createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle, attributes);
+		int programHandle = HelperRendererGameView.createAndLinkProgram(vertexShaderHandle, fragmentShaderHandle, attributes);
 		        
         // Set program handles. These will later be used to pass in values to the program.
         mMVPMatrixHandle = GLES20.glGetUniformLocation(programHandle, "u_MVPMatrix");        

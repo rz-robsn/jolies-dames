@@ -1,6 +1,9 @@
-package com.jolies.dames.utilities.model;
+package com.jolies.dames.utilities;
 
-public interface GameListener
+import com.jolies.dames.utilities.model.GamePiece;
+import com.jolies.dames.utilities.model.Player;
+
+public interface ListenerGame
 {
     
     /**
