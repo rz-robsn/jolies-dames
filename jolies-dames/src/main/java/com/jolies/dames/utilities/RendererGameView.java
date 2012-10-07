@@ -67,7 +67,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
 	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
 	{
 		// Set the background clear color to gray.
-		GLES20.glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.1f);
 	
 		// Position the eye behind the origin.
 		final float eyeX = 0.0f;
