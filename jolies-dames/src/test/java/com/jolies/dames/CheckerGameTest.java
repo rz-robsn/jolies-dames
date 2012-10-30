@@ -86,8 +86,8 @@ public class CheckerGameTest
         /* Making Illegal Moves */
         game.movePiece(4, 4, 3, 3); // Moving Red Piece
         
-        verify(mockListener).onPieceMoved(3, 3, 4, 4, GamePiece.RED_PIECE);
-        verify(mockListener).onIllegalMove(4, 4, 5, 6, GamePiece.RED_PIECE);
+        verify(mockListener).onPieceMoved(3, 5, 4, 4, GamePiece.RED_PIECE);
+        verify(mockListener).onIllegalMove(4, 4, 3, 3, GamePiece.RED_PIECE);
     }
     
     @Test
@@ -97,7 +97,7 @@ public class CheckerGameTest
         
         game.movePiece(3, 5, 2, 6); // Moving Red Piece Backwards
         
-        verify(mockListener).onIllegalMove(3, 5, 2, 1, GamePiece.RED_PIECE);
+        verify(mockListener).onIllegalMove(3, 5, 2, 6, GamePiece.RED_PIECE);
     }
 
     @Test
