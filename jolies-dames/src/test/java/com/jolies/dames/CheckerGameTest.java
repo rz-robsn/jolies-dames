@@ -1,7 +1,5 @@
 package com.jolies.dames;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static com.jolies.dames.matchers.IsAnyGamePiece.isAnyGamePiece;
 
 import java.util.ArrayList;
@@ -11,8 +9,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-
 import com.jolies.dames.utilities.ListenerGame;
 import com.jolies.dames.utilities.model.CheckerGame;
 import com.jolies.dames.utilities.model.GamePiece;
@@ -95,6 +91,35 @@ public class CheckerGameTest
         
         verify(mockListener).onIllegalMove(3, 5, 2, 1, GamePiece.RED_PIECE);
     }
+
+    @Test
+    public void shouldHaveOnlyJumpingWhitePieceAsLegalMove() throws Exception
+    {   
+        // Setting up a piece that can only be jumped by red piece at position (7, 5)
+        this.grid.get(5).set(5, GamePiece.EMPTY_SLOT); // set grid[5][5] = EMPTY_SLOT. 
+        this.grid.get(4).set(6, GamePiece.WHITE_PIECE); // set grid[6][4] = WHITE_PIECE.
+        
+        // Trying to move red pieces other than (7,5)
+        game.movePiece(1, 5, 0, 4);
+        game.movePiece(6, 6, 5, 5);
+        game.movePiece(3, 5, 4, 4);
+        
+        // Trying to move some white pieces
+        game.movePiece(0, 2, 1, 3);
+        game.movePiece(6, 2, 5, 3);
+        
+        // Jumping the Piece
+        game.movePiece(7, 5, 5, 3);
+        
+        verify(mockListener).onIllegalMove(1, 5, 0, 4, GamePiece.RED_PIECE);
+        verify(mockListener).onIllegalMove(6, 6, 5, 5, GamePiece.RED_PIECE);
+        verify(mockListener).onIllegalMove(3, 5, 4, 4, GamePiece.RED_PIECE);
+        verify(mockListener).onIllegalMove(0, 2, 1, 3, GamePiece.WHITE_PIECE);
+        verify(mockListener).onIllegalMove(6, 2, 5, 3, GamePiece.WHITE_PIECE);
+        
+        verify(mockListener).onPieceEaten(6, 4, GamePiece.WHITE_PIECE);
+        verify(mockListener).onPieceMoved(7, 5, 5, 3, GamePiece.RED_PIECE);        
+    }
     
     @Test
     public void shouldCallListenerOnPieceBecameKingWhenPieceReachesEndOfBoard() throws Exception
@@ -119,7 +144,7 @@ public class CheckerGameTest
     private void printGame() throws Exception
     {
         System.out.println("Current Game :");
-        for (int i = 7; i >= 0; i--)
+        for (int i = 7; i >=  0; i--)
         {
             System.out.printf("%d ", i);
             for (int j = 0; j < 0; j++)
