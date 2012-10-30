@@ -41,6 +41,20 @@ public class CheckerGameTest
         game.newGame();
         verify(mockListener).onNewGame();
     }
+
+    @Test
+    public void shouldHaveTheCorrectPieceInitalPositionsOnNewGame() throws Exception
+    {
+        game.newGame();
+        
+        // Checking some initial piece positions
+        assertThat(grid.get(0).get(0) ,equalTo(GamePiece.WHITE_PIECE));
+        assertThat(grid.get(7).get(7) ,equalTo(GamePiece.RED_PIECE));
+        assertThat(grid.get(4).get(4) ,equalTo(GamePiece.EMPTY_SLOT));
+        assertThat(grid.get(6).get(4) ,equalTo(GamePiece.RED_PIECE));
+        assertThat(grid.get(1).get(3) ,equalTo(GamePiece.WHITE_PIECE));
+        assertThat(grid.get(3).get(1) ,equalTo(GamePiece.EMPTY_SLOT));
+     }
     
     @Test
     public void shouldCallListenerOnIllegalMove() throws Exception
@@ -64,7 +78,7 @@ public class CheckerGameTest
     }
 
     @Test
-    public void shouldCallListenerOnMovingRedPieceAtWhiteTurn() throws Exception
+    public void shouldCallListenerIllegalMoveOnMovingRedPieceAtWhiteTurn() throws Exception
     {        
         // Moving legally Red Piece
         game.movePiece(3, 5, 4, 4);

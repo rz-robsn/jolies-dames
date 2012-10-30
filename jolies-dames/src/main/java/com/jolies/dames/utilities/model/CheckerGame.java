@@ -24,6 +24,13 @@ public class CheckerGame
     
     public CheckerGame()
     {
+        // create new grid
+        grid = new ArrayList<ArrayList<GamePiece>>(GRID_SIZE);
+        for (int i = 0 ; i < GRID_SIZE ; i++)
+        {
+            grid.add(new ArrayList<GamePiece>(GRID_SIZE));
+        }
+        this.jumpingPiece = null;
     }
     
     /**
@@ -34,6 +41,7 @@ public class CheckerGame
      */
     public void setListener(ListenerGame listener)
     {
+        this.listener = listener;
     }
     
     /**
@@ -41,6 +49,22 @@ public class CheckerGame
      */
     public void newGame()
     {
+        // Filling the grid with pieces and empty slots
+        this.initPiecesWithFirstSlotContainingPiece(grid.get(0), GamePiece.WHITE_PIECE);
+        this.initPiecesWithFirstSlotEmpty(grid.get(1), GamePiece.WHITE_PIECE);
+        this.initPiecesWithFirstSlotContainingPiece(grid.get(2), GamePiece.WHITE_PIECE);
+        this.initRowWithEmptySlot(grid.get(3));
+        this.initRowWithEmptySlot(grid.get(4));
+        this.initPiecesWithFirstSlotEmpty(grid.get(5), GamePiece.RED_PIECE);
+        this.initPiecesWithFirstSlotContainingPiece(grid.get(6), GamePiece.RED_PIECE);
+        this.initPiecesWithFirstSlotEmpty(grid.get(7), GamePiece.RED_PIECE);
+
+        this.currentPlayer = Player.PLAYER_RED;
+        this.gameIsOver = false;
+
+        this.jumpingPiece = null;
+
+        this.listener.onNewGame();
     }
     
     /**
@@ -73,7 +97,7 @@ public class CheckerGame
     
     public ArrayList<ArrayList<GamePiece>> getGrid()
     {
-        return null;
+        return this.grid;
     }
     
     /**
@@ -93,15 +117,27 @@ public class CheckerGame
     private void initPiecesWithFirstSlotEmpty(ArrayList<GamePiece> gridRow,
             GamePiece piece)
     {
+        for (int i = 0 ; i < GRID_SIZE ; i++)
+        {
+            gridRow.add(i, (i % 2 == 0) ? GamePiece.EMPTY_SLOT : piece) ;
+        }
     }
     
     private void initPiecesWithFirstSlotContainingPiece(
             ArrayList<GamePiece> gridRow, GamePiece piece)
     {
+        for (int i = 0 ; i < GRID_SIZE ; i++)
+        {
+            gridRow.add(i, (i % 2 == 1) ? GamePiece.EMPTY_SLOT : piece) ;
+        }
     }
     
     private void initRowWithEmptySlot(ArrayList<GamePiece> gridRow)
     {
+        for (int i = 0 ; i < GRID_SIZE ; i++)
+        {
+            gridRow.add(i, GamePiece.EMPTY_SLOT) ;
+        }
     }
     
     private void switchTurn()
