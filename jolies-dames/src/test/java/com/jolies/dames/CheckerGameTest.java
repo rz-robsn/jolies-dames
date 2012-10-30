@@ -4,6 +4,8 @@ import static com.jolies.dames.matchers.IsAnyGamePiece.isAnyGamePiece;
 
 import java.util.ArrayList;
 import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 import org.junit.After;
 import org.junit.Before;
@@ -69,14 +71,6 @@ public class CheckerGameTest
         
         /* Making Illegal Moves */
         game.movePiece(4, 4, 3, 3); // Moving Red Piece
-                        
-        // Assert size of list of moves available for some other red piece is
-        // equal to 2
-        
-        // move Red Piece
-        
-        // Assert that only move available is eating red piece.
-        // Eat Red Piece
         
         verify(mockListener).onPieceMoved(3, 3, 4, 4, GamePiece.RED_PIECE);
         verify(mockListener).onIllegalMove(4, 4, 5, 6, GamePiece.RED_PIECE);
@@ -133,6 +127,19 @@ public class CheckerGameTest
         
         verify(mockListener).onPieceMoved(2, 1, 1, 0, GamePiece.RED_PIECE);
         verify(mockListener).onPieceBecameKing(1, 0, GamePiece.RED_KING_PIECE);
+    }
+
+    @Test
+    public void shouldAllowKingPiecesToMoveBackWards() throws Exception
+    {
+        this.grid.get(2).set(3, GamePiece.RED_KING_PIECE); // set grid[3][2] = KING_RED_PIECE. 
+
+        assertThat(game.getAvailableMovesForPiece(3, 2).size(), equalTo(4));
+        
+        // Moving King Piece
+        game.movePiece(3, 2, 2, 3);
+        
+        verify(mockListener).onPieceMoved(3, 2, 2, 3, GamePiece.RED_KING_PIECE);
     }
     
     @After
