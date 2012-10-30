@@ -4,7 +4,6 @@ import com.jolies.dames.utilities.GLSurfaceViewGame;
 import com.jolies.dames.utilities.ListenerBoard;
 
 import android.app.Activity;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
 public class ActivityPlayGame extends Activity implements ListenerBoard

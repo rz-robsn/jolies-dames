@@ -4,7 +4,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import com.jolies.dames.utilities.glviews.GLBoard;
-import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.Slot;
 
 import android.opengl.GLES20;

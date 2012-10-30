@@ -5,7 +5,6 @@ import com.jolies.dames.utilities.model.Slot;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.view.MotionEvent;
 
 public class GLSurfaceViewGame extends GLSurfaceView
 {
