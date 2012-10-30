@@ -72,9 +72,9 @@ public class CheckerGameTest
     public void shouldCallListenerOnRedPieceMoved() throws Exception
     {        
         // Moving legally Red Piece
-        game.movePiece(3, 3, 4, 4);
+        game.movePiece(5, 5, 4, 4);
         
-        verify(mockListener).onPieceMoved(3, 3, 4, 4, GamePiece.RED_PIECE);
+        verify(mockListener).onPieceMoved(5, 5, 4, 4, GamePiece.RED_PIECE);
     }
 
     @Test
