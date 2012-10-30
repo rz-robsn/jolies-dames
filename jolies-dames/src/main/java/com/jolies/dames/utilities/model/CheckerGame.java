@@ -1,6 +1,7 @@
 package com.jolies.dames.utilities.model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.jolies.dames.utilities.ListenerGame;
@@ -8,6 +9,14 @@ import com.jolies.dames.utilities.ListenerGame;
 public class CheckerGame
 {
     public static final int GRID_SIZE = 8;
+    
+    private static class CheckerGameException extends Exception
+    {
+        public CheckerGameException(String message)
+        {
+            super(message);
+        }
+    }
     
     private ListenerGame listener;
     
@@ -78,6 +87,72 @@ public class CheckerGame
      */
     public void movePiece(int xStart, int yStart, int xEnd, int yEnd)
     {
+        GamePiece movingPiece = this.getGamePieceAt(xStart, yStart);
+        if (!this.moveIsLegal(xStart, yStart, xEnd, yEnd))
+        {
+            this.listener.onIllegalMove(xStart, yStart, xEnd, yEnd, movingPiece);
+        }
+        else
+        {
+            // move the piece
+            this.setGamePieceAt(xStart, yStart, GamePiece.EMPTY_SLOT);
+            this.setGamePieceAt(xEnd, yEnd, movingPiece);
+
+            // if the moving piece is jumping over an enemy piece.
+            if (Math.abs(yEnd - yStart) == 2)
+            {
+                // eat The piece in between (xStart, yStart) and (xEnd, yEnd)
+                int xEnemy = xStart + (xEnd - xStart)/2; 
+                int yEnemy = yStart + (yEnd - yStart)/2;
+
+                GamePiece eatenPiece = this.getGamePieceAt(xEnemy, yEnemy);
+                this.setGamePieceAt(xEnemy, yEnemy, GamePiece.EMPTY_SLOT);
+                this.listener.onPieceEaten(xEnemy, yEnemy, eatenPiece);
+
+                this.jumpingPiece = new Slot(xEnd, yEnd);  
+            }
+            else
+            {
+                this.jumpingPiece = null;
+            } 
+
+            this.listener.onPieceMoved(xStart, yStart, xEnd, yEnd, movingPiece);
+
+            // Promote to king if piece reached the end.
+            try
+            {
+                if (this.pieceHasReachedOppositeEnd(xEnd, yEnd))
+                {
+                    this.promotePiece(xEnd, yEnd);
+                }
+            }
+            catch (CheckerGameException ignored)
+            {
+                ignored.printStackTrace();
+            }
+
+            // If both players can't move any pieces
+            if( !this.playerCanStillMoveAPiece(this.currentPlayer)
+                && !this.playerCanStillMoveAPiece(getOpponent(currentPlayer)))
+            {
+                this.gameIsOver = true;
+                this.listener.onDraw();
+            }
+            else if (!this.playerCanStillMoveAPiece(getOpponent(currentPlayer))) // the other player cannot move
+            {
+                this.gameIsOver = true ;
+                this.listener.onPlayerWin(this.currentPlayer);
+            }
+            else if (this.jumpingPiece != null
+                    && this.pieceCanEatEnemyPiece(xEnd, yEnd, this.currentPlayer)) // the moving piece can chain jumps
+            {
+                this.listener.onPieceCanStillJump(xEnd, yEnd, movingPiece);
+            }
+            else 
+            {
+                this.switchTurn();
+            }
+        }
     }
     
     /**
@@ -92,7 +167,7 @@ public class CheckerGame
      */
     public List<Slot> getAvailableMovesForPiece(int x, int y)
     {
-        return null;
+        return this.getAvailableMovesForPiece(x, y, this.currentPlayer);
     }
     
     public ArrayList<ArrayList<GamePiece>> getGrid()
@@ -111,7 +186,64 @@ public class CheckerGame
      */
     private List<Slot> getAvailableMovesForPiece(int x, int y, Player player)
     {
-        return null;
+        if(this.gameIsOver)
+        {
+            return new LinkedList<Slot>();
+        }
+        if(this.getGamePieceAt(x,y) == GamePiece.EMPTY_SLOT)
+        {
+            return new LinkedList<Slot>();
+        }   
+        else if (this.jumpingPiece != null
+                && pieceBelongsToPlayer(getGamePieceAt(jumpingPiece.x, jumpingPiece.y), player)
+                && (this.jumpingPiece.x != x || this.jumpingPiece.y != y))// there is another piece that is chain Jumping
+        {
+            return new LinkedList<Slot>();        
+        }
+        else if(!pieceBelongsToPlayer(getGamePieceAt(x, y), player))
+        {
+            return new LinkedList<Slot>(); 
+        }   
+        else if (!this.pieceCanEatEnemyPiece(x, y))
+        {
+            // check if there exists another piece that can eat an enemy piece
+            // and return empty list if it does (because the player must move that other piece)  
+            for (int i = 0; i < GRID_SIZE; i++)
+            {
+                for (int j = 0; j < GRID_SIZE; j++)
+                {
+                    try
+                    {
+                        if( !(i == x && j == y)
+                            && this.pieceCanEatEnemyPiece(i,j)
+                            && getPlayerOwningPiece(this.getGamePieceAt(x,y)) == getPlayerOwningPiece(this.getGamePieceAt(i,j)))
+                        {
+                            return new LinkedList<Slot>();
+                        }
+                    }
+                    catch (CheckerGameException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            
+            // return all empty slots the piece can move to.
+            List<Slot> moves = new LinkedList<Slot>();
+            try
+            {
+                this.addAvailableMovesToEmptySlots(x, y, moves);
+            }
+            catch (CheckerGameException e)
+            {
+                e.printStackTrace();
+            }
+            return moves;
+        }
+        else 
+        {
+            return this.getAllMovesThatEatEnemy(x, y);
+        }
     }
     
     private void initPiecesWithFirstSlotEmpty(ArrayList<GamePiece> gridRow,
@@ -142,82 +274,239 @@ public class CheckerGame
     
     private void switchTurn()
     {
+        this.currentPlayer = (currentPlayer == Player.PLAYER_RED) ? Player.PLAYER_WHITE : Player.PLAYER_RED;
+        this.jumpingPiece = null;
     }
     
     private boolean moveIsLegal(int xStart, int yStart, int xEnd, int yEnd)
     {
+        List<Slot> moves = this.getAvailableMovesForPiece(xStart, yStart);        
+        for (Slot move : moves)
+        {
+            if (move.x == xEnd && move.y == yEnd)
+            {
+                return true;
+            }
+        }
         return false;
     }
     
     private boolean pieceCanEatEnemyPiece(int x, int y, Player player)
     {
-        return false;
+        return this.getAllMovesThatEatEnemy(x,y).size() > 0;
     }
     
     private boolean pieceCanEatEnemyPiece(int x, int y)
     {
-        return false;
+        return this.pieceCanEatEnemyPiece(x, y, this.currentPlayer);
     }
     
     private boolean pieceCanEatEnemyPiece(int x, int y, int xEnemy, int yEnemy,
             int xEmptySlot, int yEmptySlot)
     {
-        return false;
+        try
+        {
+            return getPlayerOwningPiece(this.getGamePieceAt(x,y)) 
+                        != getPlayerOwningPiece(this.getGamePieceAt(xEnemy, yEnemy))
+                   && this.getGamePieceAt(xEmptySlot, yEmptySlot) == GamePiece.EMPTY_SLOT;
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            return false;
+        }
+        catch (CheckerGameException e)
+        {
+            return false;
+        }
     }
     
     private boolean playerCanStillMoveAPiece(Player player)
     {
+        for (int i = 0; i < GRID_SIZE; i++)
+        {
+            for (int j = 0; j < GRID_SIZE; j++)
+            {
+                if (this.pieceBelongsToPlayer(i, j, player)
+                    && this.getAvailableMovesForPiece(i, j, player).size() > 0)
+                {
+                    return true;
+                }
+            }
+        }
         return false;
     }
     
     private List<Slot> getAllMovesThatEatEnemy(int x, int y)
     {
-        return null;
+        List<Slot> returnList = new LinkedList<Slot>();
+        switch(this.getGamePieceAt(x,y))
+        {
+            case RED_KING_PIECE:
+            case WHITE_KING_PIECE:
+                if(this.pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2))
+                {
+                    returnList.add(new Slot(x-2, y-2));
+                }
+                if(this.pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2))
+                {
+                    returnList.add(new Slot(x+2, y-2));
+                }
+                if(this.pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2))
+                {
+                    returnList.add(new Slot(x-2, y+2));
+                }
+                if(this.pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2))
+                {
+                    returnList.add(new Slot(x+2, y+2));
+                }
+                break;
+            case RED_PIECE:
+                if(this.pieceCanEatEnemyPiece(x, y, x-1, y-1, x-2, y-2))
+                {
+                    returnList.add(new Slot(x-2, y-2));
+                }
+                if(this.pieceCanEatEnemyPiece(x, y, x+1, y-1, x+2, y-2))
+                {
+                    returnList.add(new Slot(x+2, y-2));
+                }
+                break;
+            case WHITE_PIECE:
+                if(this.pieceCanEatEnemyPiece(x, y, x-1, y+1, x-2, y+2))
+                {
+                    returnList.add(new Slot(x-2, y+2));
+                }
+                if(this.pieceCanEatEnemyPiece(x, y, x+1, y+1, x+2, y+2))
+                {
+                    returnList.add(new Slot(x+2, y+2));
+                }
+                break;
+            case EMPTY_SLOT:
+                break;
+        }
+        return returnList;
     }
     
-    private void addAvailableMovesToEmptySlots(int x, int y, List<Slot> moves)
+    private void addAvailableMovesToEmptySlots(int x, int y, List<Slot> moves) throws CheckerGameException
     {
+        switch(this.getGamePieceAt(x,y))
+        {
+            case RED_KING_PIECE:
+            case WHITE_KING_PIECE:
+                this.pushSlotIfEmpty(x-1, y-1, moves);
+                this.pushSlotIfEmpty(x+1, y-1, moves);
+                this.pushSlotIfEmpty(x-1, y+1, moves);
+                this.pushSlotIfEmpty(x+1, y+1, moves);
+                break;
+            case WHITE_PIECE:
+                this.pushSlotIfEmpty(x-1, y+1, moves);
+                this.pushSlotIfEmpty(x+1, y+1, moves);
+                break;
+            case RED_PIECE:
+                this.pushSlotIfEmpty(x-1, y-1, moves);
+                this.pushSlotIfEmpty(x+1, y-1, moves);
+                break;
+            case EMPTY_SLOT:
+                throw new CheckerGameException("Don't call Game::addAvailableMovesToEmptySlots() on EMPTY_SLOT.");
+        }
     }
     
     private void pushSlotIfEmpty(int x, int y, List<Slot> moves)
     {
+        try
+        {
+            if(this.getGamePieceAt(x,y) == GamePiece.EMPTY_SLOT)
+            {
+                moves.add(new Slot(x,y));
+            }
+        }
+        catch (IndexOutOfBoundsException doNothing) {}
     }
     
-    private boolean pieceHasReachedOppositeEnd(int x, int y)
+    private boolean pieceHasReachedOppositeEnd(int x, int y) throws CheckerGameException
     {
-        return false;
+        switch(this.getGamePieceAt(x,y))
+        {
+            case RED_PIECE:
+            case RED_KING_PIECE:
+                return y == 0;
+
+            case WHITE_PIECE:   
+            case WHITE_KING_PIECE:
+                return y == GRID_SIZE-1;
+
+            case EMPTY_SLOT :
+            default:
+                throw new CheckerGameException("Don't call Game::pieceHasReachedOppositeEnd on EMPTY_SLOT");
+        }
     }
     
-    private void promotePiece(int x, int y)
-    {
+    private void promotePiece(int x, int y) throws CheckerGameException 
+    {   
+        switch(this.getGamePieceAt(x,y))
+        {
+            case RED_PIECE:     
+                this.setGamePieceAt(x, y, GamePiece.RED_KING_PIECE);
+                this.listener.onPieceBecameKing(x, y, GamePiece.RED_KING_PIECE);                    
+                break;
+
+            case WHITE_PIECE:
+                this.setGamePieceAt(x, y, GamePiece.WHITE_KING_PIECE);
+                this.listener.onPieceBecameKing(x, y, GamePiece.WHITE_KING_PIECE);
+
+            case RED_KING_PIECE:
+            case WHITE_KING_PIECE:
+                break;
+
+            case EMPTY_SLOT :
+                throw new CheckerGameException("Don't call Game::promotePiece on EMPTY_SLOT");
+        }
     }
     
     private boolean pieceBelongsToPlayer(int x, int y, Player player)
     {
-        return false;
+        return pieceBelongsToPlayer(this.getGamePieceAt(x, y), player);
     }
     
     private static boolean pieceBelongsToPlayer(GamePiece piece, Player player)
     {
-        return false;
+        try
+        {
+            return piece != GamePiece.EMPTY_SLOT && getPlayerOwningPiece(piece) == player;
+        }
+        catch (CheckerGameException e)
+        {
+            return false;
+        }
     }
     
     private GamePiece getGamePieceAt(int x, int y)
     {
-        return null;
+        return this.grid.get(y).get(x);
     }
     
     private void setGamePieceAt(int x, int y, GamePiece piece)
     {
+        this.grid.get(y).set(x, piece);
     }
     
-    private static Player getPlayerOwningPiece(GamePiece piece)
+    private static Player getPlayerOwningPiece(GamePiece piece) throws CheckerGameException
     {
-        return null;
+        switch(piece)
+        {
+            case RED_PIECE:
+            case RED_KING_PIECE:
+                return Player.PLAYER_RED;
+            case WHITE_PIECE:   
+            case WHITE_KING_PIECE:
+                return Player.PLAYER_WHITE;
+            case EMPTY_SLOT :
+            default:
+                throw new CheckerGame.CheckerGameException("Don't call Game::getPlayerOwningPiece(EMPTY_SLOT)");
+        }
     }
     
     private static Player getOpponent(Player player)
     {
-        return null;
+        return (player == Player.PLAYER_RED) ? Player.PLAYER_WHITE : Player.PLAYER_RED;
     }
 }
