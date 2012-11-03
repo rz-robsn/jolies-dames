@@ -178,6 +178,11 @@ public class CheckerGame
         return this.grid;
     }
     
+    public GamePiece getGamePieceAt(int x, int y)
+    {
+        return this.grid.get(y).get(x);
+    }
+    
     /**
      * Returns the list of slots where the piece at (x,y) can move to.
      * 
@@ -480,11 +485,6 @@ public class CheckerGame
         {
             return false;
         }
-    }
-    
-    private GamePiece getGamePieceAt(int x, int y)
-    {
-        return this.grid.get(y).get(x);
     }
     
     private void setGamePieceAt(int x, int y, GamePiece piece)

@@ -53,8 +53,15 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
     @Override
     public void onNewGame()
     {
-        // TODO Auto-generated method stub
-        
+        // Create initial Pieces Positions
+        for (int i = 0; i < CheckerGame.GRID_SIZE; i++)
+        {
+            for (int j = 0; j < CheckerGame.GRID_SIZE; j++)
+            {
+                GamePiece gamePiece = this.game.getGamePieceAt(i, j);
+                this.surface.getRenderer().getBoard().createPieceAtPosition(i, j, gamePiece);
+            }    
+        }
     }
 
     @Override

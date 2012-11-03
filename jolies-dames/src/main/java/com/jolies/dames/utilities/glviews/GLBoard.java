@@ -11,7 +11,10 @@ import com.jolies.dames.utilities.model.GamePiece;
 import com.jolies.dames.utilities.model.Slot;
 
 public class GLBoard extends GLView{
-			
+	
+    /** Height of a normal piece */
+    private static final float NORMAL_PIECE_HEIGHT = 0.025f;
+    
 	private GLSlot[][] glSlots;
 	private GLPiece[][] glPieces;
 	
@@ -24,9 +27,14 @@ public class GLBoard extends GLView{
 	private float[] topLeft;
 	
 	/**
-	 * The width and weight values of the square board.
+	 * The width and height values of the square board.
 	 */
 	private float length;
+	
+	/**
+	 * The Board's piece factory
+	 */
+	private GLPieceFactory piecesFactory;
 	
 	/**
 	 * Constructor
@@ -39,6 +47,7 @@ public class GLBoard extends GLView{
 		/* Creating the GLSlots */
 		glSlots = new GLSlot[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
 		glPieces = new GLPiece[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
+		piecesFactory = new GLPieceFactory(NORMAL_PIECE_HEIGHT);
 		
 		this.topLeft = topLeft;
 		this.length = length; 
@@ -56,9 +65,6 @@ public class GLBoard extends GLView{
 				glSlots[i][j] = new GLSlot(slotTopLeftData, slotLength, defaultColor(i, j));
 			}	
 		}
-		
-		this.createPieceAtPosition(0, 0, PieceColor.RED);
-	    this.createPieceAtPosition(5, 4, PieceColor.WHITE);
 	}
 
 	@Override
@@ -154,23 +160,19 @@ public class GLBoard extends GLView{
 	 * 
 	 * @param x
 	 * @param y
-	 * @param pieceColor The new Piece Color
+	 * @param GamePiece The piece's associated gamePiece
 	 */
-	public void createPieceAtPosition(int x, int y, PieceColor pieceColor)
+	public void createPieceAtPosition(int x, int y, GamePiece gamePiece)
 	{
         float slotLength = getSlotLength();
-        float[] pieceTopCenterData = {
-                topLeft[0] + x*slotLength + slotLength/2f,
-                topLeft[1]+ 0.025f,
-                topLeft[2]+ (CheckerGame.GRID_SIZE-(y+1)) * slotLength + slotLength/ 2f
-        };
+
         float[] pieceBottomCenterData = {
                 topLeft[0]+ x*slotLength + slotLength/2f,
                 topLeft[1],
                 topLeft[2]+ (CheckerGame.GRID_SIZE-(y+1)) * slotLength + slotLength/2f
         };      
-        
-	    this.glPieces[x][y] = new GLPiece(pieceTopCenterData, pieceBottomCenterData, slotLength/2f, pieceColor);
+                
+	    this.glPieces[x][y] = this.piecesFactory.getGLPiece(pieceBottomCenterData, slotLength/2f, gamePiece);
 	}
 	
 	/**
