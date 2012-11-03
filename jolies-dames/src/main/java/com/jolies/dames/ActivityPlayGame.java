@@ -48,22 +48,28 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
 
     @Override
     public void onSlotSelected(int x, int y)
-    {
-        this.surface.getRenderer().getBoard().unhighlightAllSlots();
-        
+    {        
         if(this.previouslySelectedSlot != null)
         {
-            this.game.movePiece(this.previouslySelectedSlot.x, this.previouslySelectedSlot.y, x, y);            
-            this.previouslySelectedSlot = null;            
+            if(!(this.previouslySelectedSlot.x == x && this.previouslySelectedSlot.y == y))
+            {
+                this.surface.getRenderer().getBoard().unhighlightAllSlots();
+
+                this.game.movePiece(this.previouslySelectedSlot.x, this.previouslySelectedSlot.y, x, y);            
+                this.previouslySelectedSlot = null;        
+            }
         }
         else
         {
+            this.surface.getRenderer().getBoard().unhighlightAllSlots();
+
+            
             // highlight moves available for piece at position (x,y)
             Slot[] moves = this.game.getAvailableMovesForPiece(x, y).toArray(new Slot[]{});
-            this.surface.getRenderer().getBoard().setSlotsToHighLight(moves);
 
             if(moves.length > 0)
             {
+                this.surface.getRenderer().getBoard().setSlotsToHighLight(moves);
                 this.previouslySelectedSlot = new Slot(x,y);   
             }
         }
@@ -122,8 +128,7 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
     public void onIllegalMove(int xStart, int yStart, int xEnd, int yEnd,
             GamePiece gamePiece)
     {
-        // TODO Auto-generated method stub
-        
+        this.surface.getRenderer().getBoard().unhighlightAllSlots();        
     }
 
     @Override
