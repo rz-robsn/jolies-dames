@@ -174,6 +174,31 @@ public class GLBoard extends GLView{
 	}
 	
 	/**
+	 * Moves the piece from (xStart, yStart) to (xEnd, yEnd).
+	 * 
+	 * @param xStart
+	 * @param yStart
+	 * @param xEnd
+	 * @param yEnd
+	 */
+	public void movePiece(int xStart, int yStart, int xEnd, int yEnd)
+	{
+	    this.glPieces[xEnd][yEnd] = this.glPieces[xStart][yStart];
+	    this.glPieces[xStart][yStart] = null;
+	}
+	
+	/**
+	 * Destroys the piece at position (x,y) on the grid.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void destroyPieceAt(int x, int y)
+	{
+	    this.glPieces[x][y] = null;
+	}
+	
+	/**
      * @return the Top Left position of the board. The board will be parallel to the XZ-plane.
      */
     public float[] getTopLeft()

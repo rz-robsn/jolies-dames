@@ -181,7 +181,7 @@ public class RendererGameView implements GLSurfaceView.Renderer
     /**
      * @return the GLBoard object that is rendered.
      */
-    public GLBoard getBoard()
+    public final GLBoard getBoard()
     {
         return board;
     }	

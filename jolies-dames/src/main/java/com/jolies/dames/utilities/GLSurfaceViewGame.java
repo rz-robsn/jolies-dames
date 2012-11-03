@@ -8,7 +8,6 @@ import android.opengl.GLSurfaceView;
 
 public class GLSurfaceViewGame extends GLSurfaceView
 {
-    
     private RendererGameView renderer;
     private TouchListenerSurfaceViewGame touchListener;
     
@@ -33,6 +32,14 @@ public class GLSurfaceViewGame extends GLSurfaceView
     public void setListenerBoard(ListenerBoard listener)
     {
         this.touchListener.setListener(listener);
+    }
+
+    /**
+     * @return the renderer
+     */
+    public final RendererGameView getRenderer()
+    {
+        return renderer;
     }
     
 }

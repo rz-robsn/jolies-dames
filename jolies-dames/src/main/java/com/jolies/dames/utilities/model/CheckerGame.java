@@ -10,6 +10,9 @@ public class CheckerGame
 {
     public static final int GRID_SIZE = 8;
     
+    /**
+     * Exception for internal use that is thrown on unexpected/illogical method calls
+     */
     private static class CheckerGameException extends Exception
     {
         public CheckerGameException(String message)
