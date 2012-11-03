@@ -1,15 +1,19 @@
 package com.jolies.dames.utilities.glviews;
 
+import java.util.ArrayList;
+
 import android.graphics.RectF;
 
+import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
 import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.CheckerGame;
+import com.jolies.dames.utilities.model.GamePiece;
 import com.jolies.dames.utilities.model.Slot;
 
 public class GLBoard extends GLView{
 			
 	private GLSlot[][] glSlots;
-	private GLPiece glPiece;
+	private GLPiece[][] glPieces;
 	
 	private Slot slotSelected = null;
 	private Slot[] slotsToHighLight = {};
@@ -34,6 +38,7 @@ public class GLBoard extends GLView{
 		
 		/* Creating the GLSlots */
 		glSlots = new GLSlot[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
+		glPieces = new GLPiece[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
 		
 		this.topLeft = topLeft;
 		this.length = length; 
@@ -52,17 +57,8 @@ public class GLBoard extends GLView{
 			}	
 		}
 		
-		float[] pieceTopCenterData = {
-				topLeft[0]+ slotLength/2f,
-				topLeft[1]+ 0.025f,
-				topLeft[2]+ slotLength/ 2f
-		};
-		float[] pieceBottomCenterData = {
-				topLeft[0]+ slotLength/2f,
-				topLeft[1],
-				topLeft[2]+ slotLength/2f
-		};		
-		glPiece = new GLPiece(pieceTopCenterData, pieceBottomCenterData, slotLength/2f, GLPiece.PieceColor.RED);
+		this.createPieceAtPosition(0, 0, PieceColor.RED);
+	    this.createPieceAtPosition(5, 4, PieceColor.WHITE);
 	}
 
 	@Override
@@ -75,8 +71,17 @@ public class GLBoard extends GLView{
 				glSlot.draw(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
 			}
 		}
-		glPiece.draw(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
-   }
+        for(GLPiece[] pieces : this.glPieces)
+        {
+            for(GLPiece piece : pieces)
+            {
+                if (piece != null)
+                {
+                    piece.draw(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
+                }
+            }
+        }
+	}
 	
 	/**
      * @param slotSelected the slotSelected to set
@@ -141,6 +146,31 @@ public class GLBoard extends GLView{
                 topLeft[2]+ (CheckerGame.GRID_SIZE - y-1) * this.getSlotLength()
         };
 	    this.glSlots[x][y] = new GLSlot(slotTopLeftData, this.getSlotLength(), color);
+	}
+	
+	/**
+	 * Creates a new Piece at Position (x,y) on the board.
+	 * Deletes any other piece that was previously at that position.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param pieceColor The new Piece Color
+	 */
+	public void createPieceAtPosition(int x, int y, PieceColor pieceColor)
+	{
+        float slotLength = getSlotLength();
+        float[] pieceTopCenterData = {
+                topLeft[0] + x*slotLength + slotLength/2f,
+                topLeft[1]+ 0.025f,
+                topLeft[2]+ (CheckerGame.GRID_SIZE-(y+1)) * slotLength + slotLength/ 2f
+        };
+        float[] pieceBottomCenterData = {
+                topLeft[0]+ x*slotLength + slotLength/2f,
+                topLeft[1],
+                topLeft[2]+ (CheckerGame.GRID_SIZE-(y+1)) * slotLength + slotLength/2f
+        };      
+        
+	    this.glPieces[x][y] = new GLPiece(pieceTopCenterData, pieceBottomCenterData, slotLength/2f, pieceColor);
 	}
 	
 	/**
