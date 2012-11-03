@@ -18,13 +18,18 @@ public class GLPiece extends GLView {
 	
 	/** The Number of vertices to be used to draw a disk, must be even */
 	private static final int NUM_OF_DISK_VERTICES = 720;
-
+	
 	private FloatBuffer topDiskPosition;
 	private FloatBuffer bottomDiskPosition;
 	private FloatBuffer color;
 	
 	private FloatBuffer sidePositions;
 	private FloatBuffer sideColor;	
+	
+	float[] topCenterPosition;
+	float[] bottomCenterPosition;
+	private float radius;
+	private PieceColor pieceColor;
 
 	/**
 	 * Constructor, defines a cylinder parallel to the XZ-plane to be drawn
@@ -36,7 +41,18 @@ public class GLPiece extends GLView {
 	public GLPiece(float[] topCenterPosition, float[] bottomCenterPosition,
 			float radius, PieceColor color) 
 	{
-		// The vertex data array of the top disk.
+		initialize(topCenterPosition, bottomCenterPosition, radius, color);
+	}
+
+    private void initialize(float[] topCenterPosition,
+            float[] bottomCenterPosition, float radius, PieceColor color)
+    {
+        this.topCenterPosition = topCenterPosition;
+        this.bottomCenterPosition = bottomCenterPosition;
+        this.radius = radius;
+        this.pieceColor = color;
+        
+        // The vertex data array of the top disk.
 		float[] topDiskVerticesData = new float[(NUM_OF_DISK_VERTICES + 1) * POSITION_DATA_SIZE];
 
 		// The vertex data array of the bottom disk.
@@ -153,7 +169,7 @@ public class GLPiece extends GLView {
 				.allocateDirect(sideVerticesDataColor.length * BYTES_PER_FLOAT)
 				.order(ByteOrder.nativeOrder()).asFloatBuffer();
 		this.sideColor.put(sideVerticesDataColor).position(0);
-	}
+    }
 
 	@Override
 	public void draw(float[] mMVPMatrix, float[] mModelViewMatrix, float[] mModelMatrix,
@@ -164,6 +180,29 @@ public class GLPiece extends GLView {
 		this.drawDisk(bottomDiskPosition, mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);
 		
 		this.drawPieceSide(mMVPMatrix, mModelViewMatrix, mModelMatrix, mViewMatrix, mProjectionMatrix, mPositionHandle, mColorHandle, mMVPMatrixHandle);		
+	}
+	
+	/**
+	 *  
+	 * 
+	 * @param bottomCenterX
+	 * @param bottomCenterZ
+	 */
+	public void setPosition(float bottomCenterX, float bottomCenterZ)
+	{
+       float[] newtopCenterPosition = new float[] {
+               bottomCenterX,
+               topCenterPosition[1],
+               bottomCenterZ
+        };
+	    
+	    float[] newBottomCenterPosition = new float[] {
+	            bottomCenterX,
+	            bottomCenterPosition[1],
+	            bottomCenterZ
+	    };	 
+	    
+	    this.initialize(newtopCenterPosition, newBottomCenterPosition, this.radius, this.pieceColor);
 	}
 
 	private void drawDisk(FloatBuffer diskBuffer, 

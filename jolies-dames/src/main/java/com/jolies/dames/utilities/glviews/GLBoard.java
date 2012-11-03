@@ -94,9 +94,20 @@ public class GLBoard extends GLView{
      */
     public void setSlotSelected(Slot slotSelected)
     {
+        // Un-selecting previous slot
         if(this.slotSelected != null)
         {
-            this.setGLSlotColor(this.slotSelected, defaultColor(this.slotSelected));
+            boolean slotSelectedShouldBeHighlighted = false;
+            for(Slot slot : this.slotsToHighLight)
+            {
+                if (slot.equals(this.slotSelected))
+                {
+                    slotSelectedShouldBeHighlighted = true;
+                    break;
+                }
+            }
+            this.setGLSlotColor(this.slotSelected, slotSelectedShouldBeHighlighted ? SlotColor.GREEN 
+                                                                                   : defaultColor(this.slotSelected));
         }
         
         this.setGLSlotColor(slotSelected, SlotColor.BLUE);
@@ -111,11 +122,13 @@ public class GLBoard extends GLView{
      */
     public void setSlotsToHighLight(Slot[] slotsToHighLight)
     {
+        // Un-highlighting previous highlighted slots
         if (this.slotsToHighLight.length > 0)
         {
             for(Slot slot : this.slotsToHighLight)
             {
-                this.setGLSlotColor(slot, defaultColor(slot));
+                this.setGLSlotColor(slot, slot.equals(this.slotSelected) ? SlotColor.BLUE 
+                                                                         : defaultColor(slot));
             }
         }
         
@@ -124,6 +137,15 @@ public class GLBoard extends GLView{
         {
             this.setGLSlotColor(slot, SlotColor.GREEN);
         }
+    }
+    
+    /**
+     * Reset all highlighted slots to their default colors.
+     */
+    public void unhighlightAllSlots()
+    {
+        Slot[] emptySlots = new Slot[]{};
+        this.setSlotsToHighLight(emptySlots);
     }
 
     /**
@@ -149,7 +171,7 @@ public class GLBoard extends GLView{
         float[] slotTopLeftData = {
                 topLeft[0]+ x * this.getSlotLength(),
                 topLeft[1],
-                topLeft[2]+ (CheckerGame.GRID_SIZE - y-1) * this.getSlotLength()
+                topLeft[2]+ (CheckerGame.GRID_SIZE - (y+1)) * this.getSlotLength()
         };
 	    this.glSlots[x][y] = new GLSlot(slotTopLeftData, this.getSlotLength(), color);
 	}
@@ -187,6 +209,9 @@ public class GLBoard extends GLView{
 	{
 	    this.glPieces[xEnd][yEnd] = this.glPieces[xStart][yStart];
 	    this.glPieces[xStart][yStart] = null;
+	    this.glPieces[xEnd][yEnd].setPosition(
+	            topLeft[0]+ xEnd*this.getSlotLength() + this.getSlotLength()/2f,
+	            topLeft[2]+ (CheckerGame.GRID_SIZE - (yEnd+1)) * this.getSlotLength() + this.getSlotLength()/2f);
 	}
 	
 	/**

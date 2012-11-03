@@ -24,9 +24,6 @@ public class GLSurfaceViewGame extends GLSurfaceView
         
         touchListener = new TouchListenerSurfaceViewGame(renderer);
         this.setOnTouchListener(touchListener);
-        
-        Slot[] slots = { new Slot(0, 0), new Slot(5, 5), new Slot(7, 7) };
-        renderer.highLightSlots(slots);
     }
     
     public void setListenerBoard(ListenerBoard listener)

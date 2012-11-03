@@ -196,9 +196,4 @@ public class RendererGameView implements GLSurfaceView.Renderer
     {
         this.board.setSlotSelected(slot);
     }
-    
-    public void highLightSlots(Slot[] slots)
-    {
-        this.board.setSlotsToHighLight(slots);
-    }
 }

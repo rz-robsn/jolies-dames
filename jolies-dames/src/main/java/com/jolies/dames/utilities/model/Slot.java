@@ -14,7 +14,7 @@ public class Slot {
     
     public boolean equals(Slot slot)
     {
-        return this.x == slot.x && this.y == slot.y;
+        return slot != null && this.x == slot.x && this.y == slot.y;
     }
     
 }
