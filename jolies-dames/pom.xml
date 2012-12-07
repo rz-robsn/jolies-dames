@@ -10,24 +10,31 @@
     <name>jolies-dames</name>
 
     <properties>
-        <platform.version>2.3.3</platform.version>
+        <platform.version>4.2_r1</platform.version>
     </properties>
 
     <dependencies>
-        
+
         <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <version>${platform.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        	<groupId>Rajawali</groupId>
+        	<artifactId>Rajawali</artifactId>
+        	<version>0.0.1-SNAPSHOT</version>
+        	<type>apklib</type>
+        </dependency>                
         
-        <dependency>
-            <groupId>com.google.android.maps</groupId>
-            <artifactId>maps</artifactId>
-            <version>10_r2</version>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+		  <groupId>android</groupId>
+		  <artifactId>android</artifactId>
+		  <version>${platform.version}</version>
+		  <scope>provided</scope>
+		</dependency>
+        
+		<dependency>
+		  <groupId>com.google.android.maps</groupId>
+		  <artifactId>maps</artifactId>
+		  <version>17_r1</version>
+		  <scope>provided</scope>
+		</dependency>
                 
         <dependency>
             <groupId>com.pivotallabs</groupId>
@@ -61,12 +68,6 @@
             	</exclusion>
             </exclusions> 		
         </dependency>
-                               
-        <dependency>
-        	<groupId>Rajawali</groupId>
-        	<artifactId>Rajawali</artifactId>
-        	<version>0.0.1-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -81,7 +82,7 @@
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
                     <nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory>
                     <sdk>
-                        <platform>10</platform>
+                        <platform>17</platform>
                     </sdk>
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
                 </configuration>
