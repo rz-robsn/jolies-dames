@@ -4,10 +4,10 @@ import android.os.Bundle;
 
 import com.jolies.dames.utilities.RendererHelloRajawali;
 
-import rajawali.RajawaliActivity;
+import rajawali.RajawaliFragmentActivity;
 
-public class ActivityHelloRajawali extends RajawaliActivity {
-
+public class ActivityHelloRajawali extends RajawaliFragmentActivity
+{
 	private RendererHelloRajawali mRenderer; 
 	
 	@Override
