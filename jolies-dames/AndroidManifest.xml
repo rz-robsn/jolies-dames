@@ -19,6 +19,8 @@
         <activity android:name=".ActivityHelloAndroid" >
         </activity>
         <activity android:name=".ActivityPlayGame" >
+        </activity>
+        <activity android:name=".ActivityHelloRajawali" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
