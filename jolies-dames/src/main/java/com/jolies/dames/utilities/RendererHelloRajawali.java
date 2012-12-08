@@ -3,13 +3,14 @@ package com.jolies.dames.utilities;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import com.jolies.dames.R;
-
+import android.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import rajawali.BaseObject3D;
 import rajawali.lights.DirectionalLight;
 import rajawali.materials.DiffuseMaterial;
+import rajawali.parser.ObjParser;
 import rajawali.primitives.Sphere;
 import rajawali.renderer.RajawaliRenderer;
 
@@ -38,13 +39,11 @@ public class RendererHelloRajawali extends RajawaliRenderer{
 		mLight = new DirectionalLight(0.1f, 0.2f, 1.0f); // set the direction
 		mLight.setPower(1.5f);
 		
-		Bitmap bg = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.selera_sari);
-		mSphere = new Sphere(1, 12, 12);
-		DiffuseMaterial material = new DiffuseMaterial();
-		mSphere.setMaterial(material);
-		mSphere.setLight(mLight);
-		mSphere.addTexture(mTextureManager.addTexture(bg));
-		addChild(mSphere);
+		ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, com.jolies.dames.R.raw.piece_obj);
+		objParser.parse();
+		BaseObject3D mObject = objParser.getParsedObject();
+		mObject.addLight(mLight);
+		addChild(mObject);
 		
 		mCamera.setZ(-4.2f);
 	}
