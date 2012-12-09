@@ -36,7 +36,7 @@ public class RendererHelloRajawali extends RajawaliRenderer{
 	public void onSurfaceCreated(GL10 gl, EGLConfig config)
 	{
 		super.onSurfaceCreated(gl, config);
-		mLight = new DirectionalLight(0.1f, 0.2f, 1.0f); // set the direction
+		mLight = new DirectionalLight(1, -1, 0.5f); // set the direction
 		mLight.setPower(1.5f);
 		
 		ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, com.jolies.dames.R.raw.piece_obj);
@@ -44,6 +44,10 @@ public class RendererHelloRajawali extends RajawaliRenderer{
 		BaseObject3D mObject = objParser.getParsedObject();
 		mObject.addLight(mLight);
 		addChild(mObject);
+		
+		this.mCamera.setZ(-4.2f);
+		this.mCamera.setY(0.5f);
+		this.mCamera.setLookAt(0, 0, 0);
 		
 		mCamera.setZ(-4.2f);
 	}
