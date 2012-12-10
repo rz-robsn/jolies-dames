@@ -1,8 +1,13 @@
 package com.jolies.dames;
 
-import com.jolies.dames.utilities.GLSurfaceViewGame;
+import rajawali.RajawaliFragmentActivity;
+import rajawali.renderer.RajawaliRenderer;
+
 import com.jolies.dames.utilities.ListenerBoard;
 import com.jolies.dames.utilities.ListenerGame;
+import com.jolies.dames.utilities.RendererGameView;
+import com.jolies.dames.utilities.RendererHelloRajawali;
+import com.jolies.dames.utilities.glviews.OnTouchListenerSlotClicked;
 import com.jolies.dames.utilities.model.CheckerGame;
 import com.jolies.dames.utilities.model.GamePiece;
 import com.jolies.dames.utilities.model.Player;
@@ -11,21 +16,25 @@ import com.jolies.dames.utilities.model.Slot;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class ActivityPlayGame extends Activity implements ListenerBoard, ListenerGame
+public class ActivityPlayGame extends RajawaliFragmentActivity implements ListenerBoard, ListenerGame
 {
-    private GLSurfaceViewGame surface;
+	private RendererGameView mRenderer;
     private CheckerGame game;
     
     private Slot previouslySelectedSlot = null;
     
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        
-        surface = new GLSurfaceViewGame(this);
-        this.setContentView(surface);        
-        surface.setListenerBoard(this);
+		super.onCreate(savedInstanceState);
+		
+		mRenderer = new RendererGameView(this);
+		mRenderer.setSurfaceView(mSurfaceView);
+		super.setRenderer(mRenderer);
+		
+		OnTouchListenerSlotClicked touchListener = new OnTouchListenerSlotClicked(mRenderer);
+		touchListener.setListener(this);
+		this.mSurfaceView.setOnTouchListener(touchListener);
         
         game = new CheckerGame();
         game.setListener(this);
@@ -36,14 +45,14 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
     protected void onPause()
     {
         super.onPause();
-        surface.onPause();
+        this.mSurfaceView.onPause();
     }
     
     @Override
     protected void onResume()
     {
         super.onResume();
-        surface.onResume();
+        this.mSurfaceView.onResume();
     }
 
     @Override
@@ -53,7 +62,7 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
         {
             if(!(this.previouslySelectedSlot.x == x && this.previouslySelectedSlot.y == y))
             {
-                this.surface.getRenderer().getBoard().unhighlightAllSlots();
+                this.mRenderer.getBoard().unhighlightAllSlots();
 
                 this.game.movePiece(this.previouslySelectedSlot.x, this.previouslySelectedSlot.y, x, y);            
                 this.previouslySelectedSlot = null;        
@@ -61,7 +70,7 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
         }
         else
         {
-            this.surface.getRenderer().getBoard().unhighlightAllSlots();
+            this.mRenderer.getBoard().unhighlightAllSlots();
 
             
             // highlight moves available for piece at position (x,y)
@@ -69,7 +78,7 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
 
             if(moves.length > 0)
             {
-                this.surface.getRenderer().getBoard().setSlotsToHighLight(moves);
+                this.mRenderer.getBoard().setSlotsToHighLight(moves);
                 this.previouslySelectedSlot = new Slot(x,y);   
             }
         }
@@ -84,7 +93,7 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
             for (int j = 0; j < CheckerGame.GRID_SIZE; j++)
             {
                 GamePiece gamePiece = this.game.getGamePieceAt(i, j);
-                this.surface.getRenderer().getBoard().createPieceAtPosition(i, j, gamePiece);
+                this.mRenderer.getBoard().createPieceAtPosition(i, j, gamePiece);
             }    
         }
         this.previouslySelectedSlot = null;
@@ -108,27 +117,27 @@ public class ActivityPlayGame extends Activity implements ListenerBoard, Listene
     public void onPieceMoved(int xStart, int yStart, int xEnd, int yEnd,
             GamePiece gamePiece)
     {
-        this.surface.getRenderer().getBoard().movePiece(xStart, yStart, xEnd, yEnd);
+        this.mRenderer.getBoard().movePiece(xStart, yStart, xEnd, yEnd);
     }
 
     @Override
     public void onPieceEaten(int x, int y, GamePiece gamePiece)
     {
         // TODO Auto-generated method stub
-        this.surface.getRenderer().getBoard().destroyPieceAt(x, y);
+        this.mRenderer.getBoard().destroyPieceAt(x, y);
     }
 
     @Override
     public void onPieceBecameKing(int x, int y, GamePiece gamePiece)
     {
-        this.surface.getRenderer().getBoard().createPieceAtPosition(x, y, gamePiece);
+        this.mRenderer.getBoard().createPieceAtPosition(x, y, gamePiece);
     }
 
     @Override
     public void onIllegalMove(int xStart, int yStart, int xEnd, int yEnd,
             GamePiece gamePiece)
     {
-        this.surface.getRenderer().getBoard().unhighlightAllSlots();        
+        this.mRenderer.getBoard().unhighlightAllSlots();        
     }
 
     @Override

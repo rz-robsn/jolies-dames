@@ -16,12 +16,12 @@ import android.view.View.OnTouchListener;
  *  This class interprets the touch controls on the screen and dispatches the appropriate
  *  events. 
  */
-public class TouchListenerSurfaceViewGame implements OnTouchListener
+public class OnTouchListenerSlotClicked implements OnTouchListener
 {
     private ListenerBoard listener;
     private RendererGameView renderer;
     
-    public TouchListenerSurfaceViewGame(RendererGameView renderer)
+    public OnTouchListenerSlotClicked(RendererGameView renderer)
     {
         super();
         this.renderer = renderer;

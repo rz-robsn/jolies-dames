@@ -5,10 +5,11 @@ import android.os.Bundle;
 import com.jolies.dames.utilities.RendererHelloRajawali;
 
 import rajawali.RajawaliFragmentActivity;
+import rajawali.renderer.RajawaliRenderer;
 
 public class ActivityHelloRajawali extends RajawaliFragmentActivity
 {
-	private RendererHelloRajawali mRenderer; 
+	private RajawaliRenderer mRenderer; 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

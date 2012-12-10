@@ -52,7 +52,7 @@ public class RendererHelloRajawali extends RajawaliRenderer{
 		plane.setMaterial(material);
 		this.addChild(plane);
 		
-		this.mCamera.setZ(-4.2f);
+		this.mCamera.setZ(-10.2f);
 		this.mCamera.setY(2f);
 		this.mCamera.setLookAt(0, 0, 0);
 		
