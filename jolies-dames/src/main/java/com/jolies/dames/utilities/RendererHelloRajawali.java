@@ -11,6 +11,7 @@ import rajawali.BaseObject3D;
 import rajawali.lights.DirectionalLight;
 import rajawali.materials.DiffuseMaterial;
 import rajawali.parser.ObjParser;
+import rajawali.primitives.Plane;
 import rajawali.primitives.Sphere;
 import rajawali.renderer.RajawaliRenderer;
 
@@ -45,8 +46,14 @@ public class RendererHelloRajawali extends RajawaliRenderer{
 		mObject.addLight(mLight);
 		addChild(mObject);
 		
+		Plane plane = new Plane(1,1,1,1);
+		plane.addLight(mLight);
+		DiffuseMaterial material = new DiffuseMaterial();
+		plane.setMaterial(material);
+		this.addChild(plane);
+		
 		this.mCamera.setZ(-4.2f);
-		this.mCamera.setY(0.5f);
+		this.mCamera.setY(2f);
 		this.mCamera.setLookAt(0, 0, 0);
 		
 		mCamera.setZ(-4.2f);
