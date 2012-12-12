@@ -5,6 +5,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.jolies.dames.R;
 import com.jolies.dames.utilities.glviews.GLBoard;
+import com.jolies.dames.utilities.glviews.GLSlot;
+import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.Slot;
 
 import android.content.Context;
@@ -15,6 +17,8 @@ import android.opengl.Matrix;
 import rajawali.BaseObject3D;
 import rajawali.lights.DirectionalLight;
 import rajawali.materials.DiffuseMaterial;
+import rajawali.materials.TextureInfo;
+import rajawali.math.Number3D;
 import rajawali.parser.ObjParser;
 import rajawali.primitives.Plane;
 import rajawali.renderer.RajawaliRenderer;
@@ -57,11 +61,10 @@ public class RendererGameView extends RajawaliRenderer
 		mObject.addLight(mLight);
 		addChild(mObject);
 		
-		Plane plane = new Plane(1,1,1,1);
-		plane.addLight(mLight);
-		DiffuseMaterial material = new DiffuseMaterial();
-		plane.setMaterial(material);
-		this.addChild(plane);
+		
+		GLSlot slot = new GLSlot(this.getContext(), this.mTextureManager, new Number3D(0,0,0), SlotColor.BLUE);
+		slot.object.addLight(mLight);
+		this.addChild(slot.object);
 		
 		this.mCamera.setY(2f);
 		this.mCamera.setLookAt(0, 0, 0);		
