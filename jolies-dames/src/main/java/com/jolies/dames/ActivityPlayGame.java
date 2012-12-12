@@ -6,7 +6,6 @@ import rajawali.renderer.RajawaliRenderer;
 import com.jolies.dames.utilities.ListenerBoard;
 import com.jolies.dames.utilities.ListenerGame;
 import com.jolies.dames.utilities.RendererGameView;
-import com.jolies.dames.utilities.RendererHelloRajawali;
 import com.jolies.dames.utilities.glviews.OnTouchListenerSlotClicked;
 import com.jolies.dames.utilities.model.CheckerGame;
 import com.jolies.dames.utilities.model.GamePiece;
@@ -88,15 +87,15 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
     public void onNewGame()
     {
         // Create initial Pieces Positions
-        for (int i = 0; i < CheckerGame.GRID_SIZE; i++)
-        {
-            for (int j = 0; j < CheckerGame.GRID_SIZE; j++)
-            {
-                GamePiece gamePiece = this.game.getGamePieceAt(i, j);
-                this.mRenderer.getBoard().createPieceAtPosition(i, j, gamePiece);
-            }    
-        }
-        this.previouslySelectedSlot = null;
+//        for (int i = 0; i < CheckerGame.GRID_SIZE; i++)
+//        {
+//            for (int j = 0; j < CheckerGame.GRID_SIZE; j++)
+//            {
+//                GamePiece gamePiece = this.game.getGamePieceAt(i, j);
+//                this.mRenderer.getBoard().createPieceAtPosition(i, j, gamePiece);
+//            }    
+//        }
+//        this.previouslySelectedSlot = null;
     }
 
     @Override
@@ -123,7 +122,6 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
     @Override
     public void onPieceEaten(int x, int y, GamePiece gamePiece)
     {
-        // TODO Auto-generated method stub
         this.mRenderer.getBoard().destroyPieceAt(x, y);
     }
 

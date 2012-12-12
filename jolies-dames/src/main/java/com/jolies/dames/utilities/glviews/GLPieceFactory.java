@@ -43,7 +43,8 @@ public class GLPieceFactory
                         bottomCenterPosition[1] + getKingPieceHeight(),
                         bottomCenterPosition[2]
                 };
-                return new GLPiece(topCenterPositionRK, bottomCenterPosition, radius, PieceColor.RED);
+                //return new GLPiece(topCenterPositionRK, bottomCenterPosition, radius, PieceColor.RED);
+                return null;
 
             case RED_PIECE:
                 float[] topCenterPositionR = {
@@ -51,7 +52,8 @@ public class GLPieceFactory
                         bottomCenterPosition[1] + normalPieceHeight,
                         bottomCenterPosition[2]
                 };
-                return new GLPiece(topCenterPositionR, bottomCenterPosition, radius, PieceColor.RED);
+                //return new GLPiece(topCenterPositionR, bottomCenterPosition, radius, PieceColor.RED);
+                return null;
 
             case WHITE_KING_PIECE:
                 float[] topCenterPositionWK = {
@@ -59,7 +61,8 @@ public class GLPieceFactory
                         bottomCenterPosition[1] + getKingPieceHeight(),
                         bottomCenterPosition[2]
                 };               
-                return new GLPiece(topCenterPositionWK, bottomCenterPosition, radius, PieceColor.WHITE);
+                //return new GLPiece(topCenterPositionWK, bottomCenterPosition, radius, PieceColor.WHITE);
+                return null;
 
                 
             case WHITE_PIECE:
@@ -68,7 +71,8 @@ public class GLPieceFactory
                         bottomCenterPosition[1] + normalPieceHeight,
                         bottomCenterPosition[2]
                 };
-                return new GLPiece(topCenterPositionW, bottomCenterPosition, radius, PieceColor.WHITE);
+                //return new GLPiece(topCenterPositionW, bottomCenterPosition, radius, PieceColor.WHITE);
+                return null;
                 
             default:
                 return null;           

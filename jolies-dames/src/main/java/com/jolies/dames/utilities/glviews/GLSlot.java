@@ -8,7 +8,7 @@ import android.graphics.RectF;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
-public class GLSlot extends GLView{
+public class GLSlot {
 
 	/** The Different colors a slot can have */
 	public static enum SlotColor {BLUE, GREEN, BROWN, BEIGE}
@@ -52,110 +52,4 @@ public class GLSlot extends GLView{
 		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
 		1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f, 1.0f,
 	};
-	
-	/**
-	 * Top-left coordinate of the slot
-	 */
-	private float[] topLeftPosition;
-	
-	/**
-	 * Width and height of the square slot to draw
-	 */
-	private float length;
-	
-	/** Top left corner of the slot. */	
-	private FloatBuffer position;
-	
-	/** Color of the Slot. */	
-	private FloatBuffer color;
-
-	/**
-	 * Contructor for GLSLot. The Slot drawn will always be parrallel to the XZ-Plane.
-	 * 
-	 * @param topLeftPosition top-left coordinate of the slot to draw
-	 * @param length width and height of the square slot to draw
-	 * @param color color of the slot.
-	 */
-	public GLSlot(float[] topLeftPosition, float length, SlotColor color) {
-		super();
-
-		this.topLeftPosition = topLeftPosition;
-		this.length = length;
-		
-		float[] positionData = {
-				
-				// X, Y, Z
-				topLeftPosition[0], topLeftPosition[1], topLeftPosition[2],
-				topLeftPosition[0] + length, topLeftPosition[1], topLeftPosition[2],
-				topLeftPosition[0], topLeftPosition[1], topLeftPosition[2] + length,
-				topLeftPosition[0], topLeftPosition[1], topLeftPosition[2] + length,
-				topLeftPosition[0] + length, topLeftPosition[1], topLeftPosition[2],
-				topLeftPosition[0] + length, topLeftPosition[1], topLeftPosition[2] + length
-		};
-
-		float[] colorData = null;
-		switch(color)
-		{
-			case BLUE:
-				colorData = blueColorData;
-				break;
-				
-			case BEIGE:
-				colorData = beigeColorData;
-				break;
-				
-			case BROWN:
-				colorData = brownColorData;
-				break;
-				
-			case GREEN:
-				colorData = greenColorData;
-				break;
-		}		
-				
-		// Initialize the buffers.
-		this.position = ByteBuffer.allocateDirect(positionData.length * BYTES_PER_FLOAT)
-		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		this.position.put(positionData).position(0);
-		
-		this.color = ByteBuffer.allocateDirect(colorData.length * BYTES_PER_FLOAT)
-		        .order(ByteOrder.nativeOrder()).asFloatBuffer();		
-		this.color.put(colorData).position(0);
-	}
-	
-	@Override
-	public void draw(float[] mMVPMatrix, float[] mModelViewMatrix, float[] mModelMatrix, float[] mViewMatrix, float[] mProjectionMatrix, int mPositionHandle, int mColorHandle, int mMVPMatrixHandle)
-	{		
-		// Pass in the position information
-		position.position(0);
-        GLES20.glVertexAttribPointer(mPositionHandle, POSITION_DATA_SIZE, GLES20.GL_FLOAT, false,
-        		STRIDE_POSITION_BYTES, position);                        
-        GLES20.glEnableVertexAttribArray(mPositionHandle);        
-        
-        // Pass in the color information
-        color.position(0);
-        GLES20.glVertexAttribPointer(mColorHandle, COLOR_DATA_SIZE, GLES20.GL_FLOAT, false,
-        		STRIDE_COLOR_BYTES, color);                
-        GLES20.glEnableVertexAttribArray(mColorHandle);
-        
-		// This multiplies the view matrix by the model matrix, and stores the result in the MV matrix
-        // (which currently contains model * view).
-        Matrix.multiplyMM(mModelViewMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-        
-        // This multiplies the modelview matrix by the projection matrix, and stores the result in the MVP matrix
-        // (which now contains model * view * projection).
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mModelViewMatrix, 0);
-
-        GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mMVPMatrix, 0);
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 6);
-     }
-	
-	/**
-     * @return the RectF object containing the board's coordinate
-     */
-    public RectF getRectF()
-    {
-        return new RectF(topLeftPosition[0], topLeftPosition[2], topLeftPosition[0] + length, topLeftPosition[2] + length);
-    }
-
 }
