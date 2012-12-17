@@ -2,6 +2,11 @@ package com.jolies.dames.utilities.glviews;
 
 import java.util.ArrayList;
 
+import rajawali.BaseObject3D;
+import rajawali.materials.TextureManager;
+import rajawali.math.Number3D;
+
+import android.content.Context;
 import android.graphics.RectF;
 
 import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
@@ -21,15 +26,15 @@ public class GLBoard {
 	private Slot slotSelected = null;
 	private Slot[] slotsToHighLight = {};
 	
+	private Context context;
+	private TextureManager textureManager;
+	
+	public BaseObject3D object;
+	
 	/**
 	 * Top Left position of the board. The board will be parallel to the XZ-plane.
 	 */
 	private float[] topLeft;
-	
-	/**
-	 * The width and height values of the square board.
-	 */
-	private float length;
 	
 	/**
 	 * The Board's piece factory
@@ -39,18 +44,39 @@ public class GLBoard {
 	/**
 	 * Constructor
 	 * 
+	 * @param context
+	 * @param textureManager
 	 * @param topLeft Top Left position of the board. The board will be parallel to the XZ-plane.
-	 * @param length the width and weight values of the square board.
 	 */
-	public GLBoard(float[] topLeft, float length) {
+	public GLBoard(Context context, TextureManager textureManager,
+			float[] topLeft) {
+		super();
+		this.context = context;
+		this.textureManager = textureManager;
+		this.topLeft = topLeft;
+		
+		this.object = new BaseObject3D();
 		
 		/* Creating the GLSlots */
 		glSlots = new GLSlot[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
-		glPieces = new GLPiece[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
-		piecesFactory = new GLPieceFactory(NORMAL_PIECE_HEIGHT);
-				
-	}
+		for(int i = 0; i < CheckerGame.GRID_SIZE; i++)
+		{
+			for(int j = 0; j < CheckerGame.GRID_SIZE; j++)
+			{				
+				glSlots[i][j] = new GLSlot(
+						context,
+						textureManager, 
+						new Number3D(topLeft[0] + i*GLSlot.DIMENSION_XZ, topLeft[1], topLeft[2] + (CheckerGame.GRID_SIZE - j-1) * GLSlot.DIMENSION_XZ),
+						defaultColor(i,j));
+				this.object.addChild(glSlots[i][j].object);
+			}			
+		}
 	
+		/* Creating the GLPieces */
+		glPieces = new GLPiece[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
+		piecesFactory = new GLPieceFactory(NORMAL_PIECE_HEIGHT);	
+	}
+
 	/**
      * @param slotSelected the slotSelected to set
      */
@@ -130,6 +156,7 @@ public class GLBoard {
 	 */
 	public void setGLSlotColor(int x, int y, SlotColor color)
 	{
+		this.glSlots[x][y].changeSlotColorTo(color);
 	}
 	
 	/**

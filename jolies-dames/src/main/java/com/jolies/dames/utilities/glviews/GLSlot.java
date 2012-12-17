@@ -26,14 +26,14 @@ public class GLSlot {
 	/** The Different colors a slot can have */
 	public static enum SlotColor {BLUE, GREEN, BROWN, BEIGE}
 
-	private static final float MODEL_DIMENSION_XY = 1.125f;
-	private static final float MODEL_DIMENSION_Z = 0.052f;
+	private static final float MODEL_DIMENSION_XZ = 1.125f;
+	private static final float MODEL_DIMENSION_Y = 0.052f;
 	
-	private static final float DIMENSION_XY = 0.125f;
-	private static final float DIMENSION_Z = 0.025f;
+	public static final float DIMENSION_XZ = 0.125f;
+	public static final float DIMENSION_Y = 0.025f;
 	
-	private static final float SCALE_XY = DIMENSION_XY/MODEL_DIMENSION_XY;
-	private static final float SCALE_Z = DIMENSION_Z/MODEL_DIMENSION_Z;
+	private static final float SCALE_XZ = DIMENSION_XZ/MODEL_DIMENSION_XZ;
+	private static final float SCALE_Y = DIMENSION_Y/MODEL_DIMENSION_Y;
 	
 	public BaseObject3D object;
 	
@@ -42,10 +42,11 @@ public class GLSlot {
 		ObjParser objParser = new ObjParser(context.getResources(), textureManager, R.raw.slot_obj);
 		objParser.parse();
 		object = objParser.getParsedObject();
+		object.setPosition(position);
 		
-		object.setScaleX(SCALE_XY);
-		object.setScaleY(SCALE_XY);
-		object.setScale(SCALE_Z);
+		object.setScaleX(SCALE_XZ);
+		object.setScaleZ(SCALE_XZ);
+		object.setScaleY(SCALE_Y);
 		
 		DiffuseMaterial material = new DiffuseMaterial();
 		material.setAmbientIntensity(0.75f);				
