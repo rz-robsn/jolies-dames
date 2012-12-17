@@ -5,6 +5,8 @@ import javax.microedition.khronos.opengles.GL10;
 
 import com.jolies.dames.R;
 import com.jolies.dames.utilities.glviews.GLBoard;
+import com.jolies.dames.utilities.glviews.GLPiece;
+import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
 import com.jolies.dames.utilities.glviews.GLSlot;
 import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.Slot;
@@ -65,6 +67,10 @@ public class RendererGameView extends RajawaliRenderer
 		GLBoard board = new GLBoard(mContext, mTextureManager, topLeftPosition);
 		board.object.addLight(mLight);
 		this.addChild(board.object);
+		
+		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, false);
+		piece.object.addLight(mLight);
+		this.addChild(piece.object);
 		
 		this.mCamera.setPosition(0.0f, 1.5f, 1.5f);
 		this.mCamera.setLookAt(0, 0, 0);
