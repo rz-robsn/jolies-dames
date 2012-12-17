@@ -14,6 +14,7 @@ import rajawali.math.Number3D;
 import rajawali.parser.ObjParser;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 import android.util.FloatMath;
@@ -47,7 +48,15 @@ public class GLPiece {
 		{
 			BaseObject3D bottomPieceObject = objParser.getParsedObject();
 			BaseObject3D topPieceObject = bottomPieceObject.clone();			
+
+			object = new BaseObject3D();
 			topPieceObject.setPosition(object.getPosition().add(0, DIMENSION_Y/2 + KING_PIECE_GAP, 0));
+
+			if(color == PieceColor.RED)
+			{
+				bottomPieceObject.removeTexture(bottomPieceObject.getTextureInfoList().get(0));
+				bottomPieceObject.addTexture(textureManager.addTexture(BitmapFactory.decodeResource(context.getResources(), R.drawable.wooden_planks_red)));														
+			}
 			
 			object = new BaseObject3D();
 			object.addChild(bottomPieceObject);
@@ -55,25 +64,15 @@ public class GLPiece {
 		}
 		else
 		{
-			object = objParser.getParsedObject();			
+			object = objParser.getParsedObject();
+			
+			if(color == PieceColor.RED)
+			{
+				object.removeTexture(object.getTextureInfoList().get(0));					
+				object.addTexture(textureManager.addTexture(BitmapFactory.decodeResource(context.getResources(), R.drawable.wooden_planks_red)));									
+			}
 		}
 		
 		object.setPosition(position);
-
-		switch (color) 
-		{
-			case RED:
-				DiffuseMaterial material = new DiffuseMaterial();
-				material.setAmbientIntensity(0.5f);
-				material.setAmbientColor(0.8f, 0.0f, 1.0f, 1);
-				object.setMaterial(material);
-				break;
-				
-			case WHITE:
-				break;
-				
-			default:
-				break;
-		}
 	}
 }

@@ -68,7 +68,7 @@ public class RendererGameView extends RajawaliRenderer
 		board.object.addLight(mLight);
 		this.addChild(board.object);
 		
-		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, false);
+		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, true);
 		piece.object.addLight(mLight);
 		this.addChild(piece.object);
 		
