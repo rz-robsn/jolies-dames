@@ -55,14 +55,13 @@ public class RendererGameView extends RajawaliRenderer
 		mLight = new DirectionalLight(1, -1, 0.5f); // set the direction
 		mLight.setPower(1.5f);		
 		
-		ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, R.raw.piece_obj);
-		objParser.parse();
-		BaseObject3D mObject = objParser.getParsedObject();
-		mObject.addLight(mLight);
-		addChild(mObject);
-		
-		
-		GLSlot slot = new GLSlot(this.getContext(), this.mTextureManager, new Number3D(0,0,0), SlotColor.BLUE);
+//		ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, R.raw.piece_obj);
+//		objParser.parse();
+//		BaseObject3D mObject = objParser.getParsedObject();
+//		mObject.addLight(mLight);
+//		addChild(mObject);
+				
+		GLSlot slot = new GLSlot(this.getContext(), this.mTextureManager, new Number3D(0,0,0), SlotColor.GREEN);
 		slot.object.addLight(mLight);
 		this.addChild(slot.object);
 		
