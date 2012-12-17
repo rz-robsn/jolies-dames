@@ -198,7 +198,7 @@ public class GLBoard {
      */
     public float[] getTopLeft()
     {
-    	return null;
+    	return this.topLeft;
     }
 
 
