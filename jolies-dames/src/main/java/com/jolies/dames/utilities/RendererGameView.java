@@ -61,7 +61,7 @@ public class RendererGameView extends RajawaliRenderer
 //		mObject.addLight(mLight);
 //		addChild(mObject);
 				
-		GLSlot slot = new GLSlot(this.getContext(), this.mTextureManager, new Number3D(0,0,0), SlotColor.GREEN);
+		GLSlot slot = new GLSlot(this.getContext(), this.mTextureManager, new Number3D(0,0,0), SlotColor.BLUE);
 		slot.object.addLight(mLight);
 		this.addChild(slot.object);
 		

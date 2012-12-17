@@ -48,29 +48,35 @@ public class GLSlot {
 		object.setScale(SCALE_Z);
 		
 		DiffuseMaterial material = new DiffuseMaterial();
-		material.setAmbientColor(getColorForSlotColor(color));
-		material.setAmbientIntensity(0.75f);
-		
-		
-		
+		material.setAmbientIntensity(0.75f);				
 		object.setMaterial(material);
-
+		this.changeSlotColorTo(color);		
 	}
 	
-	private static Number3D getColorForSlotColor(SlotColor color)
+	public void changeSlotColorTo(SlotColor color)
 	{
+		Number3D newColor = null;
+		
 		switch(color)
 		{
 			case BEIGE:
-				return new Number3D(1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f);				
+				newColor = new Number3D(1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f);
+				break;
 			case BLUE:
-				return new Number3D(0.1686f, 0.1098f, 0.8392f);
+				newColor = new Number3D(0.1686f, 0.1098f, 0.8392f);
+				break;
 			case BROWN:
-				return new Number3D(0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f);
+				newColor = new Number3D(0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f);
+				break;
 			case GREEN:
-				return new Number3D(0.133333f, 0.72157f, 0.027450f);
+				newColor = new Number3D(0.133333f, 0.72157f, 0.027450f);
+				break;
 			default:
-				return new Number3D(1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f);
+				newColor = new Number3D(1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f);
+				break;
 		}
+		
+		DiffuseMaterial material = (DiffuseMaterial) object.getMaterial();
+		material.setAmbientColor(newColor);
 	}
 }
