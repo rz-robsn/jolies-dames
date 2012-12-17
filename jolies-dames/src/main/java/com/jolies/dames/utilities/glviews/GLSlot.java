@@ -9,6 +9,7 @@ import com.jolies.dames.R;
 import rajawali.BaseObject3D;
 import rajawali.lights.DirectionalLight;
 import rajawali.materials.DiffuseMaterial;
+import rajawali.materials.SimpleMaterial;
 import rajawali.materials.TextureInfo;
 import rajawali.materials.TextureManager;
 import rajawali.math.Number3D;
@@ -48,36 +49,43 @@ public class GLSlot {
 		object.setScaleZ(SCALE_XZ);
 		object.setScaleY(SCALE_Y);
 		
-		DiffuseMaterial material = new DiffuseMaterial();
-		material.setAmbientIntensity(0.75f);				
-		object.setMaterial(material);
 		this.changeSlotColorTo(color);		
 	}
 	
 	public void changeSlotColorTo(SlotColor color)
 	{
+		DiffuseMaterial material = new DiffuseMaterial();
+		material.setAmbientIntensity(0.75f);						
 		Number3D newColor = null;
 		
 		switch(color)
 		{
-			case BEIGE:
-				newColor = new Number3D(1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f);
+			case BROWN:				
+				object.setMaterial(new SimpleMaterial());
 				break;
+				
+			case BEIGE:				
+				newColor = new Number3D(1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f);
+				material.setAmbientColor(newColor);
+				object.setMaterial(material);
+				break;
+				
 			case BLUE:
 				newColor = new Number3D(0.1686f, 0.1098f, 0.8392f);
+				material.setAmbientColor(newColor);
+				object.setMaterial(material);
 				break;
-			case BROWN:
-				newColor = new Number3D(0.81960784313725490196078431372549f, 0.54509803921568627450980392156863f, 0.27843137254901960784313725490196f);
-				break;
+				
 			case GREEN:
 				newColor = new Number3D(0.133333f, 0.72157f, 0.027450f);
+				material.setAmbientColor(newColor);
+				object.setMaterial(material);
 				break;
+				
 			default:
-				newColor = new Number3D(1.0f, 0.8078431372549019607843137254902f, 0.61960784313725490196078431372549f);
 				break;
 		}
 		
-		DiffuseMaterial material = (DiffuseMaterial) object.getMaterial();
-		material.setAmbientColor(newColor);
+		
 	}
 }
