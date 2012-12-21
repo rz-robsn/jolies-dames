@@ -24,8 +24,8 @@ public class GLPiece {
 	/** The Different colors a Piece can have */
 	public static enum PieceColor { WHITE, RED }
 
-	private final static float DIMENSION_XZ = 0.125f;
-	private final static float DIMENSION_Y = 0.025f;
+	public final static float DIMENSION_XZ = 0.125f;
+	public final static float DIMENSION_Y = 0.025f;
 	
 	/**
 	 * The gap distance between the top piece and the bottom piece
@@ -34,12 +34,10 @@ public class GLPiece {
 	private final static float KING_PIECE_GAP = 0.01f;	
 	
 	public BaseObject3D object;
-	private PieceColor pieceColor;
 	
 	public GLPiece(Context context, TextureManager textureManager,
 			Number3D position, PieceColor color, boolean kingPiece)
 	{
-		this.pieceColor = color;
 		
 		ObjParser objParser = new ObjParser(context.getResources(), textureManager, R.raw.piece_obj);
 		objParser.parse();

@@ -1,10 +1,14 @@
 package com.jolies.dames;
 
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
+
 import rajawali.RajawaliFragmentActivity;
 import rajawali.renderer.RajawaliRenderer;
 
 import com.jolies.dames.utilities.ListenerBoard;
 import com.jolies.dames.utilities.ListenerGame;
+import com.jolies.dames.utilities.ListenerOnSurfaceCreated;
 import com.jolies.dames.utilities.RendererGameView;
 import com.jolies.dames.utilities.glviews.OnTouchListenerSlotClicked;
 import com.jolies.dames.utilities.model.CheckerGame;
@@ -15,7 +19,7 @@ import com.jolies.dames.utilities.model.Slot;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class ActivityPlayGame extends RajawaliFragmentActivity implements ListenerBoard, ListenerGame
+public class ActivityPlayGame extends RajawaliFragmentActivity implements ListenerBoard, ListenerGame, ListenerOnSurfaceCreated
 {
 	private RendererGameView mRenderer;
     private CheckerGame game;
@@ -30,14 +34,11 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
 		mRenderer = new RendererGameView(this);
 		mRenderer.setSurfaceView(mSurfaceView);
 		super.setRenderer(mRenderer);
+		mRenderer.setListenerOnSurfaceCreated(this);
 		
 		OnTouchListenerSlotClicked touchListener = new OnTouchListenerSlotClicked(mRenderer);
 		touchListener.setListener(this);
 		this.mSurfaceView.setOnTouchListener(touchListener);
-        
-        game = new CheckerGame();
-        game.setListener(this);
-        game.newGame();
     }
     
     @Override
@@ -87,15 +88,15 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
     public void onNewGame()
     {
         // Create initial Pieces Positions
-//        for (int i = 0; i < CheckerGame.GRID_SIZE; i++)
-//        {
-//            for (int j = 0; j < CheckerGame.GRID_SIZE; j++)
-//            {
-//                GamePiece gamePiece = this.game.getGamePieceAt(i, j);
-//                this.mRenderer.getBoard().createPieceAtPosition(i, j, gamePiece);
-//            }    
-//        }
-//        this.previouslySelectedSlot = null;
+        for (int i = 0; i < CheckerGame.GRID_SIZE; i++)
+        {
+            for (int j = 0; j < CheckerGame.GRID_SIZE; j++)
+            {
+                GamePiece gamePiece = this.game.getGamePieceAt(i, j);
+                //this.mRenderer.getBoard().createPieceAtPosition(i, j, gamePiece);
+            }    
+        }
+        this.previouslySelectedSlot = null;
     }
 
     @Override
@@ -141,7 +142,14 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
     @Override
     public void onPieceCanStillJump(int x, int y, GamePiece gamePiece)
     {
-        // TODO Auto-generated method stub
-        
+        // TODO Auto-generated method stub        
     }
+
+	@Override
+	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
+	{
+        game = new CheckerGame();
+        game.setListener(this);
+        game.newGame();
+	}
 }

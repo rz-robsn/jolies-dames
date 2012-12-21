@@ -1,5 +1,7 @@
 package com.jolies.dames.utilities.glviews;
 
+import rajawali.math.Number3D;
+
 import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
 import com.jolies.dames.utilities.model.GamePiece;
 
@@ -9,78 +11,76 @@ import com.jolies.dames.utilities.model.GamePiece;
  */
 public class GLPieceFactory
 {        
-    private float normalPieceHeight;
+    private GLBoard board;
     
     /**
      * Constructor, the height of a king Piece will be double the height of a normal piece.
      * 
      * @param normalPieceHeight the height of a Normal Piece.
      */
-    public GLPieceFactory(float normalPieceHeight)
+    public GLPieceFactory(GLBoard board)
     {
         super();
-        this.normalPieceHeight = normalPieceHeight;
+        this.board = board;
     }
 
     /**
-     * Returns a GLPiece whose height and color will be derived from the gamePiece parameter.
+     * Returns a GLPiece corresponding to the passed position on the grid 
+     * and the passed gamePiece.
      * 
-     * @param bottomCenterPosition
-     * @param radius
+     * @param x
+     * @param y
      * @param gamePiece
-     * @return
+     * @return a GLPiece corresponding to the passed position on the grid 
+     * 		   and the passed gamePiece.
      */
-    public GLPiece getGLPiece(float[] bottomCenterPosition, float radius, GamePiece gamePiece)
+    public GLPiece getGLPiece(int x, int y, GamePiece gamePiece)
     {
+    	Number3D position = this.board.getTopLeft();
+    	position = position.add(x * GLSlot.DIMENSION_XZ, 0, y * GLSlot.DIMENSION_XZ);
+    	position = position.add(
+    			GLSlot.DIMENSION_XZ/2, 
+    			GLSlot.DIMENSION_Y/2 + GLPiece.DIMENSION_Y/2, 
+    			GLSlot.DIMENSION_XZ/2);
+    	
         switch(gamePiece)
         {
             case EMPTY_SLOT:
                 return null;
 
             case RED_KING_PIECE:
-                float[] topCenterPositionRK = {
-                        bottomCenterPosition[0],
-                        bottomCenterPosition[1] + getKingPieceHeight(),
-                        bottomCenterPosition[2]
-                };
-                //return new GLPiece(topCenterPositionRK, bottomCenterPosition, radius, PieceColor.RED);
-                return null;
+            	return new GLPiece(
+            			this.board.context, 
+            			this.board.textureManager,
+            			position, 
+            			PieceColor.RED, 
+            			true);
 
             case RED_PIECE:
-                float[] topCenterPositionR = {
-                        bottomCenterPosition[0],
-                        bottomCenterPosition[1] + normalPieceHeight,
-                        bottomCenterPosition[2]
-                };
-                //return new GLPiece(topCenterPositionR, bottomCenterPosition, radius, PieceColor.RED);
-                return null;
-
+            	return new GLPiece(
+            			this.board.context, 
+            			this.board.textureManager,
+            			position, 
+            			PieceColor.RED, 
+            			false);
+            	
             case WHITE_KING_PIECE:
-                float[] topCenterPositionWK = {
-                        bottomCenterPosition[0],
-                        bottomCenterPosition[1] + getKingPieceHeight(),
-                        bottomCenterPosition[2]
-                };               
-                //return new GLPiece(topCenterPositionWK, bottomCenterPosition, radius, PieceColor.WHITE);
-                return null;
-
+            	return new GLPiece(
+            			this.board.context, 
+            			this.board.textureManager,
+            			position, 
+            			PieceColor.WHITE, 
+            			true);
                 
             case WHITE_PIECE:
-                float[] topCenterPositionW = {
-                        bottomCenterPosition[0],
-                        bottomCenterPosition[1] + normalPieceHeight,
-                        bottomCenterPosition[2]
-                };
-                //return new GLPiece(topCenterPositionW, bottomCenterPosition, radius, PieceColor.WHITE);
-                return null;
-                
+            	return new GLPiece(
+            			this.board.context, 
+            			this.board.textureManager,
+            			position, 
+            			PieceColor.WHITE, 
+            			false);                
             default:
                 return null;           
         }
-    }
-    
-    public float getKingPieceHeight()
-    {
-        return this.normalPieceHeight * 2;
     }
 }

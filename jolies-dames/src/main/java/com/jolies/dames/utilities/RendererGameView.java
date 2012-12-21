@@ -33,7 +33,8 @@ public class RendererGameView extends RajawaliRenderer
 {
 	private GLBoard board;
 	private DirectionalLight mLight;
-    
+    private ListenerOnSurfaceCreated listener = null;
+	
 	/**
 	 * Initialize the model data.
 	 */
@@ -56,17 +57,11 @@ public class RendererGameView extends RajawaliRenderer
 		
 		mLight = new DirectionalLight(1, -1, 0.5f); // set the direction
 		mLight.setPower(1.5f);		
-		
-//		ObjParser objParser = new ObjParser(mContext.getResources(), mTextureManager, R.raw.piece_obj);
-//		objParser.parse();
-//		BaseObject3D mObject = objParser.getParsedObject();
-//		mObject.addLight(mLight);
-//		addChild(mObject);
 				
-		float[] topLeftPosition = {-0.45f, 0.0f, -0.5f};
-		GLBoard board = new GLBoard(mContext, mTextureManager, topLeftPosition);
-		board.object.addLight(mLight);
-		this.addChild(board.object);
+//		Number3D topLeftPosition = new Number3D(-0.45f, 0.0f, -0.5f);
+//		this.board = new GLBoard(mContext, mTextureManager, topLeftPosition);
+//		board.object.addLight(mLight);
+//		this.addChild(board.object);
 		
 		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, true);
 		piece.object.addLight(mLight);
@@ -74,6 +69,11 @@ public class RendererGameView extends RajawaliRenderer
 		
 		this.mCamera.setPosition(0.0f, 1.5f, 1.5f);
 		this.mCamera.setLookAt(0, 0, 0);
+		
+		if(listener != null)
+		{
+			listener.onSurfaceCreated(glUnused, config);
+		}
 	}	
 	
 	@Override
@@ -103,5 +103,10 @@ public class RendererGameView extends RajawaliRenderer
     public void selectSlot(Slot slot)
     {
         this.board.setSlotSelected(slot);
+    }
+    
+    public void setListenerOnSurfaceCreated(ListenerOnSurfaceCreated listener)
+    {
+    	this.listener = listener;
     }
 }

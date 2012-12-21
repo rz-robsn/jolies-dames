@@ -17,8 +17,8 @@ import com.jolies.dames.utilities.model.Slot;
 
 public class GLBoard {
 	
-    /** Height of a normal piece */
-    private static final float NORMAL_PIECE_HEIGHT = 0.025f;
+    /** The Width and Height values of the board*/
+    public static final float DIMENSION = GLSlot.DIMENSION_XZ * CheckerGame.GRID_SIZE;
     
 	private GLSlot[][] glSlots;
 	private GLPiece[][] glPieces;
@@ -26,15 +26,15 @@ public class GLBoard {
 	private Slot slotSelected = null;
 	private Slot[] slotsToHighLight = {};
 	
-	private Context context;
-	private TextureManager textureManager;
+	public Context context;
+	public TextureManager textureManager;
 	
 	public BaseObject3D object;
 	
 	/**
 	 * Top Left position of the board. The board will be parallel to the XZ-plane.
 	 */
-	private float[] topLeft;
+	private Number3D topLeft;
 	
 	/**
 	 * The Board's piece factory
@@ -49,7 +49,7 @@ public class GLBoard {
 	 * @param topLeft Top Left position of the board. The board will be parallel to the XZ-plane.
 	 */
 	public GLBoard(Context context, TextureManager textureManager,
-			float[] topLeft) {
+			Number3D topLeft) {
 		super();
 		this.context = context;
 		this.textureManager = textureManager;
@@ -66,7 +66,7 @@ public class GLBoard {
 				glSlots[i][j] = new GLSlot(
 						context,
 						textureManager, 
-						new Number3D(topLeft[0] + i*GLSlot.DIMENSION_XZ, topLeft[1], topLeft[2] + (CheckerGame.GRID_SIZE - j-1) * GLSlot.DIMENSION_XZ),
+						this.topLeft.add(i*GLSlot.DIMENSION_XZ, 0, (CheckerGame.GRID_SIZE - j-1) * GLSlot.DIMENSION_XZ),
 						defaultColor(i,j));
 				this.object.addChild(glSlots[i][j].object);
 			}			
@@ -74,7 +74,7 @@ public class GLBoard {
 	
 		/* Creating the GLPieces */
 		glPieces = new GLPiece[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
-		piecesFactory = new GLPieceFactory(NORMAL_PIECE_HEIGHT);	
+		piecesFactory = new GLPieceFactory(this);	
 	}
 
 	/**
@@ -169,6 +169,19 @@ public class GLBoard {
 	 */
 	public void createPieceAtPosition(int x, int y, GamePiece gamePiece)
 	{
+		// Deleting previous piece
+		GLPiece oldPiece = this.glPieces[x][y]; 		
+		if (oldPiece != null)
+		{
+			this.object.removeChild(oldPiece.object);
+		}
+		
+		GLPiece newPiece = this.piecesFactory.getGLPiece(x, y, gamePiece);
+		if(newPiece != null)
+		{
+			this.object.addChild(newPiece.object);	
+		}
+		this.glPieces[x][y] = newPiece;
 	}
 	
 	/**
@@ -196,7 +209,7 @@ public class GLBoard {
 	/**
      * @return the Top Left position of the board. The board will be parallel to the XZ-plane.
      */
-    public float[] getTopLeft()
+    public Number3D getTopLeft()
     {
     	return this.topLeft;
     }
