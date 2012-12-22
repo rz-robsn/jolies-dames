@@ -57,6 +57,10 @@ public class RendererGameView extends RajawaliRenderer
 		Number3D topLeftPosition = new Number3D(-0.45f, 0.0f, -0.5f);
 		this.board = new GLBoard(mContext, mTextureManager, topLeftPosition, mLight);
 		this.addChild(board.object);
+		
+		this.mCamera.setPosition(-0.05f, 1.6f, -1.6f);
+		this.mCamera.setLookAt(0, 0, 0);
+
 	}
 	
 	@Override
@@ -67,10 +71,7 @@ public class RendererGameView extends RajawaliRenderer
 //		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, true);
 //		piece.object.addLight(mLight);
 //		this.addChild(piece.object);
-		
-		this.mCamera.setPosition(0.0f, 1.5f, 1.5f);
-		this.mCamera.setLookAt(0, 0, 0);
-		
+				
 		if(listener != null)
 		{
 			listener.onSurfaceCreated(glUnused, config);

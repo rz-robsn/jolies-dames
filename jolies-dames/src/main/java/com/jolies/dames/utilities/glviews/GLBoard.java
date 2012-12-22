@@ -169,7 +169,7 @@ public class GLBoard {
 	
 	public BaseObject3D getSlotObj3DAt(int x, int y)
 	{
-		return this.glSlots[x][y].object;
+		return this.glSlots[x][CheckerGame.GRID_SIZE - 1 - y].object;
 	}
 	
 	/**
@@ -228,8 +228,6 @@ public class GLBoard {
     {
     	return this.topLeft;
     }
-
-
 
 	/**
 	 * @param slot
