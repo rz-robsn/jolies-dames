@@ -93,7 +93,7 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
             for (int j = 0; j < CheckerGame.GRID_SIZE; j++)
             {
                 GamePiece gamePiece = this.game.getGamePieceAt(i, j);
-                //this.mRenderer.getBoard().createPieceAtPosition(i, j, gamePiece);
+                this.mRenderer.getBoard().createPieceAtPosition(i, j, gamePiece);
             }    
         }
         this.previouslySelectedSlot = null;

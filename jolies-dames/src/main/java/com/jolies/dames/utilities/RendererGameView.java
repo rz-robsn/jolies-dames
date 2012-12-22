@@ -9,6 +9,7 @@ import com.jolies.dames.utilities.glviews.GLPiece;
 import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
 import com.jolies.dames.utilities.glviews.GLSlot;
 import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
+import com.jolies.dames.utilities.model.CheckerGame;
 import com.jolies.dames.utilities.model.Slot;
 
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 
 import rajawali.BaseObject3D;
+import rajawali.lights.ALight;
 import rajawali.lights.DirectionalLight;
 import rajawali.materials.DiffuseMaterial;
 import rajawali.materials.TextureInfo;
@@ -32,7 +34,7 @@ import rajawali.renderer.RajawaliRenderer;
 public class RendererGameView extends RajawaliRenderer 
 {
 	private GLBoard board;
-	private DirectionalLight mLight;
+	private ALight mLight;
     private ListenerOnSurfaceCreated listener = null;
 	
 	/**
@@ -57,15 +59,14 @@ public class RendererGameView extends RajawaliRenderer
 		
 		mLight = new DirectionalLight(1, -1, 0.5f); // set the direction
 		mLight.setPower(1.5f);		
-				
-//		Number3D topLeftPosition = new Number3D(-0.45f, 0.0f, -0.5f);
-//		this.board = new GLBoard(mContext, mTextureManager, topLeftPosition);
-//		board.object.addLight(mLight);
-//		this.addChild(board.object);
 		
-		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, true);
-		piece.object.addLight(mLight);
-		this.addChild(piece.object);
+		Number3D topLeftPosition = new Number3D(-0.45f, 0.0f, -0.5f);
+		this.board = new GLBoard(mContext, mTextureManager, topLeftPosition, mLight);
+		this.addChild(board.object);
+
+//		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, true);
+//		piece.object.addLight(mLight);
+//		this.addChild(piece.object);
 		
 		this.mCamera.setPosition(0.0f, 1.5f, 1.5f);
 		this.mCamera.setLookAt(0, 0, 0);

@@ -39,10 +39,8 @@ public class GLSlot {
 	public BaseObject3D object;
 	
 	public GLSlot(Context context, TextureManager textureManager, Number3D position, SlotColor color)
-	{	
-		ObjParser objParser = new ObjParser(context.getResources(), textureManager, R.raw.slot_obj);
-		objParser.parse();
-		object = objParser.getParsedObject();
+	{			
+		object = GLObjParser.getInstance(context, textureManager).getSlotObj3D();
 		object.setPosition(position);
 		
 		object.setScaleX(SCALE_XZ);

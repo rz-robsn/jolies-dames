@@ -3,6 +3,8 @@ package com.jolies.dames.utilities.glviews;
 import java.util.ArrayList;
 
 import rajawali.BaseObject3D;
+import rajawali.lights.ALight;
+import rajawali.lights.DirectionalLight;
 import rajawali.materials.TextureManager;
 import rajawali.math.Number3D;
 
@@ -26,6 +28,8 @@ public class GLBoard {
 	private Slot slotSelected = null;
 	private Slot[] slotsToHighLight = {};
 	
+	private ALight mLight;
+	
 	public Context context;
 	public TextureManager textureManager;
 	
@@ -47,13 +51,15 @@ public class GLBoard {
 	 * @param context
 	 * @param textureManager
 	 * @param topLeft Top Left position of the board. The board will be parallel to the XZ-plane.
+	 * @param mLight The light
 	 */
 	public GLBoard(Context context, TextureManager textureManager,
-			Number3D topLeft) {
+			Number3D topLeft, ALight mLight) {
 		super();
 		this.context = context;
 		this.textureManager = textureManager;
 		this.topLeft = topLeft;
+		this.mLight = mLight;
 		
 		this.object = new BaseObject3D();
 		
@@ -66,7 +72,7 @@ public class GLBoard {
 				glSlots[i][j] = new GLSlot(
 						context,
 						textureManager, 
-						this.topLeft.add(i*GLSlot.DIMENSION_XZ, 0, (CheckerGame.GRID_SIZE - j-1) * GLSlot.DIMENSION_XZ),
+						Number3D.add(topLeft, new Number3D(i*GLSlot.DIMENSION_XZ, 0, (CheckerGame.GRID_SIZE - j-1) * GLSlot.DIMENSION_XZ)),
 						defaultColor(i,j));
 				this.object.addChild(glSlots[i][j].object);
 			}			
@@ -74,7 +80,9 @@ public class GLBoard {
 	
 		/* Creating the GLPieces */
 		glPieces = new GLPiece[CheckerGame.GRID_SIZE][CheckerGame.GRID_SIZE];
-		piecesFactory = new GLPieceFactory(this);	
+		piecesFactory = new GLPieceFactory(this);
+		
+		this.object.addLight(mLight);
 	}
 
 	/**
@@ -179,9 +187,11 @@ public class GLBoard {
 		GLPiece newPiece = this.piecesFactory.getGLPiece(x, y, gamePiece);
 		if(newPiece != null)
 		{
+			newPiece.object.addLight(mLight);
 			this.object.addChild(newPiece.object);	
 		}
 		this.glPieces[x][y] = newPiece;
+		
 	}
 	
 	/**

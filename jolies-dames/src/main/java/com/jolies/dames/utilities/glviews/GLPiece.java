@@ -38,36 +38,41 @@ public class GLPiece {
 	public GLPiece(Context context, TextureManager textureManager,
 			Number3D position, PieceColor color, boolean kingPiece)
 	{
-		
-		ObjParser objParser = new ObjParser(context.getResources(), textureManager, R.raw.piece_obj);
-		objParser.parse();
-		
+				
 		if(kingPiece)
 		{
-			BaseObject3D bottomPieceObject = objParser.getParsedObject();
-			BaseObject3D topPieceObject = bottomPieceObject.clone();			
+			BaseObject3D bottomPieceObject = GLObjParser.getInstance(context, textureManager).getPieceObj3D();
+			BaseObject3D topPieceObject = GLObjParser.getInstance(context, textureManager).getPieceObj3D();			
 
 			object = new BaseObject3D();
-			topPieceObject.setPosition(object.getPosition().add(0, DIMENSION_Y/2 + KING_PIECE_GAP, 0));
+			topPieceObject.setPosition(Number3D.add(object.getPosition(), new Number3D(0, DIMENSION_Y/2 + KING_PIECE_GAP, 0)));
 
 			if(color == PieceColor.RED)
 			{
-				bottomPieceObject.removeTexture(bottomPieceObject.getTextureInfoList().get(0));
-				bottomPieceObject.addTexture(textureManager.addTexture(BitmapFactory.decodeResource(context.getResources(), R.drawable.wooden_planks_red)));														
+				DiffuseMaterial material = new DiffuseMaterial();
+				material.setAmbientIntensity(1f);
+				Number3D redColor = new Number3D(255, 0, 0);
+				material.setAmbientColor(redColor);
+
+				bottomPieceObject.setMaterial(material);
+				topPieceObject.setMaterial(material);
 			}
 			
-			object = new BaseObject3D();
 			object.addChild(bottomPieceObject);
 			object.addChild(topPieceObject);
 		}
 		else
 		{
-			object = objParser.getParsedObject();
+			object = GLObjParser.getInstance(context, textureManager).getPieceObj3D();
 			
 			if(color == PieceColor.RED)
 			{
-				object.removeTexture(object.getTextureInfoList().get(0));					
-				object.addTexture(textureManager.addTexture(BitmapFactory.decodeResource(context.getResources(), R.drawable.wooden_planks_red)));									
+				DiffuseMaterial material = new DiffuseMaterial();
+				material.setAmbientIntensity(0.75f);
+				Number3D redColor = new Number3D(255, 0, 0);
+				material.setAmbientColor(redColor);
+
+				object.setMaterial(material);
 			}
 		}
 		
