@@ -18,6 +18,7 @@ import com.jolies.dames.utilities.model.Slot;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class ActivityPlayGame extends RajawaliFragmentActivity implements ListenerBoard, ListenerGame, ListenerOnSurfaceCreated
 {
@@ -35,10 +36,6 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
 		mRenderer.setSurfaceView(mSurfaceView);
 		super.setRenderer(mRenderer);
 		mRenderer.setListenerOnSurfaceCreated(this);
-		
-		OnTouchListenerSlotClicked touchListener = new OnTouchListenerSlotClicked(mRenderer);
-		touchListener.setListener(this);
-		this.mSurfaceView.setOnTouchListener(touchListener);
     }
     
     @Override
@@ -148,6 +145,10 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
 	@Override
 	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
 	{
+		OnTouchListenerSlotClicked touchListener = new OnTouchListenerSlotClicked(mRenderer);
+		touchListener.setListener(this);
+		this.mSurfaceView.setOnTouchListener(touchListener);
+		
         game = new CheckerGame();
         game.setListener(this);
         game.newGame();

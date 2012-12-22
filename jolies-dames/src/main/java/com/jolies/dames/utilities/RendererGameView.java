@@ -49,13 +49,7 @@ public class RendererGameView extends RajawaliRenderer
 	@Override
 	protected void initScene() 
 	{
-		super.initScene();		
-	}
-	
-	@Override
-	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
-	{
-		super.onSurfaceCreated(glUnused, config);
+		super.initScene();
 		
 		mLight = new DirectionalLight(1, -1, 0.5f); // set the direction
 		mLight.setPower(1.5f);		
@@ -63,6 +57,12 @@ public class RendererGameView extends RajawaliRenderer
 		Number3D topLeftPosition = new Number3D(-0.45f, 0.0f, -0.5f);
 		this.board = new GLBoard(mContext, mTextureManager, topLeftPosition, mLight);
 		this.addChild(board.object);
+	}
+	
+	@Override
+	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
+	{
+		super.onSurfaceCreated(glUnused, config);
 
 //		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, true);
 //		piece.object.addLight(mLight);

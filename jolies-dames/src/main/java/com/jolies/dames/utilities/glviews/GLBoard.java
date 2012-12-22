@@ -167,6 +167,11 @@ public class GLBoard {
 		this.glSlots[x][y].changeSlotColorTo(color);
 	}
 	
+	public BaseObject3D getSlotObj3DAt(int x, int y)
+	{
+		return this.glSlots[x][y].object;
+	}
+	
 	/**
 	 * Creates a new Piece at Position (x,y) on the board.
 	 * Deletes any other piece that was previously at that position.
