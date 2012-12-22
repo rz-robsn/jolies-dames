@@ -39,9 +39,9 @@ public class GLPieceFactory
     	Number3D position = this.board.getTopLeft();
     	position = Number3D.add(position, new Number3D(x * GLSlot.DIMENSION_XZ, 0, y * GLSlot.DIMENSION_XZ));
     	position = Number3D.add(position, new Number3D(
-    			GLSlot.DIMENSION_XZ/2, 
+    			0, 
     			GLSlot.DIMENSION_Y/2 + GLPiece.DIMENSION_Y/2, 
-    			GLSlot.DIMENSION_XZ/2));
+    			0));
     	
         switch(gamePiece)
         {

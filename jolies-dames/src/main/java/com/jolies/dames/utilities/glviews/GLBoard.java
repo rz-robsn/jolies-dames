@@ -50,7 +50,7 @@ public class GLBoard {
 	 * 
 	 * @param context
 	 * @param textureManager
-	 * @param topLeft Top Left position of the board. The board will be parallel to the XZ-plane.
+	 * @param topLeft Position of the top-leftmost slot of the board. The board will be parallel to the XZ-plane.
 	 * @param mLight The light
 	 */
 	public GLBoard(Context context, TextureManager textureManager,
