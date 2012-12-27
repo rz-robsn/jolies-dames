@@ -58,9 +58,8 @@ public class RendererGameView extends RajawaliRenderer
 		this.board = new GLBoard(mContext, mTextureManager, topLeftPosition, mLight);
 		this.addChild(board.object);
 		
-		this.mCamera.setPosition(-0.05f, 1.6f, -1.6f);
+		this.mCamera.setPosition(-0.05f, 1.6f, 1.6f);
 		this.mCamera.setLookAt(0, 0, 0);
-
 	}
 	
 	@Override

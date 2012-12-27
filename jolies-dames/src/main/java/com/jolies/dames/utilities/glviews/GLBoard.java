@@ -69,12 +69,12 @@ public class GLBoard {
 		{
 			for(int j = 0; j < CheckerGame.GRID_SIZE; j++)
 			{				
-				glSlots[i][j] = new GLSlot(
+				setGLSlotAtPosition(i, j, new GLSlot(
 						context,
 						textureManager, 
 						Number3D.add(topLeft, new Number3D(i*GLSlot.DIMENSION_XZ, 0, (CheckerGame.GRID_SIZE - j-1) * GLSlot.DIMENSION_XZ)),
-						defaultColor(i,j));
-				this.object.addChild(glSlots[i][j].object);
+						defaultColor(i,j)));
+				this.object.addChild(this.getSlotObj3DAt(i, j));
 			}			
 		}
 	
@@ -164,12 +164,22 @@ public class GLBoard {
 	 */
 	public void setGLSlotColor(int x, int y, SlotColor color)
 	{
-		this.glSlots[x][y].changeSlotColorTo(color);
+		getGLSlotAtPosition(x, y).changeSlotColorTo(color);
+	}
+
+	private GLSlot getGLSlotAtPosition(int x, int y) 
+	{
+		return this.glSlots[x][y];
+	}
+	
+	private void setGLSlotAtPosition(int x, int y, GLSlot slot) 
+	{
+		this.glSlots[x][y] = slot;
 	}
 	
 	public BaseObject3D getSlotObj3DAt(int x, int y)
 	{
-		return this.glSlots[x][CheckerGame.GRID_SIZE - 1 - y].object;
+		return getGLSlotAtPosition(x, y).object;
 	}
 	
 	/**

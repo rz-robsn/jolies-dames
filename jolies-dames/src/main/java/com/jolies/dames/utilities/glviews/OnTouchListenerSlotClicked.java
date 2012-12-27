@@ -24,7 +24,7 @@ import android.view.View.OnTouchListener;
  */
 public class OnTouchListenerSlotClicked implements OnTouchListener, OnObjectPickedListener
 {
-    private ListenerBoard listener;
+    private ListenerBoard listener = null;
     private RendererGameView renderer;
     private ObjectColorPicker mPicker;
     
@@ -60,9 +60,11 @@ public class OnTouchListenerSlotClicked implements OnTouchListener, OnObjectPick
     	{
         	for (int j = 0 ; j < CheckerGame.GRID_SIZE; j++)
         	{
-        		if(this.renderer.getBoard().getSlotObj3DAt(i, j) == object)
+        		if(this.renderer.getBoard().getSlotObj3DAt(i, j) == object
+        			&& this.listener != null)
         		{
-        			Log.i("objectPicked", "i=" + i + " j=" + j);		
+        			this.listener.onSlotSelected(i, j);
+        			break;
         		}
         	}	    		
     	}	
