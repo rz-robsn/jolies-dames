@@ -219,6 +219,25 @@ public class GLBoard {
 	 */
 	public void movePiece(int xStart, int yStart, int xEnd, int yEnd)
 	{
+		// Keeping the array of pieces consistent
+		GLPiece piece = this.glPieces[xStart][yStart];
+		this.glPieces[xStart][yStart] = null;
+		this.glPieces[xEnd][yEnd] = piece;
+		
+		// performing the animation
+		piece.object.setPosition(this.getPositionForSlot(xEnd, yEnd));
+	}
+	
+	public Number3D getPositionForSlot(int x, int y)
+	{
+    	Number3D position = this.getTopLeft();
+    	position = Number3D.add(position, new Number3D(x * GLSlot.DIMENSION_XZ, 0, (CheckerGame.GRID_SIZE - 1 - y) * GLSlot.DIMENSION_XZ));
+    	position = Number3D.add(position, new Number3D(
+    			0, 
+    			GLSlot.DIMENSION_Y/2 + GLPiece.DIMENSION_Y/2, 
+    			0));
+    	
+    	return position;
 	}
 	
 	/**
@@ -229,6 +248,8 @@ public class GLBoard {
 	 */
 	public void destroyPieceAt(int x, int y)
 	{
+		this.object.removeChild(this.glPieces[x][y].object);
+		this.glPieces[x][y] = null;
 	}
 	
 	/**

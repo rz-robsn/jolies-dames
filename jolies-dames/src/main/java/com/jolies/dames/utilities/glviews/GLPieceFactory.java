@@ -37,12 +37,7 @@ public class GLPieceFactory
      */
     public GLPiece getGLPiece(int x, int y, GamePiece gamePiece)
     {
-    	Number3D position = this.board.getTopLeft();
-    	position = Number3D.add(position, new Number3D(x * GLSlot.DIMENSION_XZ, 0, (CheckerGame.GRID_SIZE - 1 - y) * GLSlot.DIMENSION_XZ));
-    	position = Number3D.add(position, new Number3D(
-    			0, 
-    			GLSlot.DIMENSION_Y/2 + GLPiece.DIMENSION_Y/2, 
-    			0));
+    	Number3D position = this.board.getPositionForSlot(x, y);
     	
         switch(gamePiece)
         {
