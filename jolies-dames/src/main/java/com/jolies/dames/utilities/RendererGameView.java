@@ -1,7 +1,11 @@
 package com.jolies.dames.utilities;
 
+import java.math.MathContext;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import org.h2.util.MathUtils;
 
 import com.jolies.dames.R;
 import com.jolies.dames.utilities.glviews.GLBoard;
@@ -22,6 +26,7 @@ import rajawali.lights.ALight;
 import rajawali.lights.DirectionalLight;
 import rajawali.materials.DiffuseMaterial;
 import rajawali.materials.TextureInfo;
+import rajawali.math.MathUtil;
 import rajawali.math.Number3D;
 import rajawali.parser.ObjParser;
 import rajawali.primitives.Plane;
@@ -36,6 +41,8 @@ public class RendererGameView extends RajawaliRenderer
 	private GLBoard board;
 	private ALight mLight;
     private ListenerOnSurfaceCreated listener = null;
+    
+    private float zoomFactor = 1;
 	
 	/**
 	 * Initialize the model data.
@@ -58,7 +65,7 @@ public class RendererGameView extends RajawaliRenderer
 		this.board = new GLBoard(mContext, mTextureManager, topLeftPosition, mLight);
 		this.addChild(board.object);
 		
-		this.mCamera.setPosition(-0.05f, 1.6f, 1.6f);
+		this.mCamera.setPosition(0.0f, this.zoomFactor * 1.6f, this.zoomFactor * 1.6f);
 		this.mCamera.setLookAt(0, 0, 0);
 	}
 	
@@ -109,5 +116,19 @@ public class RendererGameView extends RajawaliRenderer
     public void setListenerOnSurfaceCreated(ListenerOnSurfaceCreated listener)
     {
     	this.listener = listener;
+    }
+    
+    public void increaseZoomFactorBy(float deltaValue)
+    {
+    	this.zoomFactor = Clamp(zoomFactor + deltaValue, -3, 3);
+		this.mCamera.setPosition(0.0f, this.zoomFactor * 1.6f, this.zoomFactor * 1.6f);
+    }
+    
+    private static float Clamp(float value, float minBound, float maxBound)
+    {
+    	float returnValue = value;
+    	returnValue = Math.min(returnValue, maxBound);
+    	returnValue = Math.max(returnValue, minBound);
+    	return returnValue;    	
     }
 }

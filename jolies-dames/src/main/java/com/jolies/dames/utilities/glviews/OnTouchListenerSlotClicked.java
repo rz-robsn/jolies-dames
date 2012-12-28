@@ -49,15 +49,12 @@ public class OnTouchListenerSlotClicked implements OnTouchListener, OnObjectPick
     {    
     	if(event.getPointerCount() >= 2
     		&& event.getAction() == MotionEvent.ACTION_MOVE) // the gesture is a pinch/expand gesture
-    	{
-        	int pointerId1 = event.getPointerId(0);
-        	int pointerId2 = event.getPointerId(1);
-    		
+    	{    		
 			float distance = (float)getDistance(
-					event.getX(pointerId1), 
-					event.getY(pointerId1),
-					event.getX(pointerId2), 
-					event.getY(pointerId2)
+					event.getX(0), 
+					event.getY(0),
+					event.getX(1), 
+					event.getY(1)
 			);
         	
     		if(this.previousDistance != -1 && this.previousDistance != distance)
