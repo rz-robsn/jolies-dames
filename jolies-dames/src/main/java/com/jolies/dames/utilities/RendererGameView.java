@@ -47,21 +47,17 @@ public class RendererGameView extends RajawaliRenderer
 		
 		this.mCamera.setPosition(0.0f, this.zoomFactor * 1.6f, this.zoomFactor * 1.6f);
 		this.mCamera.setLookAt(0, 0, 0);
+		
+		if(listener != null)
+		{
+			listener.onSceneInitialized();
+		}
 	}
 	
 	@Override
 	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
 	{
 		super.onSurfaceCreated(glUnused, config);
-
-//		GLPiece piece = new GLPiece(mContext, mTextureManager, new Number3D(0,0.3f,0), PieceColor.WHITE, true);
-//		piece.object.addLight(mLight);
-//		this.addChild(piece.object);
-				
-		if(listener != null)
-		{
-			listener.onSurfaceCreated(glUnused, config);
-		}
 	}	
 	
 	@Override

@@ -1,7 +1,5 @@
 package com.jolies.dames;
 
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 import rajawali.RajawaliFragmentActivity;
 import com.jolies.dames.utilities.ListenerBoard;
@@ -145,7 +143,7 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
     }
 
 	@Override
-	public void onSurfaceCreated(GL10 glUnused, EGLConfig config) 
+	public void onSceneInitialized() 
 	{
 		OnTouchListenerSlotClicked touchListener = new OnTouchListenerSlotClicked(mRenderer);
 		touchListener.setListener(this);
