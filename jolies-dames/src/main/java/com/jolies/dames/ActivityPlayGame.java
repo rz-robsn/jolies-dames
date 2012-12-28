@@ -81,6 +81,12 @@ public class ActivityPlayGame extends RajawaliFragmentActivity implements Listen
         }
     }
 
+	@Override
+	public void onPinchOrExpand(float deltaValue) 
+	{
+		Log.i("pointers", "POE called, deltaValue:" + deltaValue); 
+	}    
+    
     @Override
     public void onNewGame()
     {

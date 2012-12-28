@@ -28,6 +28,8 @@ public class OnTouchListenerSlotClicked implements OnTouchListener, OnObjectPick
     private RendererGameView renderer;
     private ObjectColorPicker mPicker;
     
+    private float previousDistance = -1;
+    
     public OnTouchListenerSlotClicked(RendererGameView renderer)
     {
         super();
@@ -44,8 +46,33 @@ public class OnTouchListenerSlotClicked implements OnTouchListener, OnObjectPick
 
     @Override
     public boolean onTouch(View v, MotionEvent event)
-    {
-		if(event.getAction() == MotionEvent.ACTION_DOWN)
+    {    
+    	if(event.getPointerCount() >= 2
+    		&& event.getAction() == MotionEvent.ACTION_MOVE) // the gesture is a pinch/expand gesture
+    	{
+        	int pointerId1 = event.getPointerId(0);
+        	int pointerId2 = event.getPointerId(1);
+    		
+			float distance = (float)getDistance(
+					event.getX(pointerId1), 
+					event.getY(pointerId1),
+					event.getX(pointerId2), 
+					event.getY(pointerId2)
+			);
+        	
+    		if(this.previousDistance != -1 && this.previousDistance != distance)
+    		{
+    			this.listener.onPinchOrExpand(distance - previousDistance); 
+    		}
+    		
+			this.previousDistance = distance;
+    	}
+    	else if(event.getAction() == MotionEvent.ACTION_POINTER_UP 
+    			|| event.getAction() == MotionEvent.ACTION_UP)
+    	{
+    		this.previousDistance = -1;
+    	}
+    	else if(event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			this.mPicker.getObjectAt(event.getX(), event.getY());
 		}
@@ -73,5 +100,19 @@ public class OnTouchListenerSlotClicked implements OnTouchListener, OnObjectPick
     public void setListener(ListenerBoard listener)
     {
         this.listener = listener;
+    }
+    
+    /**
+     * Returns the distance between the points (x1, y1) and (x2, y2)
+     * 
+     * @param x1
+     * @param y1
+     * @param x2
+     * @param y2
+     * @return
+     */
+    private static double getDistance(float x1, float y1, float x2, float y2)
+    {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
 }
