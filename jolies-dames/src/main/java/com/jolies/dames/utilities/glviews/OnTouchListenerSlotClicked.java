@@ -7,13 +7,6 @@ import rajawali.util.OnObjectPickedListener;
 import com.jolies.dames.utilities.ListenerBoard;
 import com.jolies.dames.utilities.RendererGameView;
 import com.jolies.dames.utilities.model.CheckerGame;
-import com.jolies.dames.utilities.model.Slot;
-
-import android.graphics.RectF;
-import android.opengl.GLES10;
-import android.opengl.GLU;
-import android.util.FloatMath;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;

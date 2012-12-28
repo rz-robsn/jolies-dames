@@ -1,17 +1,11 @@
 package com.jolies.dames.utilities.glviews;
 
-import java.util.ArrayList;
-
 import rajawali.BaseObject3D;
 import rajawali.lights.ALight;
-import rajawali.lights.DirectionalLight;
 import rajawali.materials.TextureManager;
 import rajawali.math.Number3D;
 
 import android.content.Context;
-import android.graphics.RectF;
-
-import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
 import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
 import com.jolies.dames.utilities.model.CheckerGame;
 import com.jolies.dames.utilities.model.GamePiece;

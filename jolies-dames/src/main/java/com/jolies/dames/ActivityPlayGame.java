@@ -4,8 +4,6 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import rajawali.RajawaliFragmentActivity;
-import rajawali.renderer.RajawaliRenderer;
-
 import com.jolies.dames.utilities.ListenerBoard;
 import com.jolies.dames.utilities.ListenerGame;
 import com.jolies.dames.utilities.ListenerOnSurfaceCreated;
@@ -16,9 +14,7 @@ import com.jolies.dames.utilities.model.GamePiece;
 import com.jolies.dames.utilities.model.Player;
 import com.jolies.dames.utilities.model.Slot;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 
 public class ActivityPlayGame extends RajawaliFragmentActivity implements ListenerBoard, ListenerGame, ListenerOnSurfaceCreated
 {

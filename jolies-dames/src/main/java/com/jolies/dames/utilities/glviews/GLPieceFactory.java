@@ -3,7 +3,6 @@ package com.jolies.dames.utilities.glviews;
 import rajawali.math.Number3D;
 
 import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
-import com.jolies.dames.utilities.model.CheckerGame;
 import com.jolies.dames.utilities.model.GamePiece;
 
 /**

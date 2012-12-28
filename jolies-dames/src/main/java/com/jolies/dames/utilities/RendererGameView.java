@@ -1,35 +1,15 @@
 package com.jolies.dames.utilities;
 
-import java.math.MathContext;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import org.h2.util.MathUtils;
-
-import com.jolies.dames.R;
 import com.jolies.dames.utilities.glviews.GLBoard;
-import com.jolies.dames.utilities.glviews.GLPiece;
-import com.jolies.dames.utilities.glviews.GLPiece.PieceColor;
-import com.jolies.dames.utilities.glviews.GLSlot;
-import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
-import com.jolies.dames.utilities.model.CheckerGame;
 import com.jolies.dames.utilities.model.Slot;
 
 import android.content.Context;
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
-import android.opengl.Matrix;
-
-import rajawali.BaseObject3D;
 import rajawali.lights.ALight;
 import rajawali.lights.DirectionalLight;
-import rajawali.materials.DiffuseMaterial;
-import rajawali.materials.TextureInfo;
-import rajawali.math.MathUtil;
 import rajawali.math.Number3D;
-import rajawali.parser.ObjParser;
-import rajawali.primitives.Plane;
 import rajawali.renderer.RajawaliRenderer;
 
 /**

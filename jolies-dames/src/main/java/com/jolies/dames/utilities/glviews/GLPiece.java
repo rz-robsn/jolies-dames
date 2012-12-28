@@ -1,23 +1,10 @@
 package com.jolies.dames.utilities.glviews;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-
-import com.jolies.dames.R;
-import com.jolies.dames.utilities.glviews.GLSlot.SlotColor;
-
 import rajawali.BaseObject3D;
 import rajawali.materials.DiffuseMaterial;
 import rajawali.materials.TextureManager;
 import rajawali.math.Number3D;
-import rajawali.parser.ObjParser;
-
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.opengl.GLES20;
-import android.opengl.Matrix;
-import android.util.FloatMath;
 
 public class GLPiece {
 
